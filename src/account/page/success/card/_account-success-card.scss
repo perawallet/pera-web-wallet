@@ -1,0 +1,79 @@
+.account-success-card-container {
+  display: flex;
+  gap: 16px;
+}
+
+.account-success-card__summary {
+  display: grid;
+  grid-template-columns: 302px 1fr;
+
+  width: 100%;
+
+  background: var(--card-default);
+  border-radius: 12px;
+  box-shadow: var(--shadow-small);
+}
+
+.account-success-card__summary-value {
+  padding: 40px;
+
+  border-right: 1px solid var(--gray-100);
+}
+
+.account-success-card__summary-address {
+  padding: 40px;
+}
+
+.account-success-card__summary__main-info {
+  margin: 16px 0 8px;
+}
+
+.account-success-card__summary-value__add-funds-cta {
+  gap: 8px;
+
+  width: 166px;
+  height: 42px;
+
+  margin-top: 32px;
+  margin-right: 96px;
+
+  .plus-icon path {
+    fill: var(--primary-button-text);
+  }
+}
+
+.account-success-card__summary-address__button-group {
+  display: flex;
+  gap: 12px;
+
+  margin-top: 32px;
+}
+
+.account-success-card__summary-address__copy-button {
+  width: 90px;
+
+  .clipboard-button__content {
+    .copy-icon path {
+      fill: var(--light-button-text);
+    }
+  }
+}
+
+.account-success-card__summary-address__qr-button {
+  gap: 8px;
+}
+
+.account-success-card__pera-explorer {
+  padding: 40px;
+
+  background-color: var(--gray-200);
+  border-radius: 12px;
+}
+
+.account-success-card__pera-explorer-link {
+  gap: 8px;
+}
+
+.account-success-card__pera-explorer-text {
+  margin: 16px 0 58px;
+}

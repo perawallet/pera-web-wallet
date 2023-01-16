@@ -1,0 +1,20 @@
+.pera-loader--gray {
+  width: 100px;
+  height: 100px;
+}
+
+.pera-loader--align-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}
+
+.pera-loader-wrapper--colorful {
+  width: 56px;
+  height: 56px;
+
+  background-color: var(--helper-purple-default);
+  border-radius: 50%;
+}

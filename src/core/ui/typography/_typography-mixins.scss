@@ -1,0 +1,166 @@
+@mixin typography--display() {
+  font-family: "DMSans", sans-serif;
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 58px;
+  letter-spacing: -2.6px;
+}
+
+@mixin typography--h1() {
+  font-family: "Milan", sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 40px;
+  letter-spacing: -0.69px;
+}
+
+@mixin typography--h2() {
+  font-family: "Milan", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 29px;
+  letter-spacing: -0.47px;
+}
+
+@mixin typography--h3() {
+  font-family: "Milan", sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.47px;
+}
+
+@mixin typography--subhead() {
+  font-family: "Milan", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.26px;
+}
+
+@mixin typography--small-subhead() {
+  font-family: "Milan", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.26px;
+}
+
+@mixin typography--body() {
+  font-family: "Milan", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: -0.09px;
+}
+
+@mixin typography--medium-body() {
+  font-family: "Milan", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: -0.09px;
+}
+
+@mixin typography--bold-body() {
+  font-family: "Milan", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.09px;
+}
+
+@mixin typography--secondary-body() {
+  font-family: "Milan", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.04px;
+}
+
+@mixin typography--secondary-bold-body() {
+  font-family: "Milan", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.04px;
+}
+
+@mixin typography--button() {
+  font-family: "Milan", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.09px;
+}
+
+@mixin typography--secondary-button() {
+  font-family: "Milan", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: -0.09px;
+}
+
+@mixin typography--caption() {
+  font-family: "Milan", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  letter-spacing: -0.01px;
+}
+
+@mixin typography--tiny() {
+  font-family: "Milan", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.01px;
+}
+
+@mixin typography--bold-tiny() {
+  font-family: "Milan", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.01px;
+}
+
+@mixin typography--tagline() {
+  font-family: "Milan", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.05px;
+}
+
+// Utils
+
+@mixin is-bold {
+  font-weight: 700;
+}
+
+// Text Colors
+@mixin text-color--main() {
+  color: var(--text-main);
+}
+
+@mixin text-color--gray() {
+  color: var(--text-gray);
+}
+
+@mixin text-color--gray-light() {
+  color: var(--text-gray-light);
+}
+
+@mixin text-color--gray-lightest() {
+  color: var(--text-gray-lightest);
+}
+
+@mixin text-color--danger() {
+  color: var(--helper-red-default);
+}
+
+@mixin text-color--success() {
+  color: var(--helper-green-default);
+}

@@ -1,0 +1,23 @@
+.tooltip {
+  &.__react_component_tooltip {
+    width: auto;
+    max-width: 360px;
+
+    padding: 10px 20px;
+
+    background: var(--text-main);
+    border: none;
+    border-radius: 12px;
+
+    &.place-top {
+      &:before,
+      &:after {
+        border-top-color: var(--text-main);
+      }
+    }
+  }
+}
+
+.tooltip-content {
+  color: var(--primary-button-text);
+}

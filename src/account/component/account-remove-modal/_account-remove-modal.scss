@@ -1,0 +1,44 @@
+.account-remove-modal__hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  margin-bottom: 48px;
+
+  text-align: center;
+}
+
+.account-remove-modal__hero-unlink-icon-wrapper {
+  display: grid;
+
+  width: 106px;
+  height: 106px;
+
+  margin: 28px auto 32px;
+
+  background-color: var(--card-default);
+  border-radius: 100%;
+  box-shadow: var(--shadow-large);
+
+  place-content: center;
+
+  .unlink-icon {
+    path {
+      fill: var(--helper-red-default);
+    }
+  }
+}
+
+.account-remove-modal__hero-title {
+  margin-bottom: 16px;
+}
+
+.account-remove-modal__confirm-cta {
+  width: 100%;
+}
+
+.account-remove-modal__cancel-cta {
+  width: 100%;
+
+  margin-top: 8px;
+}

@@ -1,0 +1,31 @@
+.transaction-sign-tab-view {
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+
+  width: 480px;
+
+  margin: 0 auto;
+}
+
+.transaction-sign-tab-view__access-page {
+  background-color: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.transaction-sign-tab-view__spinner-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 480px;
+  height: 578px;
+
+  color: var(--text-main);
+  background: var(--card-default);
+
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}

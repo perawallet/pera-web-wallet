@@ -1,0 +1,73 @@
+.connect-page-embedded-view-add-import-account {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: calc(100% - 40px);
+
+  padding-top: 48px;
+}
+
+.connect-page-embedded-view-add-import-account__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 72px;
+  height: 72px;
+
+  margin: 0 auto 16px;
+
+  background: var(--card-default);
+
+  border-radius: 50%;
+  box-shadow: var(--shadow-large);
+}
+
+.connect-page-embedded-view-add-import-account__description {
+  margin: 0 auto 32px;
+
+  text-align: center;
+
+  &--no-account {
+    max-width: 268px;
+  }
+}
+
+.connect-page-embedded-view-add-import-account__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  width: 100%;
+
+  margin-bottom: 24px;
+
+  .chevron-right-icon {
+    path {
+      fill: var(--card-default);
+    }
+  }
+}
+
+.connect-page-embedded-view-add-import-account__import-account {
+  display: block;
+
+  margin: 4px auto 0;
+  padding: 0;
+
+  color: var(--helper-purple-default);
+  background-color: transparent;
+
+  text-align: center;
+}
+
+.connect-page-embedded-view-add-import-account__spinner-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,95 @@
+@import "../../../../../../../core/ui/typography/typography-mixins";
+
+.transaction-sign-assets-list-item {
+  position: relative;
+
+  min-height: 69px;
+
+  &--hidden {
+    display: none;
+  }
+
+  &--with-border-bottom {
+    .transaction-sign-assets-list-item__asset-detail {
+      border-bottom: 1px solid var(--gray-100);
+    }
+  }
+
+  &:not(:last-child) {
+    .transaction-sign-assets-list-item__asset-detail {
+      border-bottom: 1px solid var(--gray-100);
+    }
+  }
+}
+
+.transaction-sign-assets-list-item__content {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 40px auto;
+  gap: 16px;
+}
+
+.transaction-sign-assets-list-item--collectible {
+  .transaction-sign-assets-list-item__asset-img {
+    .image__img,
+    .image__placeholder {
+      border-radius: 8px;
+    }
+  }
+}
+
+.transaction-sign-assets-list-item__asset-img {
+  width: 40px;
+  height: 40px;
+
+  margin: 12px 0;
+
+  .image__img {
+    border-radius: 50%;
+  }
+
+  .image__placeholder {
+    @include typography--tagline();
+
+    background-color: var(--overlay);
+
+    border-radius: 50%;
+  }
+}
+
+.transaction-sign-assets-list-item__receive-icon-wrapper {
+  position: absolute;
+  top: 36px;
+  left: 24px;
+
+  width: 20px;
+  height: 20px;
+
+  background-color: var(--card-default);
+  border-radius: 50%;
+  box-shadow: var(--shadow-small);
+}
+
+.transaction-sign-assets-list-item__asset-detail {
+  padding: 12px 0;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--gray-100);
+  }
+}
+
+.transaction-sign-assets-list-item__collectible-description {
+  gap: 4px;
+}
+
+.transaction-sign-assets-list-item__warning {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .warning-icon {
+    path {
+      fill: var(--helper-red-default);
+    }
+  }
+}

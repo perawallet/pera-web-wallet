@@ -1,0 +1,38 @@
+.transaction-sign-detail-message {
+  display: grid;
+  grid-template-columns: 24px auto;
+  gap: 12px;
+
+  margin-bottom: 16px;
+  padding: 16px;
+
+  border-radius: 16px;
+
+  word-break: break-word;
+
+  &:last-of-type {
+    margin-bottom: 32px;
+  }
+
+  &--warning {
+    color: var(--helper-red-default);
+    background-color: var(--red-50);
+
+    .warning-icon {
+      path {
+        fill: var(--helper-red-default);
+      }
+    }
+  }
+
+  &--info {
+    background-color: var(--card-default);
+    box-shadow: var(--shadow-small);
+
+    .info-icon {
+      path {
+        fill: var(--gray-500);
+      }
+    }
+  }
+}

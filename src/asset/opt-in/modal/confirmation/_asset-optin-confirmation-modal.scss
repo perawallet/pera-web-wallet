@@ -1,0 +1,62 @@
+.asset-optin-confirmation-modal {
+  width: 424px;
+}
+
+.asset-optin-confirmation-modal__asset {
+  margin-top: 40px;
+}
+
+.asset-optin-confirmation-modal__asset-name {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  margin: 16px 0 4px;
+}
+
+.asset-optin-confirmation-modal__info-list {
+  margin: 24px 0 32px;
+}
+
+.asset-optin-confirmation-modal__info-list-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 16px 0;
+
+  border-top: 1px solid var(--gray-100);
+}
+
+.asset-optin-confirmation-modal__logo--is-nft {
+  &.asset-logo {
+    .image__img,
+    .image__placeholder {
+      border-radius: 12px;
+    }
+  }
+}
+
+.asset-optin-confirmation-modal__info-list-item__content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.asset-optin-confirmation-modal__copy-button {
+  width: max-content;
+  height: max-content;
+
+  padding: 0;
+
+  .copy-icon {
+    path {
+      fill: var(--text-gray-light);
+    }
+  }
+}
+
+.asset-optin-confirmation-modal__approve-cta {
+  margin: 48px 0 12px;
+}

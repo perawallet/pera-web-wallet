@@ -1,0 +1,19 @@
+.checkbox-input-label__icon {
+  --checkbox-focus-bg: var(--primary-button-bg);
+  --checkbox-border-color: var(--gray-400);
+
+  border-width: 2px;
+  border-radius: 6px;
+
+  &:hover {
+    --checkbox-border-color: var(--primary-button-bg);
+
+    transition: none;
+  }
+}
+
+.checkbox-input-label--is-selected {
+  .checkbox-input-label__icon {
+    border: none;
+  }
+}

@@ -1,0 +1,9 @@
+.transaction-details-list-item {
+  .list-item__click-wrapper {
+    padding: 16px 0;
+  }
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--gray-100);
+  }
+}

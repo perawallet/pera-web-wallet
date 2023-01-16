@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Tinyman",
+    "description": "Swap and stake on the original Algorand DEX",
+    "cover": "tinyman-cover.jpg",
+    "logo": "tinyman-logo.svg",
+    "cta_text": "Tinyman",
+    "cta_url": "https://app.tinyman.org",
+    "category": "recommended,swap,stake"
+  },
+  {
+    "name": "Moonpay",
+    "description": "Buy ALGO quickly",
+    "cover": "moonpay-cover.jpg",
+    "logo": "moonpay-logo.svg",
+    "cta_text": "Moonpay",
+    "cta_url": "",
+    "category": "add_funds,all,buy_algo"
+  },
+  {
+    "name": "Banxa",
+    "description": "Buy or sell ALGO, USDC, USDT globally",
+    "cover": "banxa-cover.jpg",
+    "logo": "banxa-logo.svg",
+    "cta_text": "Banxa",
+    "cta_url": "",
+    "category": "add_funds,all,buy_algo,buy_usdc,buy_usdt"
+  },
+  {
+    "name": "Wyre",
+    "description": "Buy ALGO, USDC, USDT",
+    "cover": "wyre-cover.jpg",
+    "logo": "wyre-logo.svg",
+    "cta_text": "Wyre",
+    "cta_url": "",
+    "category": "add_funds,all,buy_algo,buy_usdc,buy_usdt"
+  },
+  {
+    "name": "Coinbase",
+    "description": "Transfer your crypto to Pera securely",
+    "cover": "coinbase-cover.jpg",
+    "logo": "coinbase-logo.svg",
+    "cta_text": "Coinbase",
+    "cta_url": "",
+    "category": "add_funds,all,transfer"
+  },
+  {
+    "name": "AlgoxNFT",
+    "description": "Auctions, shuffles and NFT collections",
+    "cover": "algoxnft-cover.jpg",
+    "logo": "algoxnft-logo.svg",
+    "cta_text": "AlgoxNFT",
+    "cta_url": "https://algoxnft.com/",
+    "category": "recommended,browse_nfts"
+  },
+  {
+    "name": "Rand Gallery",
+    "description": "Latest and popular NFT listings",
+    "cover": "randgallery-cover.jpg",
+    "logo": "randgallery-logo.svg",
+    "cta_text": "Rand Gallery",
+    "cta_url": "https://www.randgallery.com/",
+    "category": "recommended,browse_nfts"
+  },
+  {
+    "name": "AlgoFi",
+    "description": "Swap, earn interest, borrow and trade",
+    "cover": "algofi-cover.jpg",
+    "logo": "algofi-logo.svg",
+    "cta_text": "AlgoFi",
+    "cta_url": "https://app.algofi.org",
+    "category": "swap,stake"
+  },
+  {
+    "name": "Humble",
+    "description": "Swap, earn interest and participate in yield farming",
+    "cover": "humble-cover.jpg",
+    "logo": "humble-logo.svg",
+    "cta_text": "Humble",
+    "cta_url": "https://app.humble.sh",
+    "category": "swap"
+  },
+  {
+    "name": "Pact",
+    "description": "Low cost, fast swaps on Algorand",
+    "cover": "pact-cover.jpg",
+    "logo": "pact-logo.svg",
+    "cta_text": "Pact",
+    "cta_url": "https://app.pact.fi",
+    "category": "swap"
+  },
+  {
+    "name": "FolksFinance",
+    "description": "Borrow and lend, participate in Liquid Governance",
+    "cover": "folksfinance-cover.jpg",
+    "logo": "folksfinance-logo.svg",
+    "cta_text": "FolksFinance",
+    "cta_url": "https://app.folks.finance",
+    "category": "stake"
+  },
+  {
+    "name": "GARD",
+    "description": "Borrow and stake with the GARD protocol",
+    "cover": "gard-cover.jpg",
+    "logo": "gard-logo.svg",
+    "cta_text": "GARD",
+    "cta_url": "https://www.gard.money",
+    "category": "stake"
+  }
+]

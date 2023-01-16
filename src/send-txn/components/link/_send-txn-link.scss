@@ -1,0 +1,29 @@
+.send-txn-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: currentColor;
+
+  &:visited {
+    color: inherit;
+  }
+
+  &--disabled {
+    background: var(--background);
+
+    cursor: not-allowed;
+
+    pointer-events: none;
+  }
+}
+
+.send-txn-link__name-row {
+  gap: 8px;
+
+  margin-top: 4px;
+}
+
+.send-txn-link__description-container {
+  gap: 16px;
+}

@@ -1,0 +1,95 @@
+@import "../../../../../core/ui/typography/typography-mixins";
+
+.account-import-pera-success {
+  width: 424px;
+}
+
+.account-import-pera-success,
+.account-import-pera-success__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.account-import-pera-success__heading {
+  gap: 16px;
+
+  margin: 32px 0;
+}
+
+.account-import-pera-success__content {
+  width: 100%;
+
+  margin-bottom: 48px;
+}
+
+.account-import-pera-success__spinner {
+  margin: auto;
+}
+
+.account-import-pera-success__info-box {
+  margin-top: 24px;
+
+  .info-box-text {
+    @include typography--medium-body();
+
+    color: rgba(183 67 20 / 100%);
+  }
+}
+
+.account-import-pera-success__icon {
+  width: 106px;
+  height: 106px;
+
+  margin-top: 14px;
+
+  background: white;
+  border-radius: 100%;
+  box-shadow: var(--shadow-large);
+
+  .check-mark-icon path {
+    fill: var(--purple-500);
+  }
+}
+
+.account-import-pera-success__account-list {
+  display: grid;
+
+  gap: 32px;
+
+  width: 100%;
+  max-height: 240px;
+
+  overflow-y: auto;
+
+  padding: 20px 28px;
+
+  background: var(--gray-100);
+  border-radius: 12px;
+}
+
+.account-import-pera-success__account-list-item {
+  position: relative;
+
+  &:not(:last-child):after {
+    position: absolute;
+
+    bottom: -16px;
+
+    width: 100%;
+
+    border-bottom: solid 1px var(--gray-200);
+
+    content: "";
+  }
+
+  .account-default-icon,
+  .account-ledger-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.account-import-pera-success__cta {
+  width: 100%;
+}

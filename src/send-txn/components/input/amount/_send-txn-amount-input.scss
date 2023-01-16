@@ -1,0 +1,26 @@
+.send-txn-amount__max-button {
+  position: absolute;
+
+  top: 50%;
+  right: 20px;
+
+  transform: translateY(-50%);
+}
+
+.send-txn-amount__input-container {
+  display: grid;
+
+  grid-template-columns: max-content 1fr;
+  grid-gap: 2px;
+
+  grid-auto-flow: column;
+}
+
+.send-txn-amount__usd-value {
+  margin-left: 2px;
+}
+
+.send-txn-amount__value-placeholder {
+  display: flex;
+  align-items: center;
+}

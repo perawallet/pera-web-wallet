@@ -1,0 +1,29 @@
+.transfer-mobile {
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+}
+
+.transfer-mobile__info-box {
+  margin: 32px 0 48px;
+
+  text-align: left;
+
+  .info-box-icon {
+    background-color: var(--helper-red-lighter);
+  }
+}
+
+.transfer-mobile__title {
+  margin: 32px 0 16px;
+}
+
+.transfer-mobile__icon {
+  width: auto;
+  height: 80px;
+}
+
+.transfer-mobile__cta {
+  width: 100%;
+}

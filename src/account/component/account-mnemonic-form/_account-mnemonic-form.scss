@@ -1,0 +1,23 @@
+.account-mnemonic-form__grid {
+  display: grid;
+  grid-template: repeat(6, 1fr) / repeat(5, 1fr);
+  gap: 32px 16px;
+}
+
+.account-mnemonic-form__grid-cell {
+  width: 120px;
+  height: 72px;
+
+  margin: 0;
+}
+
+.account-mnemonic-form__grid-input .input {
+  width: 100%;
+}
+
+.account-mnemonic-form__cta {
+  width: 424px;
+  grid-column: 1/-1;
+
+  margin: auto auto 0;
+}

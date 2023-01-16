@@ -1,0 +1,33 @@
+.algo-currency {
+  display: flex;
+  gap: 6px;
+
+  min-width: 136px;
+  height: 40px;
+
+  padding: 10px 16px;
+
+  border: 1px solid var(--gray-200);
+  border-radius: 12px;
+}
+
+.algo-currency__icon-wrapper {
+  display: grid;
+
+  width: 20px;
+  height: 20px;
+
+  background-color: var(--gray-400);
+  border-radius: 100%;
+  place-content: center;
+
+  .algo-icon {
+    path {
+      fill: var(--white);
+    }
+  }
+}
+
+.algo-currency__loader {
+  margin: auto;
+}

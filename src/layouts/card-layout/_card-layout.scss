@@ -1,0 +1,38 @@
+.card-layout {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+
+  width: max-content;
+
+  margin: auto;
+  padding: 28px;
+
+  background: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.card-layout-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background: var(--overlay);
+}
+
+.card-layout-content {
+  @extend .card-layout;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  transform: translate(-50%, -50%);
+}

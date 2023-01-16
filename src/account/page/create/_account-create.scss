@@ -1,0 +1,12 @@
+.account-create {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 424px;
+}
+
+.account-create__title,
+.account-create__address-box {
+  margin-bottom: 32px;
+}

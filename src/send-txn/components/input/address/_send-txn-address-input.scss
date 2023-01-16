@@ -1,0 +1,67 @@
+.send-txn-address__input-label {
+  .input {
+    flex: 0 0 328px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+}
+
+.send-txn-address__input-label:focus-within {
+  .input {
+    flex-basis: 100%;
+  }
+
+  .send-txn-address__my-accounts {
+    display: block;
+  }
+}
+
+.send-txn-address__my-accounts {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: -2px;
+
+  z-index: var(--send-txn-select-account-z-index);
+
+  display: none;
+
+  width: calc(100% + 4px);
+
+  max-height: 256px;
+
+  padding: 0;
+
+  border: none;
+
+  box-shadow: var(--shadow-small);
+
+  &:focus-within {
+    border: none;
+    box-shadow: none;
+  }
+
+  .form-field__title {
+    margin: 0;
+    padding: 16px 14px 0;
+  }
+
+  .form-field__label {
+    padding: 0;
+  }
+}
+
+.send-txn-address__my-accounts-select {
+  .selectable-account-list__list {
+    max-height: 234px;
+
+    background: var(--white);
+
+    .list {
+      display: grid;
+      grid-gap: 32px;
+    }
+  }
+}

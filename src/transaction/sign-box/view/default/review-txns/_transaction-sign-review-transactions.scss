@@ -1,0 +1,33 @@
+.transaction-sign-review-transactions {
+  height: 398px;
+
+  overflow: auto;
+
+  padding: 20px 28px;
+}
+
+.transaction-sign-review-transactions__title-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 24px;
+}
+
+.transaction-sign-review-transactions__button.button {
+  --button-color: var(--secondary-button-text);
+
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+
+  .chevron-right-icon {
+    width: 16px;
+    height: 16px;
+
+    path {
+      fill: var(--secondary-button-text);
+    }
+  }
+}

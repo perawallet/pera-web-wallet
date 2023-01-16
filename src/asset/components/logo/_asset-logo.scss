@@ -1,0 +1,18 @@
+@import "../../../core/ui/typography/_typography-mixins.scss";
+
+.asset-logo {
+  .image__img {
+    border-radius: 100%;
+  }
+
+  .image__placeholder {
+    @include typography--tagline();
+
+    position: static;
+
+    color: var(--light-button-disabled-text);
+
+    background: var(--background);
+    border-radius: 100%;
+  }
+}

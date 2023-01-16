@@ -1,0 +1,21 @@
+.send-txn {
+  height: 600px;
+}
+
+.send-txn__heading {
+  display: flex;
+
+  margin-bottom: 32px;
+
+  .button:active {
+    background: none;
+  }
+
+  .button:focus {
+    box-shadow: none;
+  }
+}
+
+.send-txn__header-icon path {
+  fill: var(--helper-purple-default);
+}

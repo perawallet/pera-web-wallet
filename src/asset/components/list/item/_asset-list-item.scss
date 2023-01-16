@@ -1,0 +1,42 @@
+.asset-list-item {
+  padding-bottom: 16px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .list-item__click-wrapper {
+    display: grid;
+    grid-template-columns: 32px 1fr auto;
+
+    grid-gap: 16px;
+    grid-auto-flow: column;
+
+    .asa-verified-icon,
+    .asa-trusted-icon,
+    .asa-suspicious-icon {
+      margin-left: 4px;
+    }
+  }
+}
+
+.asset-list-item__grid-cell {
+  display: grid;
+
+  &:first-child {
+    align-items: center;
+  }
+
+  &:last-child {
+    justify-items: flex-end;
+  }
+}
+
+.asset-list-item__logo--is-nft {
+  &.asset-logo {
+    .image__img,
+    .image__placeholder {
+      border-radius: 4px;
+    }
+  }
+}

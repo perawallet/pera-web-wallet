@@ -1,0 +1,124 @@
+@import "./typography-mixins";
+
+.typography--display {
+  @include typography--display();
+}
+
+.typography--h1 {
+  @include typography--h1();
+}
+
+.typography--h2 {
+  @include typography--h2();
+}
+
+.typography--h3 {
+  @include typography--h3();
+}
+
+.typography--subhead {
+  @include typography--subhead();
+}
+
+.typography--small-subhead {
+  @include typography--small-subhead();
+}
+
+.typography--body {
+  @include typography--body();
+}
+
+.typography--medium-body {
+  @include typography--medium-body();
+}
+
+.typography--bold-body {
+  @include typography--bold-body();
+}
+
+.typography--secondary-body {
+  @include typography--secondary-body();
+}
+
+.typography--secondary-bold-body {
+  @include typography--secondary-bold-body();
+}
+
+.typography--button {
+  @include typography--button();
+}
+
+.typography--secondary-button {
+  @include typography--secondary-button();
+}
+
+.typography--caption {
+  @include typography--caption();
+}
+
+.typography--tiny {
+  @include typography--tiny();
+}
+
+.typography--bold-tiny {
+  @include typography--bold-tiny();
+}
+
+.typography--tagline {
+  @include typography--tagline();
+}
+
+.text-color {
+  &--main {
+    @include text-color--main();
+  }
+
+  &--white {
+    color: var(--white);
+  }
+
+  &--gray {
+    @include text-color--gray();
+  }
+
+  &--gray-light {
+    @include text-color--gray-light();
+  }
+
+  &--gray-lightest {
+    @include text-color--gray-lightest();
+  }
+
+  &--danger {
+    @include text-color--danger();
+  }
+
+  &--success {
+    @include text-color--success();
+  }
+
+  &--purple {
+    color: var(--purple-500);
+  }
+}
+
+.text--centered {
+  text-align: center;
+}
+
+.text--right {
+  text-align: right;
+}
+
+.text--uppercase {
+  text-transform: uppercase;
+}
+
+.text--truncated {
+  width: 100%;
+
+  overflow: hidden;
+
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

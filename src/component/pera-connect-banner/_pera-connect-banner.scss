@@ -1,0 +1,39 @@
+.pera-connect-banner {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: 24px auto;
+  gap: 16px;
+
+  width: 100%;
+
+  padding: 20px 46px;
+
+  color: var(--white);
+  background-color: var(--gray-800);
+
+  text-align: center;
+
+  animation: 0.3s slideAnimationForBanner ease-out;
+}
+
+.pera-connect-banner__app-meta__favicon {
+  width: 24px;
+  height: 24px;
+
+  object-fit: cover;
+
+  overflow: hidden;
+
+  border-radius: 100%;
+}
+
+@keyframes slideAnimationForBanner {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

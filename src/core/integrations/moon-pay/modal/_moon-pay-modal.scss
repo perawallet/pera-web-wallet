@@ -1,0 +1,46 @@
+.moon-pay-modal-container {
+  .modal__body {
+    padding: 0;
+  }
+}
+
+.moon-pay-modal {
+  width: 480px;
+  height: 700px;
+
+  &--loading {
+    display: grid;
+
+    place-content: center;
+  }
+}
+
+.moon-pay-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 12px 28px 4px;
+
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.moon-pay-modal__close-button {
+  padding: 0 4px;
+}
+
+.moon-pay-modal__iframe-container {
+  height: calc(100% - 104px);
+
+  padding: 0 16px 8px 10px;
+}
+
+.moon-pay-modal__footer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+
+  padding: 12px 28px;
+
+  border-top: 1px solid var(--gray-200);
+}

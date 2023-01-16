@@ -1,0 +1,27 @@
+.empty-account-list {
+  margin: auto;
+
+  text-align: center;
+
+  .empty-wallet-icon {
+    margin-bottom: 32px;
+
+    path {
+      fill: var(--text-gray-light);
+    }
+  }
+}
+
+.empty-account-list__cta {
+  display: flex;
+  gap: 8px;
+
+  width: 240px;
+  height: 48px;
+
+  margin: 48px auto 0;
+
+  .plus-icon path {
+    fill: var(--primary-button-text);
+  }
+}

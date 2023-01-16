@@ -1,0 +1,51 @@
+.transaction-sign-detail-raw-view__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 32px;
+  padding: 28px 28px 0;
+}
+
+.transaction-sign-detail-raw-view__header__back-button.button {
+  &:hover,
+  &:focus {
+    .arrow-left-icon path {
+      fill: var(--ghost-button-text);
+    }
+  }
+}
+
+.transaction-sign-detail-raw-view__header__copy-button.button {
+  --button-color: var(--secondary-button-text);
+
+  &.button--fluid {
+    width: max-content;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+
+  .chevron-right-icon {
+    width: 16px;
+    height: 16px;
+
+    path {
+      fill: var(--secondary-button-text);
+    }
+  }
+}
+
+.transaction-sign-detail-raw-view__raw-transaction {
+  margin: 0 28px 28px;
+  padding: 16px;
+
+  background-color: var(--card-default);
+  border-radius: 12px;
+  box-shadow: var(--shadow-small);
+
+  word-break: break-word;
+}

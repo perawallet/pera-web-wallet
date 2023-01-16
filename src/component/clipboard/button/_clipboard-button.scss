@@ -1,0 +1,25 @@
+.clipboard-button {
+  display: flex;
+  align-items: center;
+}
+
+.clipboard-button__content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  .copy-icon {
+    path {
+      fill: var(--primary-button-text);
+    }
+  }
+}
+
+.clipboard-button__content__text {
+  width: max-content;
+}
+
+.clipboard-button__copied-message {
+  margin-left: 24px;
+}

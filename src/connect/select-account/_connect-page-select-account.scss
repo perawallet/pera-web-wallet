@@ -1,0 +1,85 @@
+.connect-page-select-account__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 578px;
+}
+
+.connect-page-select-account__app-information {
+  height: calc(100% - 97px);
+
+  overflow: auto;
+
+  padding: 40px 28px 28px;
+}
+
+.connect-page-select-account__app-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+.connect-page-select-account__app-meta__favicon {
+  width: 80px;
+  height: 80px;
+
+  object-fit: cover;
+
+  overflow: hidden;
+
+  border-radius: 100%;
+}
+
+.connect-page-select-account__app-meta__url {
+  margin-bottom: 40px;
+
+  color: var(--secondary-button-text);
+}
+
+.connect-page-select-account__app-meta__title {
+  margin: 16px 0 4px;
+}
+
+.connect-page-select-account__select-account-text-wrapper {
+  margin-bottom: 12px;
+}
+
+.connect-page-select-account__select-all-button.button {
+  height: unset;
+
+  padding: 0;
+}
+
+.connect-page-select-account__spinner-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+
+  width: 100%;
+  height: 100%;
+
+  text-align: center;
+}
+
+.connect-page-select-account__please-wait-text {
+  max-width: 328px;
+}
+
+.connect-page-select-account__connect-button-wrapper {
+  padding: 28px;
+
+  &--border {
+    border-top: 1px solid var(--gray-200);
+  }
+}
+
+.connect-page-select-account__connect-button {
+  width: 100%;
+  height: 48px;
+}

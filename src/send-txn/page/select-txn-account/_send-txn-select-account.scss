@@ -1,0 +1,17 @@
+@import "../../../layouts/card-layout/_card-layout.scss";
+
+.send-txn__account {
+  @extend .card-layout;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 480px;
+  height: 590px;
+
+  padding: 0;
+}
+
+.send-txn__account__go-back-button {
+  padding: 28px 28px 0;
+}

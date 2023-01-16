@@ -1,0 +1,75 @@
+.account-overview-list-item {
+  position: relative;
+
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto 28px 28px;
+  gap: 16px;
+
+  margin: 0 16px;
+  padding-right: 12px;
+
+  transition: background-color var(--default-animation);
+
+  &:hover {
+    background-color: var(--purple-50);
+    border-radius: 12px;
+  }
+}
+
+.account-overview-list-item__link {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 32px 1fr 96px 96px minmax(144px, max-content);
+  gap: 16px;
+
+  padding: 12px 0 12px 12px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.account-overview-list-item__grid-cell {
+  display: grid;
+
+  text-align: center;
+
+  &:nth-child(2) {
+    text-align: left;
+  }
+
+  &:nth-child(5n) {
+    margin-right: 20px;
+
+    text-align: right;
+  }
+}
+
+.account-overview-list-item__clipboard-button {
+  --button-height: 28px;
+
+  border-radius: 8px;
+
+  .clipboard-button__content {
+    .copy-icon {
+      margin-right: 2px;
+
+      path {
+        fill: var(--light-button-text);
+      }
+    }
+  }
+}
+
+.account-overview-list-item__skeleton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 65px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--gray-100);
+  }
+}

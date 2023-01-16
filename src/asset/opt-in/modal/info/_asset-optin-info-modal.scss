@@ -1,0 +1,26 @@
+@import "../../../../core/ui/typography/typography-mixins";
+
+.asset-optin-page__info-modal {
+  .info-modal__description-list-item:not(:first-of-type) {
+    @include text-color--gray();
+    @include typography--secondary-body();
+  }
+
+  .info-modal__description-list-item:first-of-type {
+    @include typography--medium-body();
+  }
+
+  .asset-icon,
+  .collectibles-icon,
+  .warning-icon {
+    path {
+      fill: var(--text-gray-light);
+    }
+  }
+
+  .opt-in-icon {
+    path {
+      fill: var(--helper-purple-default);
+    }
+  }
+}

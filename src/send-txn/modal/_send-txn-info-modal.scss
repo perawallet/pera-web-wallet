@@ -1,0 +1,36 @@
+@import "../../core/ui/typography/typography-mixins";
+
+.send-txn__info-modal {
+  .info-modal__description-list-item {
+    @include text-color--gray();
+    @include typography--secondary-body();
+
+    &:first-of-type {
+      @include typography--medium-body();
+
+      color: var(--text-main);
+
+      .send-txn__info-tip-icon path {
+        fill: var(--helper-purple-default);
+      }
+
+      .info-modal__description-list-item__icon-wrapper {
+        background: none;
+      }
+    }
+
+    &:not(:first-of-type) {
+      .send-txn__info-tip-icon path {
+        fill: var(--text-gray-light);
+      }
+    }
+  }
+}
+
+.send-txn__info-modal-link {
+  color: var(--helper-purple-default);
+}
+
+.send-txn__info-warning {
+  color: var(--helper-red-default);
+}

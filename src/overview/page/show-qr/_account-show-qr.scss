@@ -1,0 +1,36 @@
+.account-show-qr-modal {
+  width: 480px;
+
+  text-align: center;
+}
+
+#react-qrcode-logo {
+  margin: 14px 0 42px;
+
+  border-radius: 24px;
+  box-shadow: var(--shadow-xxlarge);
+}
+
+.account-show-qr-modal__address {
+  width: 320px;
+
+  margin: 16px auto 32px;
+
+  word-wrap: break-word;
+}
+
+.account-show-qr-modal__clipboard-button {
+  width: 132px;
+
+  margin: 0 auto 48px;
+
+  .copy-icon {
+    path {
+      fill: var(--secondary-button-text);
+    }
+  }
+}
+
+.account-show-qr-modal__close-button {
+  width: 100%;
+}

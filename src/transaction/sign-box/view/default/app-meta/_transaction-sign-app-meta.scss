@@ -1,0 +1,50 @@
+.transaction-sign-app-meta {
+  gap: 18px;
+
+  padding: 20px;
+
+  border-bottom: 1px solid var(--gray-100);
+
+  .chevron-right-icon {
+    path {
+      fill: var(--text-gray-lightest);
+    }
+  }
+}
+
+.transaction-sign-app-meta__dapp-details {
+  width: 144px;
+}
+
+.transaction-sign-app-meta__signer-account-details {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 28px auto;
+  gap: 12px;
+
+  width: 184px;
+}
+
+.transaction-sign-app-meta__information {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 28px auto;
+  gap: 12px;
+
+  width: 184px;
+}
+
+.transaction-sign-app-meta__url {
+  display: block;
+
+  margin-top: 2px;
+}
+
+.transaction-sign-app-meta__favicon {
+  width: 28px;
+  height: 28px;
+
+  .image__img {
+    border-radius: 50%;
+  }
+}

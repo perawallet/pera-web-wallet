@@ -1,0 +1,15 @@
+.simple-loader {
+  width: 16px;
+  height: 16px;
+}
+
+.simple-loader__content {
+  transform-origin: center;
+  animation: SimpleLoaderAnimation 0.75s infinite linear;
+}
+
+@keyframes SimpleLoaderAnimation {
+  100% {
+    transform: rotate(360deg);
+  }
+}

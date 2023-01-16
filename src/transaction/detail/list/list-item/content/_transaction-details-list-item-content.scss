@@ -1,0 +1,31 @@
+.transaction-details-list-item-content__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.transaction-details-list-item-content {
+  .chevron-right-icon {
+    opacity: 0;
+
+    transition: opacity var(--default-animation);
+  }
+
+  &:hover {
+    .chevron-right-icon {
+      opacity: 1;
+    }
+  }
+}
+
+.transaction-details-list-item-content__warning {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .warning-icon {
+    path {
+      fill: var(--helper-red-default);
+    }
+  }
+}

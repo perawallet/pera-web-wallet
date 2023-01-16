@@ -1,0 +1,15 @@
+.send-txn-form {
+  display: grid;
+  gap: 16px;
+
+  width: 424px;
+  height: 534px;
+
+  .form-field {
+    margin: 0;
+  }
+}
+
+.send-txn-form__asset-img {
+  height: 20px;
+}

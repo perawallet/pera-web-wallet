@@ -1,0 +1,38 @@
+.connect-page-tab-view-add-import-account__option-list {
+  margin: 80px 0 32px;
+}
+
+.connect-page-tab-view-add-import-account__nano-ledger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: auto;
+  padding: 16px;
+
+  background-color: rgba(var(--gray-200-rgb), 0.5);
+  border-radius: 16px;
+  box-shadow: var(--shadow-disabled);
+
+  cursor: not-allowed;
+
+  .ledger-icon {
+    margin-right: 12px;
+
+    path {
+      fill: var(--text-gray-light);
+    }
+
+    circle {
+      fill: var(--text-gray-light);
+    }
+  }
+}
+
+.connect-page-tab-view-add-import-account__nano-ledger__badge {
+  margin-left: 16px;
+  padding: 6px 12px;
+
+  background-color: var(--white);
+  border-radius: 16px;
+}

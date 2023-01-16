@@ -1,0 +1,39 @@
+.searchable-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  height: 356px;
+
+  overflow-y: auto;
+
+  padding: 0 28px;
+}
+
+.searchable-list__search {
+  margin: 0 28px 24px;
+
+  .form-field__label {
+    display: flex;
+    gap: 16px;
+  }
+
+  .search-icon {
+    path {
+      fill: var(--text-gray-light);
+    }
+  }
+
+  .input-container__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .input-container__left-icon {
+    margin-right: 16px;
+  }
+}
+
+.searchable-list__no-result-message {
+  margin: auto;
+}

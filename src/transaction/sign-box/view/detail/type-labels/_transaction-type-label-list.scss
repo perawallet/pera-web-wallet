@@ -1,0 +1,15 @@
+.transaction-sign-label-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+
+  padding: 0 28px;
+}
+
+.transaction-sign-label-list__item {
+  padding: 6px 24px;
+
+  background-color: var(--background);
+  border-radius: 16px;
+}

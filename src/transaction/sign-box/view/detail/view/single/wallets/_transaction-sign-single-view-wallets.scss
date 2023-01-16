@@ -1,0 +1,45 @@
+.transaction-sign-single-view-wallets {
+  margin-bottom: 32px;
+
+  border-radius: 12px;
+  box-shadow: var(--shadow-small);
+}
+
+.transaction-sign-single-view-wallets__wallet {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 22px 16px;
+
+  &--from-unknown-wallet,
+  &--to-unknown-wallet {
+    .account-default-icon {
+      rect {
+        fill: var(--secondary-button-disabled-bg);
+      }
+
+      path {
+        fill: var(--primary-button-disabled-text);
+      }
+    }
+  }
+}
+
+.transaction-sign-single-view-wallets__to {
+  position: relative;
+
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.transaction-sign-single-view-wallets__to__text {
+  position: absolute;
+  top: -8px;
+  right: calc(50% - 16px);
+
+  width: 32px;
+
+  background-color: var(--card-default);
+
+  text-align: center;
+}

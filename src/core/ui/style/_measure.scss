@@ -1,0 +1,20 @@
+@import "./_media-queries.scss";
+
+:root {
+  --page-content-max-width: 1040px;
+  --page-header-height: auto;
+  --page-header-z-index: 1;
+  --page-body-horizontal-padding: auto;
+  --sidebar-width: 240px;
+
+  --simple-toast-z-index: 5;
+  --send-txn-select-account-z-index: 2;
+
+  --default-animation: 0.25s ease;
+}
+
+@include for-small-screens {
+  :root {
+    --page-content-max-width: 100%;
+  }
+}

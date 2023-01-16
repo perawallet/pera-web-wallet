@@ -1,0 +1,39 @@
+.account-import-pera {
+  display: flex;
+  flex-direction: column;
+
+  width: 424px;
+
+  text-align: center;
+}
+
+.account-import-pera__title {
+  margin: 32px 0 16px;
+
+  color: #2a2a31;
+
+  font-size: 24px;
+  line-height: 29px;
+  letter-spacing: -0.47px;
+}
+
+.account-import-pera__description {
+  color: #7e7e8c;
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.account-import-pera__icon {
+  width: auto;
+  height: 80px;
+
+  margin-top: 64px;
+}
+
+.account-import-pera__cta {
+  width: 100%;
+
+  margin-top: 152px;
+}

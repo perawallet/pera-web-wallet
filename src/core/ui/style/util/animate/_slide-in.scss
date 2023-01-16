@@ -1,0 +1,23 @@
+.animation--slide-in {
+  @for $i from 0 through 15 {
+    &--delay--#{$i} {
+      --slide-in-delay: #{calc($i / 6)}s;
+    }
+  }
+
+  --slide-in-delay: 0s;
+
+  opacity: 0;
+
+  transform: translateY(-10%);
+  animation: AnimationSlideIn 0.3s ease-in-out forwards;
+  animation-delay: var(--slide-in-delay);
+}
+
+@keyframes AnimationSlideIn {
+  100% {
+    opacity: 1;
+
+    transform: translateY(0%);
+  }
+}

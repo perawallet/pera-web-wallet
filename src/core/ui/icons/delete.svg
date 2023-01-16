@@ -1,0 +1,30 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_ddd_10083_43082)">
+<rect x="4" y="2" width="40" height="40" rx="20" fill="white"/>
+</g>
+<path d="M31.5 17.8171C28.725 17.5421 25.9333 17.4004 23.15 17.4004C21.5 17.4004 19.85 17.4837 18.2 17.6504L16.5 17.8171" stroke="#E54343" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M21.0835 16.975L21.2668 15.8833C21.4002 15.0917 21.5002 14.5 22.9085 14.5H25.0918C26.5002 14.5 26.6085 15.125 26.7335 15.8917L26.9168 16.975" stroke="#E54343" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M29.7082 18.249L29.1665 28.0079C29.0748 29.3162 28.9998 30.3329 26.6748 30.3329H21.3248C18.9998 30.3329 18.9248 29.3162 18.8332 28.0079L18.2915 18.249" stroke="#E54343" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<defs>
+<filter id="filter0_ddd_10083_43082" x="0" y="0" width="48" height="48" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="1" operator="erode" in="SourceAlpha" result="effect1_dropShadow_10083_43082"/>
+<feOffset dy="2"/>
+<feGaussianBlur stdDeviation="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_10083_43082"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="2"/>
+<feGaussianBlur stdDeviation="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.04 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow_10083_43082" result="effect2_dropShadow_10083_43082"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="1" operator="dilate" in="SourceAlpha" result="effect3_dropShadow_10083_43082"/>
+<feOffset/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"/>
+<feBlend mode="normal" in2="effect2_dropShadow_10083_43082" result="effect3_dropShadow_10083_43082"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect3_dropShadow_10083_43082" result="shape"/>
+</filter>
+</defs>
+</svg>

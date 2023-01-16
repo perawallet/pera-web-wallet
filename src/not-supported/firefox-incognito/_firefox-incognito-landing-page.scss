@@ -1,0 +1,38 @@
+.firefox-incognito-landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+
+  color: var(--white);
+  background-color: var(--purple-500);
+
+  text-align: center;
+
+  .pera-logo {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+
+    width: 150px;
+    height: 56px;
+
+    transform: translateX(-50%);
+  }
+
+  .firefox-incognito-landing-page__header {
+    margin: 40px 0 16px;
+  }
+
+  .firefox-incognito-landing-page__figure {
+    width: 50%;
+  }
+
+  .firefox-incognito-landing-page__figure-img {
+    width: 75%;
+    height: auto;
+  }
+}

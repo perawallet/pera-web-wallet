@@ -1,0 +1,10 @@
+.explore-item-list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(264px, 1fr));
+  gap: 16px;
+  grid-auto-rows: 1fr;
+
+  .explore-item-card {
+    height: 100%;
+  }
+}

@@ -1,0 +1,28 @@
+@import "../typography/_typography-mixins.scss";
+@import "../style/media-queries";
+
+.is-bold {
+  &,
+  &.typography {
+    @include is-bold();
+  }
+}
+
+.hide-on-sm {
+  @include for-small-screens {
+    /* stylelint-disable declaration-no-important */
+    display: none !important;
+    /* stylelint-enable declaration-no-important */
+  }
+}
+
+.bullet {
+  display: inline-block;
+
+  width: 4px;
+  height: 4px;
+
+  background-color: var(--text-gray-lightest);
+
+  border-radius: 50%;
+}

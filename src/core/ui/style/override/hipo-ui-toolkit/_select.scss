@@ -1,0 +1,32 @@
+.select-trigger {
+  --select-trigger-height: unset;
+  --select-trigger-bg: unset;
+  --select-trigger-color: unset;
+  --select-trigger-border-radius: unset;
+
+  justify-content: unset;
+
+  border: unset;
+
+  &:focus {
+    border: none;
+  }
+}
+
+.select-content {
+  right: 0;
+
+  background-color: var(--card-default);
+  border: unset;
+  border-radius: 12px;
+  box-shadow: var(--shadow-small);
+}
+
+.select-item {
+  justify-content: unset;
+
+  &:hover {
+    color: unset;
+    background-color: unset;
+  }
+}

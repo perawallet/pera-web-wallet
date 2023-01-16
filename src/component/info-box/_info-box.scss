@@ -1,0 +1,32 @@
+.info-box {
+  display: flex;
+  gap: 12px;
+
+  padding: 16px 20px;
+
+  background: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.info-box-icon {
+  width: 28px;
+  height: 28px;
+
+  padding: 6px;
+
+  background-color: var(--helper-orange-lighter);
+  border-radius: 50%;
+
+  .info-icon {
+    path {
+      fill: var(--helper-orange-darker);
+    }
+  }
+}
+
+.info-box-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

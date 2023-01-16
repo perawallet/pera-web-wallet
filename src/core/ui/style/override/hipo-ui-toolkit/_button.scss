@@ -1,0 +1,204 @@
+.button {
+  --button-bg: var(--primary-button-bg);
+  --button-height: 48px;
+
+  padding: 14px 16px;
+
+  border: 2px solid transparent;
+  border-radius: 12px;
+
+  transition: background-color var(--default-animation), color var(--default-animation),
+    border var(--default-animation), box-shadow var(--default-animation);
+
+  svg path {
+    transition: fill var(--default-animation);
+  }
+}
+
+.button--primary {
+  --button-bg: var(--primary-button-bg);
+  --button-color: var(--primary-button-text);
+
+  &:hover,
+  &:focus {
+    --button-bg: var(--primary-button-hover-bg);
+    --button-color: var(--primary-button-hover-text);
+  }
+
+  &.button--is-inactive {
+    --button-bg: var(--primary-button-disabled-bg);
+    --button-color: var(--primary-button-disabled-text);
+  }
+
+  &:active {
+    border: 2px solid var(--white);
+    box-shadow: var(--shadow-pressed);
+  }
+
+  &.button.button--is-inactive.button--is-pending {
+    --button-bg: var(--primary-button-bg);
+    --button-color: var(--primary-button-text);
+
+    opacity: 1;
+
+    .simple-loader path {
+      fill: var(--secondary-button-bg);
+    }
+  }
+}
+
+.button--secondary {
+  --button-bg: var(--secondary-button-bg);
+  --button-color: var(--secondary-button-text);
+
+  &:hover,
+  &:focus {
+    --button-bg: var(--secondary-button-hover-bg);
+    --button-color: var(--secondary-button-hover-text);
+  }
+
+  &:active {
+    border: 2px solid var(--white);
+    box-shadow: var(--shadow-pressed);
+  }
+
+  &.button--is-inactive {
+    --button-bg: var(--secondary-button-disabled-bg);
+    --button-color: var(--secondary-button-disabled-text);
+  }
+
+  &.button.button--is-inactive.button--is-pending {
+    --button-bg: var(--secondary-button-bg);
+    --button-color: var(--secondary-button-text);
+
+    opacity: 1;
+  }
+}
+
+.button--light {
+  --button-bg: var(--light-button-bg);
+  --button-color: var(--light-button-text);
+
+  box-shadow: var(--shadow-small);
+
+  &:hover,
+  &:focus {
+    --button-bg: var(--light-button-hover-bg);
+    --button-color: var(--light-button-hover-text);
+  }
+
+  &:active {
+    border: 2px solid var(--white);
+    box-shadow: var(--shadow-pressed);
+  }
+
+  &.button--is-inactive {
+    --button-bg: var(--light-button-disabled-bg);
+    --button-color: var(--light-button-disabled-text);
+  }
+
+  &.button.button--is-inactive.button--is-pending {
+    --button-bg: var(--light-button-bg);
+    --button-color: var(--light-button-text);
+
+    opacity: 1;
+  }
+}
+
+.button--ghost {
+  --button-bg: transparent;
+  --button-color: var(--ghost-button-text);
+
+  &:hover,
+  &:focus {
+    --button-color: var(--ghost-button-hover-text);
+
+    svg path {
+      fill: var(--ghost-button-hover-text);
+    }
+  }
+
+  &:active {
+    --button-bg: var(--ghost-button-pressed-bg);
+    --button-color: var(--ghost-button-pressed-text);
+
+    svg path {
+      fill: var(--ghost-button-pressed-text);
+    }
+  }
+
+  &.button--is-inactive {
+    --button-color: var(--ghost-button-disabled-text);
+
+    svg path {
+      fill: var(--ghost-button-disabled-text);
+    }
+  }
+
+  &.button.button--is-inactive.button--is-pending {
+    --button-bg: var(--ghost-button-bg);
+    --button-color: var(--ghost-button-text);
+
+    opacity: 1;
+  }
+}
+
+.button--danger {
+  --button-bg: var(--red-100);
+  --button-color: var(--helper-red-default);
+
+  &:hover,
+  &:focus {
+    --button-bg: var(--red-200);
+    --button-color: var(--helper-red-darker);
+  }
+
+  &.button--is-inactive {
+    --button-bg: var(--primary-button-disabled-bg);
+    --button-color: var(--primary-button-disabled-text);
+  }
+}
+
+.button--custom {
+  --button-bg: unset;
+  --button-color: unset;
+
+  &.button--small,
+  &.button--medium,
+  &.button--large {
+    --button-height: unset;
+
+    padding: 0;
+  }
+}
+
+.button--small {
+  --button-height: 28px;
+
+  padding: 6px 12px;
+}
+
+.button--medium {
+  --button-height: 40px;
+
+  padding: 10px 16px;
+}
+
+.button--large {
+  --button-height: 48px;
+
+  padding: 14px 16px;
+}
+
+.button--fluid {
+  width: 100%;
+}
+
+.link-button {
+  display: flex;
+}
+
+.button__loader--align-right {
+  position: absolute;
+  right: 16px;
+}

@@ -1,0 +1,34 @@
+@import "../../core//ui//typography/typography-mixins";
+
+.lock-button,
+.lock-button__shortcut {
+  @include typography--button();
+
+  display: flex;
+  align-items: center;
+}
+
+.lock-button {
+  gap: 8px;
+
+  width: 124px;
+  height: 40px;
+
+  .lock-icon {
+    path {
+      fill: var(--light-button-text);
+    }
+  }
+
+  &.button--is-inactive {
+    .lock-icon {
+      path {
+        fill: var(--light-button-disabled-text);
+      }
+    }
+  }
+}
+
+.lock-button__shortcut {
+  color: var(--text-gray-light);
+}

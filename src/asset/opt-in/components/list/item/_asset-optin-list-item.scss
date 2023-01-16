@@ -1,0 +1,21 @@
+.asset-optin-list-item {
+  .list-item__click-wrapper {
+    cursor: auto;
+  }
+}
+
+.asset-optin-list-item__optin-button {
+  width: 48px;
+
+  .check-mark-icon {
+    flex-shrink: 0;
+  }
+
+  .plus-icon {
+    flex-shrink: 0;
+
+    path {
+      fill: var(--purple-500);
+    }
+  }
+}

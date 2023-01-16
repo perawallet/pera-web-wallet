@@ -1,0 +1,17 @@
+.transaction-sign-detail-summary-view__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 32px;
+  padding: 28px 28px 0;
+}
+
+.transaction-sign-detail-summary-view__header__back-button.button {
+  &:hover,
+  &:focus {
+    .arrow-left-icon path {
+      fill: var(--ghost-button-text);
+    }
+  }
+}

@@ -1,0 +1,48 @@
+.transaction-sign-assets-list {
+  margin-bottom: 18px;
+}
+
+.transaction-sign-assets-list__tooltip {
+  text-transform: none;
+
+  .tooltip-trigger {
+    display: flex;
+  }
+}
+
+.transaction-sign-assets-list__subtitle {
+  margin-bottom: 8px;
+
+  &--with-tooltip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    .info-icon {
+      path {
+        fill: var(--text-gray-light);
+      }
+    }
+  }
+}
+
+.transaction-sign-assets-list__total-algo-value {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 40px auto;
+  gap: 16px;
+
+  padding: 12px 0;
+}
+
+.transaction-sign-assets-list__total-algo-value__warning {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  .warning-icon {
+    path {
+      fill: var(--helper-red-default);
+    }
+  }
+}

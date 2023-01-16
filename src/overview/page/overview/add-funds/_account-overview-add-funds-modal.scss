@@ -1,0 +1,18 @@
+.account-overview-add-funds-modal {
+  width: 480px;
+}
+
+.account-overview-add-funds-modal__go-back-button-container {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 32px;
+  padding: 28px 28px 0 0;
+}
+
+.account-overview-add-funds-modal__go-back-button {
+  &.button--custom {
+    margin-left: 8px;
+    padding: 0 16px;
+  }
+}

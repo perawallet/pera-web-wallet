@@ -1,0 +1,108 @@
+.toast-stack {
+  width: 404px;
+
+  padding: 32px;
+}
+
+.pera-toast {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+
+  width: 340px;
+
+  margin-top: 4px;
+  padding: 16px 20px;
+
+  background-color: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-xxlarge);
+
+  &--small {
+    width: 300px;
+
+    margin-left: auto;
+  }
+}
+
+.pera-toast--animation {
+  opacity: 0;
+
+  transform: scale(0.97) translate(16px, 16px);
+
+  animation: PeraToastAnimation 0.2s ease-out forwards;
+}
+
+@keyframes PeraToastAnimation {
+  100% {
+    opacity: 1;
+
+    transform: scale(1) translate(0, 0);
+  }
+}
+
+.pera-toast__title {
+  margin: 2px 0 4px;
+}
+
+.pera-toast--warning {
+  .pera-toast__title {
+    color: var(--helper-red-darker);
+  }
+}
+
+.pera-toast--info {
+  .pera-toast__title {
+    color: var(--helper-orange-darker);
+  }
+}
+
+.pera-toast__learn-more {
+  display: block;
+
+  margin-top: 12px;
+}
+
+.pera-toast__icon-wrapper {
+  width: 28px;
+  height: 28px;
+
+  padding: 6px;
+
+  border-radius: 50%;
+}
+
+.pera-toast__icon-wrapper--info {
+  background-color: var(--helper-orange-lighter);
+
+  .key-icon {
+    path {
+      fill: var(--helper-orange-darker);
+    }
+  }
+}
+
+.pera-toast__icon-wrapper--warning {
+  background-color: var(--helper-red-lighter);
+
+  .info-icon {
+    path {
+      fill: var(--helper-red-darker);
+    }
+  }
+}
+
+.toast-close-button {
+  width: 24px;
+  height: 24px;
+
+  padding: unset;
+
+  background-color: transparent;
+
+  .close-icon {
+    path {
+      fill: var(--text-gray-lightest);
+    }
+  }
+}

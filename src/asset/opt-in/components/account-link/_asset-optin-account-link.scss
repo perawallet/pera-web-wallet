@@ -1,0 +1,38 @@
+.asset-optin-account-link {
+  display: flex;
+  justify-content: space-between;
+
+  margin-top: auto;
+  padding: 16px 40px 16px 28px;
+
+  border-top: 1px solid var(--gray-200);
+
+  &,
+  &:visited {
+    color: currentColor;
+  }
+}
+
+.asset-optin-account-link__name {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.asset-optin-account-link__balance {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.asset-optin-account-link__balance-warning {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  color: var(--helper-red-default);
+
+  .warning-icon path {
+    fill: var(--helper-red-default);
+  }
+}

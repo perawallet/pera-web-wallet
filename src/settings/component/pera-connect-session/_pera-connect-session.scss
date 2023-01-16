@@ -1,0 +1,84 @@
+.pera-connect-session {
+  display: flex;
+  align-items: flex-start;
+}
+
+.pera-connect-session__content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  max-width: 400px;
+
+  margin: 0 8px 0 16px;
+}
+
+.pera-connect-session__favicon {
+  width: 40px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  .image__img {
+    border-radius: 50%;
+  }
+
+  &--placeholder {
+    display: grid;
+
+    width: 40px;
+    height: 40px;
+
+    background-color: var(--light-button-disabled-bg);
+    border-radius: 50%;
+
+    place-content: center;
+  }
+}
+
+.pera-connect-session__title {
+  margin-bottom: 4px;
+
+  color: var(--text-main);
+}
+
+.pera-connect-session__description {
+  margin-bottom: 12px;
+
+  color: var(--text-gray);
+}
+
+.pera-connect-session__date {
+  margin-bottom: 12px;
+
+  color: var(--text-gray-light);
+}
+
+.pera-connect-session__account-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.pera-connect-session__account-name {
+  width: max-content;
+
+  padding: 8px 12px;
+
+  color: var(--helper-green-darker);
+  background-color: var(--helper-green-lighter);
+  border-radius: 12px;
+}
+
+.pera-connect-session__disconnect-cta {
+  margin-left: auto;
+
+  background-color: var(--red-100);
+  border-radius: 12px;
+
+  .unlink-icon {
+    path {
+      fill: var(--helper-red-default);
+    }
+  }
+}

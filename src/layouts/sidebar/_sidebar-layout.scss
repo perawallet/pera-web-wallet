@@ -1,0 +1,54 @@
+@import "../../core/ui/typography/typography-mixins";
+
+.sidebar-layout {
+  display: flex;
+  flex-direction: column;
+
+  width: 100vw;
+  min-height: 100vh;
+
+  &--hidden {
+    .sidebar,
+    .sidebar-layout__topbar {
+      display: none;
+    }
+  }
+
+  &--is-navigation-disable {
+    .sidebar__nav-list-item {
+      &:hover {
+        background-color: unset;
+      }
+    }
+
+    .sidebar__nav-link {
+      @include text-color--gray-light();
+
+      pointer-events: none;
+
+      &:visited {
+        color: var(--text-gray-light);
+      }
+
+      svg {
+        path {
+          fill: var(--text-gray-light);
+        }
+      }
+    }
+  }
+}
+
+.sidebar-layout__content {
+  width: 100%;
+
+  padding-bottom: 40px;
+  padding-left: var(--sidebar-width);
+}
+
+.sidebar-layout__body {
+  width: max-content;
+  max-width: 95%;
+
+  margin: 0 auto;
+}

@@ -1,0 +1,71 @@
+.account-overview-portfolio-value {
+  margin-bottom: 40px;
+}
+
+.account-overview-portfolio-value__body-container {
+  margin-top: 16px;
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.account-overview-portfolio-value__body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.account-overview-portfolio-value__algo {
+  gap: 12px;
+}
+
+.account-overview-portfolio-value__algo__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  background-color: var(--gray-800);
+  border-radius: 100%;
+
+  svg path {
+    fill: var(--white);
+  }
+}
+
+.account-overview-portfolio-value__algo__value {
+  color: var(--gray-800);
+}
+
+.account-overview-portfolio-value__usd {
+  margin-top: 12px;
+}
+
+.account-overview-portfolio-value__body-cta-group {
+  display: flex;
+  gap: 16px;
+}
+
+.account-overview-portfolio-value__add-funds-modal {
+  .modal__body {
+    padding: 0;
+  }
+}
+
+.account-overview-portfolio-value__add-funds {
+  gap: 8px;
+}
+
+.account-overview-portfolio-value__add-account {
+  padding: 10px 16px;
+
+  .plus-icon {
+    margin-right: 8px;
+
+    path {
+      fill: var(--primary-button-text);
+    }
+  }
+}

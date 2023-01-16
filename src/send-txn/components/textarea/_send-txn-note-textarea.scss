@@ -1,0 +1,18 @@
+@import "../../../core/ui/typography/_typography-mixins.scss";
+
+.send-txn-note__form-field {
+  --textarea-height: 20px;
+  --text-color: var(--text-main);
+
+  .textarea {
+    @include typography--medium-body();
+
+    padding: 0;
+
+    border: none;
+
+    &::placeholder {
+      color: var(--text-gray-lightest);
+    }
+  }
+}

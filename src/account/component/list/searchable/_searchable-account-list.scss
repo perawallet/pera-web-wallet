@@ -1,0 +1,26 @@
+@import "../../../../core/ui/typography/_typography-mixins.scss";
+
+.searchable-account-list {
+  display: flex;
+  flex-direction: column;
+
+  .searchable-list {
+    height: 426px;
+  }
+}
+
+.searchable-account-list-search {
+  margin: 0 28px 24px;
+}
+
+.searchable-account-list-item {
+  padding-bottom: 16px;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  .account-balance {
+    @include typography--bold-body();
+  }
+}

@@ -1,0 +1,61 @@
+@import "../../../core/ui/typography/_typography-mixins.scss";
+
+.page-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--page-header-z-index);
+
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+
+  margin-bottom: 32px;
+  padding: 19px 24px 13px;
+
+  background-color: transparent;
+  box-shadow: transparent;
+
+  transition: background-color var(--default-animation);
+}
+
+.page-header--has-scrolled {
+  background-color: var(--background);
+}
+
+.page-header__indicator-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.page-header__go-back-button {
+  @include typography--button();
+
+  gap: 8px;
+
+  margin-left: 20px;
+  padding: 10px;
+
+  .arrow-left-icon {
+    width: 16px;
+    height: 16px;
+
+    path {
+      fill: var(--ghost-button-text);
+    }
+  }
+
+  &:before {
+    display: inline-block;
+
+    width: 1px;
+    height: 30px;
+
+    border-left: 1px solid var(--gray-200);
+
+    content: " ";
+
+    transform: translateX(-16px);
+  }
+}

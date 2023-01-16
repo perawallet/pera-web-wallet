@@ -1,0 +1,52 @@
+.account-import-passphrase {
+  display: flex;
+  flex-direction: column;
+
+  width: 424px;
+
+  text-align: center;
+}
+
+.account-import-passphrase__description {
+  margin: 16px 0 116px;
+}
+
+.account-import-passphrase__icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 106px;
+  height: 106px;
+
+  margin: 52px auto 32px;
+
+  border-radius: 100%;
+  box-shadow: var(--shadow-xlarge);
+
+  .key-icon {
+    path {
+      fill: var(--helper-purple-default);
+    }
+  }
+}
+
+.account-import-passphrase__icon {
+  width: 56px;
+  height: 56px;
+
+  path {
+    fill: var(--purple-10);
+  }
+}
+
+.account-import-passphrase__cta {
+  width: 100%;
+  height: 48px;
+
+  padding: 14px;
+
+  color: var(--primary-button-text);
+  background: var(--primary-button-bg);
+  border-radius: 12px;
+}

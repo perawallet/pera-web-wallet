@@ -1,0 +1,39 @@
+@import "../../../layouts/card-layout/_card-layout.scss";
+
+.asset-optin-page {
+  @extend .card-layout;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 480px;
+  height: 600px;
+
+  padding: 0;
+
+  .spinner {
+    margin: auto;
+  }
+}
+
+.asset-optin-page__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 28px 28px 32px;
+}
+
+.asset-optin-page__info-button {
+  width: max-content;
+  height: max-content;
+
+  padding: 0;
+
+  border: unset;
+
+  .info-icon {
+    width: 20px;
+    height: 20px;
+  }
+}

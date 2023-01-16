@@ -1,0 +1,11 @@
+.selectable-list-item__with-checkbox {
+  .list-item__click-wrapper {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    grid-gap: 16px;
+  }
+}
+
+.selectable-list-item__checkbox-input {
+  pointer-events: none;
+}

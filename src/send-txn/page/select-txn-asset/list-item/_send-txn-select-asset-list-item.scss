@@ -1,0 +1,11 @@
+.send-txn-select-asset-list-item__grid-cell {
+  display: grid;
+
+  &:first-child {
+    align-items: center;
+  }
+
+  &:last-child {
+    justify-items: flex-end;
+  }
+}

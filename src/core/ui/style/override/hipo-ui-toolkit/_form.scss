@@ -1,0 +1,45 @@
+@import "../../../typography/_typography-mixins.scss";
+
+.form-field {
+  position: relative;
+
+  padding: 14px 16px;
+
+  background-color: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+
+  &:focus-within {
+    border: 1px solid var(--input-border-hover);
+    box-shadow: var(--shadow-pressed);
+  }
+
+  .form-field-message--is-error {
+    color: var(--helper-red-default);
+  }
+}
+
+.form-field--has-error {
+  &:focus-within {
+    border: 1px solid var(--input-border-error);
+    box-shadow: var(--shadow-error);
+  }
+}
+
+.form-field__title {
+  @include typography--caption();
+
+  margin-bottom: 4px;
+
+  color: var(--text-gray);
+}
+
+.form-field-message--is-error {
+  @include typography--tiny();
+
+  position: absolute;
+  bottom: -24px;
+  left: 0;
+
+  color: var(--helper-red-default);
+}

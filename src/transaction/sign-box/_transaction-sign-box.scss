@@ -1,0 +1,21 @@
+.transaction-sign-box {
+  width: 480px;
+  height: 578px;
+
+  overflow: auto;
+
+  color: var(--text-main);
+  background: var(--card-default);
+
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.transaction-sign-box__spinner-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+}

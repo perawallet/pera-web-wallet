@@ -1,0 +1,69 @@
+@import "../../../core/ui/typography/_typography-mixins.scss";
+
+.explore-item-card {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 412px;
+
+  padding: 12px 32px 28px;
+
+  background: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.explore-item-card__cover {
+  display: flex;
+
+  overflow: hidden;
+
+  margin: 0 -20px;
+
+  border-radius: 12px;
+}
+
+.explore-item-card__logo {
+  display: flex;
+
+  width: 44px;
+  height: 44px;
+
+  overflow: hidden;
+
+  margin-top: -22px;
+
+  border: 4px solid var(--white);
+  border-radius: 100%;
+}
+
+.explore-item-card__name {
+  margin: 8px 0 4px;
+}
+
+.explore-item-card__description {
+  margin-bottom: 16px;
+}
+
+.explore-item-card__cta {
+  @include typography--button();
+
+  width: 100%;
+  height: auto;
+
+  margin-top: auto;
+}
+
+.explore-item-card__cta__icon {
+  margin-left: 8px;
+
+  transition: transform var(--default-animation);
+
+  path {
+    fill: var(--light-button-text);
+  }
+}
+
+.explore-item-card__cta:hover .explore-item-card__cta__icon {
+  transform: translate(2px, -2px);
+}

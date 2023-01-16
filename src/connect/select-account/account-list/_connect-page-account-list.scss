@@ -1,0 +1,60 @@
+.connect-page-account-list {
+  &:not(.connect-page-account-list--is-selectable) .connect-page-account-list__item,
+  .list-item__click-wrapper {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 35px 1fr;
+
+    gap: 16px;
+
+    min-height: 72px;
+
+    padding: 13px 16px;
+  }
+}
+
+.connect-page-account-list__item {
+  background-color: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+
+  &:not(:last-of-type) {
+    margin-bottom: 12px;
+  }
+}
+
+.connect-page-account-list__item--is-selected {
+  background: var(--grey-10);
+
+  .connect-page-account-list__item__check-icon-wrapper {
+    background-color: var(--purple-500);
+
+    border: none;
+
+    .checkbox-icon {
+      display: block;
+    }
+  }
+}
+
+.connect-page-account-list__item__name {
+  margin-bottom: 2px;
+}
+
+.connect-page-account-list__item__algo-amount-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.connect-page-account-list__item__check-icon-wrapper {
+  width: 20px;
+  height: 20px;
+
+  border: 2px solid var(--gray-400);
+  border-radius: 6px;
+
+  .checkbox-icon {
+    display: none;
+  }
+}

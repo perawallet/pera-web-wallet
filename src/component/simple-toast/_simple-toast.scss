@@ -1,0 +1,67 @@
+#simple-toast-root {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  z-index: var(--simple-toast-z-index);
+
+  z-index: 4;
+
+  transform: translateX(-50%);
+}
+
+.simple-toast {
+  position: relative;
+  bottom: 8px;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 24px;
+
+  color: var(--text-gray);
+  background-color: var(--card-default);
+  border-radius: 12px;
+  box-shadow: var(--shadow-large);
+
+  animation: simpleToastFadeIn var(--default-animation) forwards,
+    simpleToastFadeOut var(--default-animation) 3.75s forwards;
+
+  &--error {
+    color: var(--helper-red-default);
+  }
+
+  .tick-circle-icon {
+    path {
+      fill: var(--helper-green-default);
+    }
+  }
+
+  .danger-icon {
+    path {
+      fill: var(--helper-red-default);
+    }
+  }
+}
+
+@keyframes simpleToastFadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    bottom: 0;
+
+    opacity: 1;
+  }
+}
+
+@keyframes simpleToastFadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}

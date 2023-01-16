@@ -1,0 +1,27 @@
+.account-success-page__checkmark-animation {
+  position: relative;
+  left: -28px;
+
+  width: 120px;
+  height: 120px;
+}
+
+.account-success-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 48px;
+}
+
+.account-success-page__header-cta {
+  padding: 14px 48px;
+}
+
+.account-success-page__explore-section {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+
+  margin-top: 80px;
+}

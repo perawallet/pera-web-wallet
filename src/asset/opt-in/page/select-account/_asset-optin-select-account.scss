@@ -1,0 +1,21 @@
+@import "../../../../layouts/card-layout/_card-layout.scss";
+
+.asset-optin-select-account {
+  @extend .card-layout;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 480px;
+  height: 590px;
+
+  padding: 0;
+}
+
+.asset-optin-select-account__go-back-button {
+  padding: 28px 28px 0;
+}
+
+.asset-optin-select-account__loader {
+  margin: auto;
+}

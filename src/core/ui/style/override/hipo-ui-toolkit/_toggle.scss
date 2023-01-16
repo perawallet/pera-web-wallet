@@ -1,0 +1,29 @@
+@import "../../../typography/_typography-mixins.scss";
+
+.toggle--is-horizontal {
+  width: 100%;
+
+  border: none;
+}
+
+.toggle-item {
+  --toggle-active-color: var(--text-gray);
+  --toggle-active-bg: transparent;
+  --toggle-inactive-color: var(--text-gray);
+  --toggle-inactive-bg: transparent;
+
+  border-radius: 10px;
+
+  transition: background-color var(--default-animation);
+
+  &--is-selected {
+    --toggle-active-color: var(--secondary-button-text);
+    --toggle-active-bg: var(--secondary-button-bg);
+
+    pointer-events: none;
+  }
+}
+
+.toggle-item__label {
+  @include typography--button();
+}

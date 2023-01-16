@@ -1,0 +1,84 @@
+.account-onboarding-option-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+
+  .wallet-icon,
+  .sync-icon,
+  .key-icon {
+    margin-bottom: 24px;
+  }
+}
+
+.account-onboarding-option-list__item-container {
+  flex: 1 1 0;
+
+  background-color: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+
+  transition: box-shadow var(--default-animation), color var(--default-animation);
+
+  &:hover {
+    box-shadow: var(--shadow-xxlarge);
+
+    svg path {
+      fill: var(--helper-purple-default);
+    }
+
+    .account-onboarding-optin-list__item-title {
+      color: var(--helper-purple-default);
+    }
+
+    .arrow-right-icon {
+      opacity: 1;
+    }
+  }
+}
+
+.account-onboarding-option-list__item {
+  padding: 24px;
+}
+
+.account-onboarding-optin-list__item-title-container {
+  display: flex;
+  gap: 8px;
+
+  .arrow-right-icon {
+    opacity: 0;
+
+    transition: opacity var(--default-animation);
+
+    path {
+      fill: var(--helper-purple-default);
+    }
+  }
+}
+
+.account-onboarding-optin-list__item-title {
+  width: max-content;
+}
+
+.account-onboarding-optin-list__item-helper-text {
+  margin-bottom: 8px;
+}
+
+.account-onboarding-option-list__illustration {
+  &--create {
+    margin: 0 28px;
+  }
+
+  &--recovery-passphrase {
+    margin: 0 0 16px 28px;
+  }
+
+  &--import-from-mobile {
+    width: 248px;
+
+    margin: 0 auto;
+
+    .image__img {
+      display: block;
+    }
+  }
+}

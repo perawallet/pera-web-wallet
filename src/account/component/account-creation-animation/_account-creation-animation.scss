@@ -1,0 +1,181 @@
+.account-creation-animation {
+  width: 424px;
+  height: 510px;
+}
+
+.account-creation-animation__icon-wrapper {
+  position: relative;
+
+  width: 56px;
+  height: 56px;
+
+  margin: 186px auto 28px;
+
+  background-color: var(--helper-purple-default);
+  border-radius: 50%;
+
+  animation: accountCreationIconColor 1s forwards;
+  animation-delay: 3s;
+}
+
+.account-creation-animation__icon--lottie-wrapper {
+  background-color: transparent;
+}
+
+.account-creation-animation__icon--lottie {
+  width: 56px;
+  height: 56px;
+
+  animation: accountCreationFadeOut 1s forwards;
+  animation-delay: 3s;
+}
+
+.account-creation-animation__icon--checkmark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 30px;
+  height: 30px;
+
+  transform: translate(-50%, -50%) scale(0);
+
+  animation: accountCreationFadeIn 1s forwards;
+  animation-delay: 3s;
+
+  path {
+    fill: var(--primary-button-text);
+  }
+}
+
+.account-creation-animation__loading-text-list {
+  position: relative;
+}
+
+.account-creation-animation__loading-text-list-item {
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  width: 100%;
+
+  opacity: 0;
+
+  text-align: center;
+
+  transform: translateX(-50%);
+
+  &:nth-child(1) {
+    animation: firstAccountCreationSlide 4s forwards;
+  }
+
+  &:nth-child(2) {
+    animation: secondAccountCreationSlide 2s forwards;
+    animation-delay: 2s;
+  }
+
+  &:nth-child(3) {
+    animation: thirdAccountCreationSlide 1s forwards;
+    animation-delay: 3s;
+  }
+}
+
+@keyframes accountCreationFadeOut {
+  from {
+    transform: scale(100%);
+  }
+
+  to {
+    transform: scale(0);
+  }
+}
+
+@keyframes accountCreationFadeIn {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+  }
+
+  to {
+    transform: translate(-50%, -50%) scale(100%);
+  }
+}
+
+@keyframes accountCreationIconColor {
+  from {
+    background-color: var(--helper-purple-default);
+  }
+
+  to {
+    background-color: var(--helper-green-default);
+  }
+}
+
+@keyframes firstAccountCreationSlide {
+  0% {
+    top: 0;
+
+    opacity: 1;
+
+    transform: translateX(-50%);
+  }
+
+  50% {
+    top: 0;
+
+    opacity: 1;
+
+    transform: translateX(-50%);
+  }
+
+  75% {
+    top: 40px;
+
+    opacity: 0.5;
+
+    transform: translateX(-50%) scale(80%);
+  }
+
+  100% {
+    top: 80px;
+
+    opacity: 0.3;
+
+    transform: translateX(-50%) scale(60%);
+  }
+}
+
+@keyframes secondAccountCreationSlide {
+  0% {
+    top: 0;
+
+    opacity: 0;
+
+    transform: translateX(-50%);
+  }
+
+  50% {
+    top: 0;
+
+    opacity: 1;
+
+    transform: translateX(-50%);
+  }
+
+  100% {
+    top: 40px;
+
+    opacity: 0.5;
+
+    transform: translateX(-50%) scale(80%);
+  }
+}
+
+@keyframes thirdAccountCreationSlide {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

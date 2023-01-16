@@ -1,0 +1,47 @@
+@import "../../../layouts/card-layout/_card-layout.scss";
+
+.send-txn__select-asset {
+  @extend .card-layout;
+
+  display: flex;
+  flex-direction: column;
+
+  width: 480px;
+  height: 590px;
+
+  padding: 0;
+}
+
+.send-txn-asset__list {
+  display: grid;
+  gap: 16px;
+
+  overflow-y: auto;
+
+  .searchable-list {
+    height: 410px;
+  }
+}
+
+.send-txn__select-asset__go-back-button {
+  padding: 28px 28px 0;
+}
+
+.send-txn-asset__fund {
+  display: grid;
+  justify-items: center;
+  gap: 32px;
+
+  margin: auto;
+}
+
+.send-txn-asset__fund-cta {
+  display: flex;
+  gap: 8px;
+
+  width: 240px;
+
+  .plus-icon path {
+    fill: white;
+  }
+}

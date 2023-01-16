@@ -1,0 +1,121 @@
+.account-name-form__name-description {
+  margin-bottom: 20px;
+}
+
+.account-name-form__cta {
+  width: 100%;
+
+  margin-top: 242px;
+}
+
+.account-name-form__name-input-box {
+  position: relative;
+
+  .form-field__title {
+    margin-bottom: 8px;
+  }
+}
+
+.account-name-form__name-input {
+  .input {
+    &:placeholder-shown {
+      z-index: 1;
+    }
+
+    &:not(:placeholder-shown) {
+      z-index: 3;
+    }
+  }
+}
+
+.account-name-form__name-input__placeholder {
+  position: absolute;
+  bottom: 12px;
+  z-index: 2;
+
+  cursor: text;
+
+  transition: opacity var(--default-animation);
+}
+
+.account-name-form__name-input__placeholder__animated {
+  &:before {
+    content: "Silvio?";
+
+    animation: fadeAnimation 10s infinite;
+  }
+}
+
+@keyframes fadeAnimation {
+  0% {
+    opacity: 0;
+
+    content: "Silvio?";
+  }
+
+  9% {
+    opacity: 1;
+
+    content: "Silvio?";
+  }
+
+  18% {
+    opacity: 0;
+
+    content: "Silvio?";
+  }
+
+  27% {
+    opacity: 0;
+
+    content: "OG?";
+  }
+
+  36% {
+    opacity: 1;
+
+    content: "OG?";
+  }
+
+  45% {
+    opacity: 0;
+
+    content: "OG?";
+  }
+
+  54% {
+    opacity: 0;
+
+    content: "HODL?";
+  }
+
+  63% {
+    opacity: 1;
+
+    content: "HODL?";
+  }
+
+  72% {
+    opacity: 0;
+
+    content: "HODL?";
+  }
+
+  81% {
+    opacity: 0;
+
+    content: "Whale Account?";
+  }
+
+  90% {
+    opacity: 1;
+
+    content: "Whale Account?";
+  }
+
+  100% {
+    opacity: 0;
+
+    content: "Whale Account?";
+  }
+}

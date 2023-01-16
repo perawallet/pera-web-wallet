@@ -1,0 +1,54 @@
+.account-import-pera-qr {
+  width: 424px;
+}
+
+.account-import-pera__qr-code-wrapper {
+  margin: 60px 0 26px;
+
+  text-align: center;
+}
+
+.account-import-pera__qr-code-success-icon-wrapper {
+  width: 80px;
+  height: 80px;
+
+  background: var(--purple-500);
+  border-radius: 100%;
+}
+
+.account-import-pera__qr-code-success-icon {
+  path {
+    stroke: white;
+    stroke-width: 1px;
+    stroke-linecap: round;
+  }
+}
+
+.account-import-pera__instruction-list {
+  padding: 0 8px;
+
+  text-align: left;
+}
+
+.account-import-pera__instruction-list-item {
+  color: var(--gray-700);
+
+  &:not(:last-child) {
+    margin-bottom: 16px;
+  }
+}
+
+.account-import-pera__instruction-list-item-index {
+  display: inline-grid;
+  place-content: center;
+
+  width: 32px;
+  height: 32px;
+
+  margin-right: 16px;
+
+  color: var(--purple-500);
+  background: rgba(107 70 254 / 10%);
+
+  border-radius: 100%;
+}

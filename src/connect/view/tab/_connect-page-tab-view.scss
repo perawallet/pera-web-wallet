@@ -1,0 +1,122 @@
+.connect-page-tab-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+
+  width: 480px;
+  height: fit-content;
+
+  margin: 0 auto;
+
+  &--add-import-account {
+    width: 100%;
+
+    .connect-page-tab-view__content {
+      width: 100%;
+
+      background-color: unset;
+      border-radius: 0;
+      box-shadow: unset;
+    }
+  }
+
+  .connect-page-select-account__spinner-wrapper {
+    min-height: 615px;
+  }
+}
+
+.connect-page-tab-view__content {
+  width: 100%;
+
+  background-color: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.connect-page-tab-view__app-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 16px;
+
+  text-align: center;
+}
+
+.connect-page-tab-view__app-meta__favicon {
+  width: 75px;
+  height: 75px;
+
+  object-fit: cover;
+
+  overflow: hidden;
+
+  margin-bottom: 24px;
+
+  border-radius: 100%;
+}
+
+.connect-page-tab-view__app-meta__url {
+  color: var(--secondary-button-text);
+}
+
+.connect-page-tab-view__app-meta__title {
+  max-width: 60%;
+
+  margin-bottom: 16px;
+}
+
+.connect-page-tab-view__select-account-text {
+  margin: 38px 0 12px;
+}
+
+.connect-page-tab-view__spinner {
+  padding: 30px 0 0;
+}
+
+.connect-page-tab-view__connect-button {
+  width: 100%;
+
+  margin-top: 48px;
+}
+
+.connect-page-tab-view-banner {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 24px auto;
+  gap: 16px;
+
+  width: 640px;
+
+  margin-top: 90px;
+  padding: 14px 95px;
+
+  color: var(--white);
+  background-color: var(--text-main);
+
+  border-radius: 12px;
+
+  animation: 0.3s slideAnimationForBanner ease-out;
+}
+
+.connect-page-tab-view-banner__app-meta__favicon {
+  width: 24px;
+  height: 24px;
+
+  object-fit: cover;
+
+  overflow: hidden;
+
+  border-radius: 100%;
+}
+
+@keyframes slideAnimationForBanner {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

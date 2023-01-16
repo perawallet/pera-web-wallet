@@ -1,0 +1,31 @@
+.account-overview {
+  width: 948px;
+  max-width: 100%;
+
+  margin: auto;
+}
+
+.account-overview__onboarding-option-list {
+  margin-top: 56px;
+}
+
+.account-overview__accounts-heading {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 16px;
+}
+
+.account-overview-list__skeleton {
+  height: 240px;
+
+  padding: 16px 0;
+
+  background-color: var(--card-default);
+  border-radius: 16px;
+  box-shadow: var(--shadow-small);
+}
+
+.account-overview__account-number {
+  margin-left: 8px;
+}

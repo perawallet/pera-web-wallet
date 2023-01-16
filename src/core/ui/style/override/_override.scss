@@ -1,0 +1,37 @@
+@import "../../typography/_typography-mixins.scss";
+
+* {
+  box-sizing: border-box;
+
+  margin: 0;
+  padding: 0;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  overscroll-behavior: none;
+
+  &:before {
+    box-sizing: border-box;
+  }
+
+  &:after {
+    box-sizing: border-box;
+  }
+}
+
+ul,
+ol,
+li {
+  list-style-type: none;
+}
+
+body {
+  @include typography--body();
+
+  background-color: var(--background);
+}
+
+a {
+  text-decoration: none;
+}

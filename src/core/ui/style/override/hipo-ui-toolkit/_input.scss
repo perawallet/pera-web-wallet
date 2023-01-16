@@ -1,0 +1,34 @@
+@import "../../../typography/_typography-mixins.scss";
+
+.input {
+  @include typography--button();
+
+  position: relative;
+
+  height: 20px;
+
+  padding: 0;
+
+  color: var(--text-main);
+  background-color: var(--input-bg);
+  border: unset;
+
+  .input-container__icon {
+    height: 24px;
+  }
+
+  &::placeholder {
+    color: var(--text-gray-lightest);
+  }
+
+  &:focus + .input-container__right-icon {
+    display: block;
+
+    width: auto;
+  }
+
+  &:autofill {
+    background: var(--input-bg);
+    box-shadow: 0 0 0 100px var(--input-bg) inset;
+  }
+}

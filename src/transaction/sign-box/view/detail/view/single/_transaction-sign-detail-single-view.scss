@@ -1,0 +1,104 @@
+@import "../../../../../../core/ui/typography/typography-mixins";
+
+.transaction-sign-detail-single-view {
+  padding: 28px 28px 30px;
+
+  .transaction-sign-detail-message {
+    &:last-of-type {
+      margin-bottom: 32px;
+    }
+  }
+}
+
+.transaction-sign-detail-single-view__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 32px;
+}
+
+.transaction-sign-detail-single-view__transaction-details-list__item__title {
+  margin-bottom: 4px;
+}
+
+.transaction-sign-detail-single-view__asset-img {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  .image__img {
+    border-radius: 50%;
+  }
+
+  .image__placeholder {
+    @include typography--tagline();
+
+    background-color: var(--overlay);
+
+    border-radius: 50%;
+  }
+
+  &--collectible {
+    .image__placeholder,
+    .image__img {
+      border-radius: 8px;
+    }
+  }
+}
+
+.transaction-sign-detail-single-view__asset-detail,
+.transaction-sign-detail-single-view__asset-detail__asset-name,
+.transaction-sign-detail-single-view__asset-detail__asset-information {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.transaction-sign-detail-single-view__asset-detail__asset-name {
+  gap: 6px;
+}
+
+.transaction-sign-detail-single-view__asset-detail__asset-information {
+  gap: 8px;
+}
+
+.transaction-sign-detail-single-view__transaction-details-list__item {
+  padding: 16px 0;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--gray-100);
+  }
+
+  &:first-of-type {
+    padding-top: 0;
+  }
+
+  &:last-of-type {
+    padding-bottom: 0;
+  }
+}
+
+.transaction-sign-detail-single-view__transaction-note {
+  word-break: break-word;
+}
+
+.transaction-sign-detail-single-view__actions {
+  margin-top: 24px;
+}
+
+.transaction-sign-detail-single-view__actions__button.button {
+  @include typography--caption();
+
+  --button-bg: var(--background);
+  --button-color: var(--text-gray);
+
+  padding: 6px 12px;
+
+  border-radius: 16px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}

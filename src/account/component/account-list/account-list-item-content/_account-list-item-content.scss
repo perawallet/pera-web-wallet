@@ -1,0 +1,40 @@
+.account-list-item-content {
+  position: relative;
+
+  display: grid;
+  align-items: center;
+  grid-template-columns: 32px 240px 1fr;
+  grid-gap: 0 16px;
+
+  &:not(:last-child):after {
+    position: absolute;
+
+    bottom: -16px;
+
+    width: 100%;
+
+    border-bottom: solid 1px var(--gray-200);
+
+    content: "";
+  }
+
+  .account-list-item-content__wallet-icon {
+    display: grid;
+
+    width: 32px;
+    height: 32px;
+
+    background: #8bf4db;
+    border-radius: 100%;
+    place-content: center;
+  }
+
+  .account-list-item-content__account-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .account-balance {
+    margin-left: auto;
+  }
+}

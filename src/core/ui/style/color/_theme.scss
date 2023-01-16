@@ -1,0 +1,63 @@
+// TODO: Define light/dark theme classes when theme is activated
+
+:root {
+  --background: var(--gray-100);
+
+  --card-default: var(--white);
+
+  --overlay: rgba(178, 181, 197, 0.5);
+
+  --text-main: var(--gray-700);
+  --text-gray: var(--gray-500);
+  --text-gray-light: var(--gray-400);
+  --text-gray-lightest: var(--gray-300);
+
+  --primary-button-bg: var(--purple-500);
+  --primary-button-text: var(--white);
+  --primary-button-hover-text: var(--white);
+  --primary-button-hover-bg: var(--purple-600);
+  --primary-button-disabled-bg: var(--gray-200);
+  --primary-button-disabled-text: var(--gray-400);
+
+  --secondary-button-bg: var(--purple-100);
+  --secondary-button-text: var(--purple-500);
+  --secondary-button-hover-bg: var(--purple-200);
+  --secondary-button-hover-text: var(--purple-500);
+  --secondary-button-disabled-bg: var(--gray-200);
+  --secondary-button-disabled-text: var(--gray-400);
+
+  --light-button-bg: var(--white);
+  --light-button-text: var(--gray-500);
+  --light-button-hover-bg: var(--white);
+  --light-button-hover-text: var(--gray-700);
+  --light-button-disabled-bg: var(--gray-200);
+  --light-button-disabled-text: var(--gray-400);
+
+  --ghost-button-text: var(--gray-500);
+  --ghost-button-hover-text: var(--gray-700);
+  --ghost-button-pressed-bg: var(--purple-100);
+  --ghost-button-pressed-text: var(--purple-500);
+  --ghost-button-disabled-text: var(--gray-400);
+
+  --input-bg: var(--white);
+  --input-border: var(--gray-200);
+  --input-border-hover: var(--purple-500);
+  --input-border-error: var(--red-500);
+  --input-disabled-bg: var(--gray-100);
+
+  --helper-orange-darker: var(--orange-700);
+  --helper-orange-default: var(--orange-500);
+  --helper-orange-lighter: var(--orange-200);
+  --helper-purple-darker: var(--purple-700);
+  --helper-purple-default: var(--purple-500);
+  --helper-purple-lighter: var(--purple-100);
+  --helper-green-darker: var(--green-700);
+  --helper-green-default: var(--green-500);
+  --helper-green-lighter: var(--green-100);
+  --helper-red-darker: var(--red-700);
+  --helper-red-default: var(--red-500);
+  --helper-red-lighter: var(--red-200);
+  --helper-yellow-darker: var(--yellow-700);
+  --helper-yellow-default: var(--yellow-500);
+  --helper-yellow-lighter: var(--yellow-200);
+}
