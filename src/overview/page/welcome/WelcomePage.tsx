@@ -1,3 +1,5 @@
+import {ReactComponent as LedgerIcon} from "../../../core/ui/icons/ledger.svg";
+
 import "./_welcome-page.scss";
 
 import {Navigate} from "react-router-dom";
@@ -33,6 +35,21 @@ function WelcomePage() {
           shouldShowIllustrations={true}
           customClassName={"welcome-page__onboarding-option-list"}
         />
+
+        <div className={"welcome-page__nano-ledger"}>
+          <LedgerIcon />
+
+          <p className={"typography--subhead text-color--gray-light"}>
+            {"Pair Nano Ledger"}
+          </p>
+
+          <div
+            className={
+              "typography--tagline text-color--gray welcome-page__nano-ledger__badge"
+            }>
+            {"COMING SOON"}
+          </div>
+        </div>
       </div>
     );
 
