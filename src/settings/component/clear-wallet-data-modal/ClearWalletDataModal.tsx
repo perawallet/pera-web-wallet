@@ -10,6 +10,7 @@ import {useSimpleToaster} from "../../../component/simple-toast/util/simpleToast
 import ClearWalletDataModalConfirmationView from "./view/confirmation/ClearWalletDataModalConfirmationView";
 import ClearWalletDataModalBackupView from "./view/backup/ClearWalletDataModalBackupView";
 import {appDBManager} from "../../../core/app/db";
+import webStorage, {STORED_KEYS} from "../../../core/util/storage/web/webStorage";
 
 export const CLEAR_WALLET_DATA_MODAL_ID = "clear-wallet-data-modal";
 
@@ -102,6 +103,11 @@ function ClearWalletDataModal() {
   async function handleClearWalletDataSubmit() {
     try {
       await appDBManager.reset();
+
+      // reset local storage
+      for (const key of Object.values(STORED_KEYS)) {
+        webStorage.local.removeItem(key);
+      }
 
       location.href = "/";
 
