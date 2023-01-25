@@ -14,11 +14,11 @@ export interface TransactionTypeCounts {
 }
 
 const TRANSACTION_TYPE_LABEL_MAP = {
-  appl: "ApplicationCall",
+  appl: "Application Call",
   axferReceive: "Receive",
   axfer: "Asset Transfer",
   pay: "Payment",
-  acfg: "AssetConfig"
+  acfg: "Asset Config"
 };
 
 function getTransactionTypeCounts(transactions: Transaction[], userAddress: string) {
@@ -78,7 +78,11 @@ function seperateTransactionReceiveAndSpend(
   return receiveTransactions.reduce(
     (txns, txn) => {
       if (checkIfTransactionSignedBySomebodyElse(txn, userAddress)) {
-        txns.signedBySomebodyElseTransactions.push(txn);
+        if (checkIfTransactionIsAxferReceive(txn, userAddress)) {
+          txns.receiveTransactions.push(txn);
+        } else {
+          txns.signedBySomebodyElseTransactions.push(txn);
+        }
       } else if (checkIfTransactionApplicationCall(txn)) {
         txns.applicationCallTransactions.push(txn);
       } else if (checkIfTransactionOptIn(txn, userAddress)) {
@@ -248,7 +252,7 @@ function transactionHasClearState(transaction: Transaction) {
 
 function isTransactionDeleteAssetConfig(transaction: Transaction) {
   return (
-    transaction.assetClawback === undefined &&
+    checkTransactionAssetParamsEmpty(transaction) &&
     transaction.assetIndex &&
     transaction.type === "acfg"
   );
@@ -256,12 +260,29 @@ function isTransactionDeleteAssetConfig(transaction: Transaction) {
 
 function isTransactionUpdateAssetConfig(transaction: Transaction) {
   return (
-    transaction.assetClawback && transaction.assetIndex && transaction.type === "acfg"
+    !checkTransactionAssetParamsEmpty(transaction) &&
+    transaction.assetIndex &&
+    transaction.type === "acfg"
   );
 }
 
 function isTransactionCreateAssetConfig(transaction: Transaction) {
   return !transaction.assetIndex && transaction.type === "acfg";
+}
+
+function checkTransactionAssetParamsEmpty(transaction: Transaction) {
+  return (
+    transaction.assetClawback === undefined &&
+    transaction.assetDecimals === undefined &&
+    transaction.assetDefaultFrozen === undefined &&
+    transaction.assetFreeze === undefined &&
+    transaction.assetManager === undefined &&
+    transaction.assetMetadataHash === undefined &&
+    transaction.assetName === undefined &&
+    transaction.assetReserve === undefined &&
+    transaction.assetTotal === undefined &&
+    transaction.assetUnitName === undefined
+  );
 }
 
 /**

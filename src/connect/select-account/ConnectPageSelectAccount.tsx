@@ -1,3 +1,5 @@
+import {ReactComponent as DAppIcon} from "../../core/ui/icons/dapp.svg";
+
 import "./_connect-page-select-account.scss";
 
 import {useEffect} from "react";
@@ -98,11 +100,15 @@ function ConnectPageSelectAccount({
       <div className={"connect-page-select-account__content"}>
         <div className={"connect-page-select-account__app-information"}>
           <div className={"connect-page-select-account__app-meta"}>
-            <Image
-              customClassName={"connect-page-select-account__app-meta__favicon"}
-              src={currentSession?.favicon}
-              alt={currentSession?.title}
-            />
+            {currentSession?.favicon ? (
+              <Image
+                customClassName={"connect-page-select-account__app-meta__favicon"}
+                src={currentSession?.favicon}
+                alt={currentSession?.title}
+              />
+            ) : (
+              <DAppIcon className={"connect-page-select-account__app-meta__favicon"} />
+            )}
 
             <h3
               className={

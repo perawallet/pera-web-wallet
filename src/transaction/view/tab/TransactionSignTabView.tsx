@@ -31,16 +31,24 @@ function TransactionSignTabView() {
   useEffect(() => {
     if (hasMessageReceived && masterkey) {
       if (sessions[messageOrigin]) {
-        const fromAddress = algosdk.encodeAddress(
-          txns[0].txn.from?.publicKey || new Uint8Array(0)
-        );
-        const toAddress = algosdk.encodeAddress(
-          txns[0].txn.to?.publicKey || new Uint8Array(0)
-        );
+        let userAddress;
 
-        const userAddress = sessions[messageOrigin].accountAddresses.find(
-          (address) => address === (fromAddress || toAddress)
-        );
+        for (const transaction of txns) {
+          const fromAddress = algosdk.encodeAddress(
+            transaction.txn.from?.publicKey || new Uint8Array(0)
+          );
+          const toAddress = algosdk.encodeAddress(
+            transaction.txn.to?.publicKey || new Uint8Array(0)
+          );
+
+          userAddress = sessions[messageOrigin].accountAddresses.find(
+            (address) => address === fromAddress || address === toAddress
+          );
+
+          if (userAddress) {
+            break;
+          }
+        }
 
         dispatchFormitoAction({
           type: "SET_FORM_VALUE",

@@ -64,6 +64,19 @@
   gap: 8px;
 }
 
+.transaction-sign-detail-single-view__asset-detail__external-link.button {
+  @include typography--caption();
+  @include text-color--gray-light();
+
+  gap: 2px;
+
+  .export-icon {
+    path {
+      fill: var(--text-gray-light);
+    }
+  }
+}
+
 .transaction-sign-detail-single-view__transaction-details-list__item {
   padding: 16px 0;
 

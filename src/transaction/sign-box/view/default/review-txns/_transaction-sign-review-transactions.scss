@@ -1,4 +1,6 @@
 .transaction-sign-review-transactions {
+  position: relative;
+
   height: 398px;
 
   overflow: auto;
@@ -30,4 +32,11 @@
       fill: var(--secondary-button-text);
     }
   }
+}
+
+.transaction-sign-review-transactions__message {
+  position: absolute;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
 }

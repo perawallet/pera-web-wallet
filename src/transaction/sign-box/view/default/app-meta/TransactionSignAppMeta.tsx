@@ -1,5 +1,6 @@
 import {ReactComponent as AccountDefaultIcon} from "../../../../../core/ui/icons/account-default.svg";
 import {ReactComponent as ChevronRight} from "../../../../../core/ui/icons/chevron-right.svg";
+import {ReactComponent as DAppIcon} from "../../../../../core/ui/icons/dapp.svg";
 
 import "./_transaction-sign-app-meta.scss";
 
@@ -15,11 +16,15 @@ function TransactionSignAppMeta() {
   return (
     <div className={"align-center--vertically transaction-sign-app-meta"}>
       <div className={"transaction-sign-app-meta__information"}>
-        <Image
-          customClassName={"transaction-sign-app-meta__favicon"}
-          src={currentSession!.favicon}
-          alt={currentSession!.title}
-        />
+        {currentSession?.favicon ? (
+          <Image
+            customClassName={"transaction-sign-app-meta__favicon"}
+            src={currentSession!.favicon}
+            alt={currentSession!.title}
+          />
+        ) : (
+          <DAppIcon className={"transaction-sign-app-meta__favicon"} />
+        )}
 
         <div className={"transaction-sign-app-meta__dapp-details"}>
           <p

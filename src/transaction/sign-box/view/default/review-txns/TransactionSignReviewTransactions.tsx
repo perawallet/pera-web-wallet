@@ -39,31 +39,11 @@ function TransactionSignReviewTransactions() {
           customClassName={"transaction-sign-review-transactions__button"}
           buttonType={"custom"}>
           {txns.length === 1
-            ? "See Transaction Details"
+            ? "Transaction Details"
             : `Transaction breakdown (${txns.length})`}
 
           <ChevronRight />
         </Button>
-      </div>
-
-      <div className={"transaction-sign-review-transactions__message"}>
-        {!checkIfSignRequiredForTransactions(txns, currentSession!) && (
-          <TransactionSignDetailMessage
-            message={
-              "Your signature is not required for these transactions. Please contact the dApp developer for more information."
-            }
-            type={"info"}
-          />
-        )}
-
-        {isAllTransactionsEmpty(transactions) && (
-          <TransactionSignDetailMessage
-            message={
-              "You will not receive anything from this transaction. Sometimes dApps use empty transactions for authorization or instructions via the note field."
-            }
-            type={"info"}
-          />
-        )}
       </div>
 
       <div>
@@ -112,6 +92,26 @@ function TransactionSignReviewTransactions() {
             transactions={assetConfigTransactions}
             title={"Asset Configurations"}
             type={"asset-config"}
+          />
+        )}
+      </div>
+
+      <div className={"transaction-sign-review-transactions__message"}>
+        {!checkIfSignRequiredForTransactions(txns, currentSession!) && (
+          <TransactionSignDetailMessage
+            message={
+              "Your signature is not required for these transactions. Please contact the dApp developer for more information."
+            }
+            type={"info"}
+          />
+        )}
+
+        {isAllTransactionsEmpty(transactions) && (
+          <TransactionSignDetailMessage
+            message={
+              "You will not receive anything from this transaction. Sometimes dApps use empty transactions for authorization or instructions via the note field."
+            }
+            type={"info"}
           />
         )}
       </div>

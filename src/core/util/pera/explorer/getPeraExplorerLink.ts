@@ -1,5 +1,5 @@
 // TODO add other types here in case of need
-type PeraExplorerLinkType = "account-detail";
+type PeraExplorerLinkType = "account-detail" | "asset-detail";
 
 function getPeraExplorerLink({
   network,
@@ -19,6 +19,10 @@ function getPeraExplorerLink({
   switch (type) {
     case "account-detail":
       link = `${origin}/accounts/${encodeURIComponent(id)}`;
+      break;
+
+    case "asset-detail":
+      link = `${origin}/assets/${encodeURIComponent(id)}`;
       break;
 
     default:

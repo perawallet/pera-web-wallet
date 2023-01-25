@@ -14,7 +14,7 @@ interface PeraConnectBannerProps {
 function PeraConnectBanner({currentSession, customClassName}: PeraConnectBannerProps) {
   return (
     <div className={classNames("pera-connect-banner", customClassName)}>
-      {currentSession ? (
+      {currentSession?.favicon ? (
         <Image
           customClassName={"pera-connect-banner__app-meta__favicon"}
           src={currentSession?.favicon || ""}

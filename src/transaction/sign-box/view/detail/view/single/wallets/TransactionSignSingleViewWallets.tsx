@@ -3,6 +3,7 @@ import {ReactComponent as ApplicationCallIcon} from "../../../../../../../core/u
 import {ReactComponent as CreateIcon} from "../../../../../../../core/ui/icons/create.svg";
 import {ReactComponent as DeleteIcon} from "../../../../../../../core/ui/icons/delete.svg";
 import {ReactComponent as ModifyIcon} from "../../../../../../../core/ui/icons/modify.svg";
+import {ReactComponent as ExportIcon} from "../../../../../../../core/ui/icons/export.svg";
 
 import "./_transaction-sign-single-view-wallets.scss";
 
@@ -23,10 +24,12 @@ import {
   isTransactionUpdateAssetConfig
 } from "../../../../../../utils/transactionUtils";
 import {useTransactionSignFlowContext} from "../../../../../../context/TransactionSignFlowContext";
+import LinkButton from "../../../../../../../component/button/LinkButton";
+import {getPeraExplorerLink} from "../../../../../../../core/util/pera/explorer/getPeraExplorerLink";
 
 function TransactionSignSingleViewWallets() {
   const {
-    state: {accounts}
+    state: {accounts, preferredNetwork}
   } = useAppContext();
   const {
     formitoState: {activeTransactionIndex, txns}
@@ -51,23 +54,43 @@ function TransactionSignSingleViewWallets() {
           "transaction-sign-single-view-wallets__wallet--from-unknown-wallet":
             !fromAccount
         })}>
-        <AccountDefaultIcon width={32} height={32} />
+        <div className={"transaction-sign-single-view-wallets__wallet__description"}>
+          <AccountDefaultIcon width={32} height={32} />
 
-        <div>
-          <p className={"typography--body"}>
-            {`${
-              fromAccount?.name
-                ? trimAccountName(fromAccount.name)
-                : trimAccountAddress(fromAddress)
-            }${fromAccount ? " (You)" : ""}`}
-          </p>
-
-          {fromAccount?.name && (
-            <p className={"typography--secondary-body text-color--gray-light"}>
-              {trimAccountAddress(fromAddress)}
+          <div>
+            <p className={"typography--body"}>
+              {`${
+                fromAccount?.name
+                  ? trimAccountName(fromAccount.name)
+                  : trimAccountAddress(fromAddress)
+              }${fromAccount ? " (You)" : ""}`}
             </p>
-          )}
+
+            {fromAccount?.name && (
+              <p className={"typography--secondary-body text-color--gray-light"}>
+                {trimAccountAddress(fromAddress)}
+              </p>
+            )}
+          </div>
         </div>
+
+        {!fromAccount && (
+          <LinkButton
+            to={getPeraExplorerLink({
+              id: fromAddress,
+              network: preferredNetwork,
+              type: "account-detail"
+            })}
+            external={true}
+            buttonType={"custom"}
+            customClassName={
+              "transaction-sign-single-view-wallets__wallet__external-link"
+            }>
+            {"View on Pera Explorer"}
+
+            <ExportIcon width={16} height={16} />
+          </LinkButton>
+        )}
       </div>
 
       <div className={"transaction-sign-single-view-wallets__to"}>
@@ -86,12 +109,97 @@ function TransactionSignSingleViewWallets() {
             "transaction-sign-single-view-wallets__wallet--to-unknown-wallet": !toAccount
           }
         )}>
-        {renderFromIcon()}
-
         {renderFromDescription()}
       </div>
     </div>
   );
+
+  function renderFromDescription() {
+    if (isApplicationCall) {
+      if (isCreateApplicationTransaction(activeTransaction.txn)) {
+        return (
+          <div>
+            {renderFromIcon()}
+
+            {"Create Application"}
+          </div>
+        );
+      }
+
+      return (
+        <div className={"transaction-sign-single-view-wallets__wallet__description"}>
+          {renderFromIcon()}
+
+          {`Application #${activeTransaction.txn.appIndex}`}
+        </div>
+      );
+    }
+
+    if (isAssetConfig) {
+      if (isTransactionCreateAssetConfig(activeTransaction.txn)) {
+        return (
+          <div className={"transaction-sign-single-view-wallets__wallet__description"}>
+            {renderFromIcon()}
+
+            {activeTransaction.txn.assetName
+              ? `Create "${activeTransaction.txn.assetName}" Asset`
+              : "Create Asset"}
+          </div>
+        );
+      }
+
+      return (
+        <div className={"transaction-sign-single-view-wallets__wallet__description"}>
+          {renderFromIcon()}
+
+          {`Asset Configuration - ${activeTransaction.txn.assetIndex}`}
+        </div>
+      );
+    }
+
+    return (
+      <>
+        <div className={"transaction-sign-single-view-wallets__wallet__description"}>
+          {renderFromIcon()}
+
+          <div>
+            <p className={"typography--body"}>
+              {`${
+                toAccount?.name
+                  ? trimAccountName(toAccount.name)
+                  : trimAccountAddress(toAddress)
+              }${toAccount ? " (You)" : ""}`}
+            </p>
+
+            {toAccount?.name && (
+              <p className={"typography--secondary-body text-color--gray-light"}>
+                {trimAccountAddress(toAddress)}
+              </p>
+            )}
+          </div>
+        </div>
+
+        {!toAccount && (
+          <LinkButton
+            to={getPeraExplorerLink({
+              id: toAddress,
+              network: preferredNetwork,
+              type: "account-detail"
+            })}
+            external={true}
+            buttonType={"custom"}
+            size={"large"}
+            customClassName={
+              "transaction-sign-single-view-wallets__wallet__external-link"
+            }>
+            {"View on Pera Explorer"}
+
+            <ExportIcon width={16} height={16} />
+          </LinkButton>
+        )}
+      </>
+    );
+  }
 
   function renderFromIcon() {
     if (isApplicationCall) {
@@ -124,44 +232,6 @@ function TransactionSignSingleViewWallets() {
     }
 
     return <AccountDefaultIcon width={32} height={32} />;
-  }
-
-  function renderFromDescription() {
-    if (isApplicationCall) {
-      if (isCreateApplicationTransaction(activeTransaction.txn)) {
-        return "Create Application";
-      }
-
-      return `Application #${activeTransaction.txn.appIndex}`;
-    }
-
-    if (isAssetConfig) {
-      if (isTransactionCreateAssetConfig(activeTransaction.txn)) {
-        return activeTransaction.txn.assetName
-          ? `Create "${activeTransaction.txn.assetName}" Asset`
-          : "Create Asset";
-      }
-
-      return `Asset Configuration - ${activeTransaction.txn.assetIndex}`;
-    }
-
-    return (
-      <div>
-        <p className={"typography--body"}>
-          {`${
-            toAccount?.name
-              ? trimAccountName(toAccount.name)
-              : trimAccountAddress(toAddress)
-          }${toAccount ? " (You)" : ""}`}
-        </p>
-
-        {toAccount?.name && (
-          <p className={"typography--secondary-body text-color--gray-light"}>
-            {trimAccountAddress(toAddress)}
-          </p>
-        )}
-      </div>
-    );
   }
 }
 
