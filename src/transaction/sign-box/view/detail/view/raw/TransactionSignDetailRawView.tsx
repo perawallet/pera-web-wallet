@@ -2,6 +2,8 @@ import {ReactComponent as ArrowLeft} from "../../../../../../core/ui/icons/arrow
 
 import "./_transaction-sign-detail-raw-view.scss";
 
+import algosdk from "algosdk";
+
 import Button from "../../../../../../component/button/Button";
 import {useTransactionSignFlowContext} from "../../../../../context/TransactionSignFlowContext";
 import ClipboardButton from "../../../../../../component/clipboard/button/ClipboardButton";
@@ -12,6 +14,14 @@ function TransactionSignDetailRawView() {
     dispatchFormitoAction: dispatchTransactionPageAction
   } = useTransactionSignFlowContext();
   const {txn} = txns[activeTransactionIndex];
+  const encodedTransaction = txn.get_obj_for_encoding();
+
+  Object.keys(encodedTransaction).forEach((key) => {
+    if (key === "snd" || key === "rcv") {
+      // @ts-ignore ts-2322
+      encodedTransaction[key] = algosdk.encodeAddress(encodedTransaction[key]);
+    }
+  });
 
   return (
     <div>
@@ -28,13 +38,13 @@ function TransactionSignDetailRawView() {
         <ClipboardButton
           customClassName={"transaction-sign-detail-raw-view__header__copy-button"}
           buttonType={"custom"}
-          textToCopy={`${txn}`}>
+          textToCopy={JSON.stringify(encodedTransaction)}>
           {"Copy"}
         </ClipboardButton>
       </div>
 
       <div className={"transaction-sign-detail-raw-view__raw-transaction"}>
-        <code>{`${txn}`}</code>
+        <code>{JSON.stringify(encodedTransaction)}</code>
       </div>
     </div>
   );

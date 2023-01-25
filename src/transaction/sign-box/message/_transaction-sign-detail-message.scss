@@ -10,10 +10,6 @@
 
   word-break: break-word;
 
-  &:last-of-type {
-    margin-bottom: 32px;
-  }
-
   &--warning {
     color: var(--helper-red-default);
     background-color: var(--red-50);

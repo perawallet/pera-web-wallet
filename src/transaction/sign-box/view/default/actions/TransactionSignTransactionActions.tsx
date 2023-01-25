@@ -40,7 +40,7 @@ function TransactionSignTransactionActions({
           shouldDisplaySpinner={isSignStarted}
           customClassName={"transaction-sign-transaction-actions__button"}
           buttonType={"primary"}>
-          {"Confirm All"}
+          {txns.length > 1 ? "Confirm All" : "Confirm"}
         </Button>
       )}
     </div>
