@@ -1,0 +1,61 @@
+@import "../../../../core/ui/typography/typography-mixins";
+
+.transfer-mobile-accounts__wrapper,
+.transfer-mobile-accounts__wrapper--empty {
+  position: relative;
+
+  width: 424px;
+  height: 620px;
+
+  .selectable-account-list__list {
+    max-height: 376px;
+  }
+
+  .tooltip-container {
+    height: 20px;
+  }
+
+  .info-icon {
+    path {
+      fill: var(--text-main);
+    }
+  }
+}
+
+.transfer-mobile-accounts__wrapper--empty {
+  display: grid;
+  place-content: center;
+
+  width: 424px;
+  height: 620px;
+}
+
+.transfer-mobile-accounts__wrapper__go-back-button {
+  margin-bottom: 8px;
+}
+
+.transfer-mobile-accounts__subheader {
+  margin: 0 0 32px 40px;
+}
+
+.transfer-mobile-accounts__select-form-wrapper {
+  position: relative;
+
+  height: 440px;
+
+  padding: 22px 20px;
+
+  background-color: var(--layer-2);
+
+  border-radius: 12px;
+
+  box-shadow: var(--shadow-inline);
+}
+
+.transfer-mobile-accounts__select-form {
+  .selectable-account-list__cta {
+    position: absolute;
+    bottom: -80px;
+    left: 0;
+  }
+}

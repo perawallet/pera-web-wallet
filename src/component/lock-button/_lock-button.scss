@@ -8,11 +8,15 @@
   align-items: center;
 }
 
-.lock-button {
+.lock-button.button {
+  --button-bg: var(--layer-1);
+
   gap: 8px;
 
   width: 124px;
   height: 40px;
+
+  box-shadow: var(--shadow-2);
 
   .lock-icon {
     path {
@@ -30,5 +34,5 @@
 }
 
 .lock-button__shortcut {
-  color: var(--text-gray-light);
+  color: var(--text-gray-lighter);
 }

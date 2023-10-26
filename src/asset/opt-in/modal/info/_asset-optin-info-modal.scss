@@ -1,6 +1,10 @@
 @import "../../../../core/ui/typography/typography-mixins";
 
 .asset-optin-page__info-modal {
+  .info-modal__icon-wrapper {
+    margin-top: 0;
+  }
+
   .info-modal__description-list-item:not(:first-of-type) {
     @include text-color--gray();
     @include typography--secondary-body();
@@ -8,19 +12,29 @@
 
   .info-modal__description-list-item:first-of-type {
     @include typography--medium-body();
+
+    .info-modal__description-list-item__icon-wrapper {
+      background-color: transparent;
+
+      .tip-icon {
+        path {
+          fill: var(--helper-purple-900);
+        }
+      }
+    }
   }
 
   .asset-icon,
   .collectibles-icon,
   .warning-icon {
     path {
-      fill: var(--text-gray-light);
+      fill: var(--text-gray-lighter);
     }
   }
 
   .opt-in-icon {
     path {
-      fill: var(--helper-purple-default);
+      fill: var(--helper-purple-900);
     }
   }
 }

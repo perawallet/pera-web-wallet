@@ -1,16 +1,21 @@
 import {AccountBackup} from "../../../../account/accountModels";
-import {PortfolioOverview} from "../../../../overview/util/hook/usePortfolioOverview";
 import Api, {ApiConfigType, DEFAULT_API_NETWORK} from "../../../api";
 import {fetchJSONMiddleware} from "../../../network/fetcherUtils";
 import {PERA_API_CONFIG, PERA_WEB_DEVICE_CONFIG} from "./peraApiConstants";
 import {
   AccountASA,
+  AccountNameService,
+  BannerResponse,
   CurrencyInformation,
   DeviceInformation,
-  FetchMoonPayURLPayload,
-  MultipleAccountOverviewRequestBody
+  MultipleAccountOverviewRequestBody,
+  ShouldRefreshRequestBody,
+  ShouldRefreshRequestResponse
 } from "./peraApiModels";
-import {mapAddressAccountASADataMiddleware} from "./peraApiUtils";
+import {
+  filterBannerMiddleware,
+  mapAddressAccountASADataMiddleware
+} from "./peraApiUtils";
 
 export class PeraApi<ConfigType extends ApiConfigType> extends Api<ConfigType> {
   private config: ConfigType;
@@ -51,6 +56,17 @@ export class PeraApi<ConfigType extends ApiConfigType> extends Api<ConfigType> {
     );
   }
 
+  getBanners(deviceId: string, options?: {signal: AbortSignal}) {
+    return this.getInstance().run<BannerResponse>(
+      {
+        method: "GET",
+        responseMiddlewares: [fetchJSONMiddleware, filterBannerMiddleware],
+        signal: options?.signal
+      },
+      `v1/devices/${deviceId}/banners/`
+    );
+  }
+
   createAccountBackup(deviceId: string, encryptedContent?: string) {
     const body = {
       type: "temporary",
@@ -70,18 +86,17 @@ export class PeraApi<ConfigType extends ApiConfigType> extends Api<ConfigType> {
 
   getAccountBackup(deviceId: string) {
     return this.getInstance().run<{encrypted_content: string}>(
-      {
-        method: "GET"
-      },
+      {method: "GET"},
       `v1/backups/${deviceId}/`
     );
   }
 
-  getAssets(params: ListAssetRequestParams) {
+  getAssets(params: ListAssetRequestParams, options?: {signal: AbortSignal}) {
     return this.getInstance().run<ListRequestResponse<Asset>>(
       {
         method: "GET",
-        params
+        params,
+        signal: options?.signal
       },
       `v1/assets/`
     );
@@ -89,9 +104,7 @@ export class PeraApi<ConfigType extends ApiConfigType> extends Api<ConfigType> {
 
   getAccountOverview(address: string) {
     return this.getInstance().run<AccountOverview>(
-      {
-        method: "GET"
-      },
+      {method: "GET"},
       `v1/accounts/${address}/overview`
     );
   }
@@ -115,13 +128,14 @@ export class PeraApi<ConfigType extends ApiConfigType> extends Api<ConfigType> {
     );
   }
 
-  fetchMoonPayURL(body: FetchMoonPayURLPayload) {
-    return this.getInstance().run<{url: string}>(
+  getNFDomains(name: string, options?: {signal: AbortSignal}) {
+    return this.getInstance().run<ListRequestResponse<AccountNameService>>(
       {
-        method: "POST",
-        body
+        method: "GET",
+        params: {name},
+        signal: options?.signal
       },
-      "v1/moonpay/sign-url/"
+      `v1/name-services/search/`
     );
   }
 
@@ -139,6 +153,34 @@ export class PeraApi<ConfigType extends ApiConfigType> extends Api<ConfigType> {
         ]
       },
       `v1/accounts/${address}/assets/`
+    );
+  }
+
+  getAccountDetail(address: string, options?: {signal: AbortSignal}) {
+    return this.getInstance().run<AccountDetail>(
+      {
+        method: "GET",
+        signal: options?.signal
+      },
+      `v1/accounts/${address}/`
+    );
+  }
+
+  getAccountNames(address: string, options?: {signal: AbortSignal}) {
+    return this.getInstance().run<AccountDomain>(
+      {method: "GET", signal: options?.signal},
+      `v1/accounts/${address}/names/`
+    );
+  }
+
+  getShouldRefresh(body: ShouldRefreshRequestBody, options?: {signal: AbortSignal}) {
+    return this.getInstance().run<ShouldRefreshRequestResponse>(
+      {
+        method: "POST",
+        body,
+        signal: options?.signal
+      },
+      "v1/accounts/should-refresh/"
     );
   }
 
@@ -161,6 +203,7 @@ export class PeraApi<ConfigType extends ApiConfigType> extends Api<ConfigType> {
     const exec = () =>
       this.getAccountAssets(address, {
         include_algo,
+        limit: 2000,
         ...(cursor ? {cursor} : {})
       });
 
@@ -181,74 +224,6 @@ export class PeraApi<ConfigType extends ApiConfigType> extends Api<ConfigType> {
       } catch (error) {
         reject(error);
       }
-    });
-  }
-
-  /**
-   * Only for Caching Purposes - Do not use directly in components.
-   * ---
-   * Batches all independent requests for paginated `getAccountAssets` endpoint
-   * returns all assets of address given in array
-   *
-   * @param {string[]} addresses
-   * @returns  {Promise<AccountASA[]>}
-   * @memberof PeraApi
-   */
-  getAllMultipleAccountAssets(addresses: string[]): Promise<AccountASA[]> {
-    let include_algo = true;
-    let nextBatch: {address: string; next?: string}[] = addresses.map((address) => ({
-      address
-    }));
-
-    const exec = (
-      address: string,
-      {shouldIncludeAlgo, cursor}: {shouldIncludeAlgo: boolean; cursor?: string}
-    ) =>
-      this.getAccountAssets(address, {
-        include_algo: shouldIncludeAlgo,
-        limit: 500,
-        ...(cursor ? {cursor} : {})
-      });
-
-    return new Promise(async (resolve) => {
-      const assets: AccountASA[] = [];
-
-      do {
-        const promises: PromiseSettledResult<ListRequestResponse<AccountASA>>[] =
-          await Promise.allSettled(
-            // eslint-disable-next-line no-loop-func
-            nextBatch.map(({address, next}) =>
-              exec(address, {shouldIncludeAlgo: include_algo, cursor: next})
-            )
-          );
-
-        // do not include algo after first batch
-        include_algo = false;
-
-        // reset next batch if all promises settled
-        nextBatch = [];
-
-        for (const promise of promises) {
-          if (
-            promise.status === "fulfilled" &&
-            promise.value.results &&
-            promise.value.results.length > 0
-          ) {
-            const {results, next} = promise.value;
-            const {address} = results[0];
-
-            assets.push(...results);
-
-            if (next) {
-              const cursor = new URL(next).searchParams.get("cursor") || undefined;
-
-              nextBatch.push({address, next: cursor});
-            }
-          }
-        }
-      } while (nextBatch.length > 0);
-
-      resolve(assets);
     });
   }
 }

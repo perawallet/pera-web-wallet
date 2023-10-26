@@ -1,0 +1,56 @@
+.account-limit-warning-banner {
+  position: relative;
+
+  display: flex;
+  gap: 12px;
+
+  height: 84px;
+
+  margin: 20px 0 16px;
+  padding: 16px 20px;
+
+  background: var(--layer-1);
+
+  border-radius: 16px;
+  box-shadow: var(--shadow-1);
+}
+
+.account-limit-warning-banner__danger-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  background-color: var(--helper-pink-100);
+  border-radius: 100%;
+
+  .danger-icon {
+    path {
+      fill: var(--helper-pink-900);
+    }
+  }
+}
+
+.account-limit-warning-banner__body__title {
+  color: var(--helper-pink-900);
+}
+
+.account-limit-warning-banner__close-button {
+  --button-height: fit-content;
+  --button-width: fit-content;
+
+  position: absolute;
+
+  top: 16px;
+  right: 20px;
+
+  padding: 0;
+
+  .close-icon {
+    path {
+      fill: var(--text-gray);
+    }
+  }
+}

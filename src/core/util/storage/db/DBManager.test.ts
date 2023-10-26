@@ -109,7 +109,8 @@ describe("DBManager/indexedDB", () => {
         name: "a3",
         address: "acccountaddress3",
         pk: "3",
-        date: new Date(today.getDate() + 2)
+        date: new Date(today.getDate() + 2),
+        rekeyedTo: null
       };
 
       try {

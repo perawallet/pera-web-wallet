@@ -1,14 +1,12 @@
-import {ReactComponent as LedgerIcon} from "../../../core/ui/icons/ledger.svg";
-
 import "./_welcome-page.scss";
 
 import {Navigate} from "react-router-dom";
 
-import AccountOnboardingOptionList from "../../../account/component/onboarding-option-list/AccountOnboardingOptionList";
 import {useAppContext} from "../../../core/app/AppContext";
 import {generateWelcomePageCopies} from "./util/welcomePageUtils";
 import ROUTES from "../../../core/route/routes";
 import RequirePassword from "../../../core/route/RequirePassword";
+import AccountPageOnboardingOptionList from "./account-page-onboarding-option-list/AccountPageOnboardingOptionList";
 
 function WelcomePage() {
   const {
@@ -31,25 +29,10 @@ function WelcomePage() {
           </p>
         )}
 
-        <AccountOnboardingOptionList
+        <AccountPageOnboardingOptionList
           shouldShowIllustrations={true}
           customClassName={"welcome-page__onboarding-option-list"}
         />
-
-        <div className={"welcome-page__nano-ledger"}>
-          <LedgerIcon />
-
-          <p className={"typography--subhead text-color--gray-light"}>
-            {"Pair Nano Ledger"}
-          </p>
-
-          <div
-            className={
-              "typography--tagline text-color--gray welcome-page__nano-ledger__badge"
-            }>
-            {"COMING SOON"}
-          </div>
-        </div>
       </div>
     );
 

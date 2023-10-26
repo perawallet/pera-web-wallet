@@ -39,6 +39,7 @@ interface PasswordAccessPageProps {
   hasCancelButton?: boolean;
   customClassName?: string;
   type?: "default" | "modal" | "connect-new-tab" | "embedded";
+  isCompactMode?: boolean;
 }
 
 export const PASSWORD_ACCESS_MODAL_ID = "password-access-modal";
@@ -58,7 +59,8 @@ function PasswordAccessPage({
   onCancel,
   hasCancelButton,
   customClassName,
-  type = "default"
+  type = "default",
+  isCompactMode
 }: PasswordAccessPageProps) {
   const {
     from,
@@ -79,7 +81,9 @@ function PasswordAccessPage({
 
   return (
     <div
-      className={classNames(`password-access password-access--${type}`, customClassName)}>
+      className={classNames(`password-access password-access--${type}`, customClassName, {
+        "password-access--compact": isCompactMode
+      })}>
       <div className={"align-center--horizontally password-access__hero"}>
         <div className={"password-access__hero-icon"}>{renderHeroIcon()}</div>
 
@@ -88,13 +92,13 @@ function PasswordAccessPage({
             className={
               "typography--h2 text-color--main text--centered password-access__hero-title"
             }>
-            {title || "Unlock Pera Wallet"}
+            {title || "Enter Passcode"}
           </p>
         )}
 
         <p
           className={
-            "typography--body text-color--gray-light text--centered password-access__hero-description"
+            "typography--body text-color--gray text--centered password-access__hero-description"
           }>
           {description || "Enter your passcode to unlock your wallet"}
         </p>
@@ -136,7 +140,7 @@ function PasswordAccessPage({
 
         {hasCancelButton && (
           <Button
-            buttonType={"ghost"}
+            buttonType={"light"}
             size={"large"}
             customClassName={"password-access__form-field__cancel"}
             onClick={handleCancelClick}>
@@ -189,13 +193,9 @@ function PasswordAccessPage({
       throw new Error("Incorrect password.");
     }
 
-    const accounts = await appDBManager.decryptTableEntries(
-      "accounts",
-      masterkey
-    )("address");
     const sessions = await appDBManager.decryptTableEntries("sessions", masterkey)("url");
 
-    dispatchAppState({type: "SYNC_IDB", payload: {accounts, sessions}});
+    dispatchAppState({type: "SET_SESSION", session: Object.values(sessions)});
     dispatchAppState({type: "SET_MASTERKEY", masterkey});
   }
 

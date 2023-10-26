@@ -1,0 +1,68 @@
+.ledger-import-accounts-added__modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 376px;
+}
+
+.ledger-import-accounts-added-modal__checkmark-icon-wrapper {
+  display: grid;
+  place-content: center;
+
+  width: 96px;
+  height: 96px;
+
+  margin: 0 0 32px;
+
+  background-color: var(--layer-1);
+  border-radius: 100%;
+  box-shadow: var(--shadow-1);
+
+  .checkmark-icon {
+    path {
+      fill: var(--helper-peace-900);
+    }
+  }
+}
+
+.ledger-import-accounts-added-modal__list {
+  display: grid;
+  gap: 32px;
+
+  width: 100%;
+  max-height: calc(48px * 4); // 4 items
+
+  overflow-y: auto;
+
+  margin: 48px 0;
+  padding: 0;
+
+  .ledger-import-accounts-added-modal__list-item-description {
+    color: var(--helper-peace-900);
+  }
+}
+
+.ledger-import-accounts-added-modal__list-item {
+  position: relative;
+
+  display: grid;
+  align-items: center;
+  grid-template-columns: 32px 1fr auto;
+  gap: 16px;
+
+  .ledger-import-accounts-added-modal__list-item-description {
+    color: var(--helper-peace-900);
+  }
+
+  &:not(:last-child):after {
+    position: absolute;
+    bottom: -16px;
+
+    width: 100%;
+
+    border-bottom: solid 1px var(--layer-3);
+
+    content: "";
+  }
+}

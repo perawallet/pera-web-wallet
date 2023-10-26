@@ -27,7 +27,7 @@ function SendTxnSelectAssetListItem({asset, onSelect}: SendTxnSelectAssetListIte
 
           <FormatUSDBalance
             value={asset.balance_usd_value}
-            customClassName={"text-color--gray-light typography--secondary-body"}
+            customClassName={"text-color--gray-lighter typography--secondary-body"}
           />
         </div>
       }

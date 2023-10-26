@@ -38,7 +38,7 @@ function ClearWalletDataModalBackupView({
           target={"_blank"}
           rel={"noopener noreferrer"}
           className={
-            "typography--secondary-bold-body clear-wallet-data-modal__helper-link"
+            "typography--secondary-medium-body clear-wallet-data-modal__helper-link"
           }>
           {"Learn how to backup your accounts →"}
         </a>

@@ -1,0 +1,20 @@
+.account-import-backup-passphrase {
+  .account-import-backup-passphrase__mnemonic-form {
+    grid-template: repeat(3, 1fr) / repeat(4, 1fr);
+
+    margin-top: 24px;
+  }
+
+  .account-mnemonic-form__grid-cell {
+    width: 150px;
+  }
+
+  .account-mnemonic-form__cta {
+    margin-top: 16px;
+  }
+}
+
+.account-import-backup-passphrase__title,
+.account-import-backup-passphrase__description {
+  margin-bottom: 24px;
+}

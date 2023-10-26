@@ -8,7 +8,6 @@ import "./_password-create-page.scss";
 import {useEffect, useRef, useState} from "react";
 import {Location, Navigate, useNavigate} from "react-router-dom";
 import {FormField} from "@hipo/react-ui-toolkit";
-import classNames from "classnames";
 
 import ROUTES from "../../../core/route/routes";
 import {useAppContext} from "../../../core/app/AppContext";
@@ -16,12 +15,19 @@ import useFormito from "../../../core/util/hook/formito/useFormito";
 import {validatePasswordCreateForm} from "../../util/passwordUtils";
 import PeraPasswordInput from "../../../component/pera-password-input/PeraPasswordInput";
 import Button from "../../../component/button/Button";
-import {hashPassword} from "../../../core/util/nacl/naclUtils";
+import {encryptSK, decryptSK, hashPassword} from "../../../core/util/nacl/naclUtils";
 import InfoBox from "../../../component/info-box/InfoBox";
-import {withGoBackLink} from "../../../core/route/context/NavigationContext";
 import {useSimpleToaster} from "../../../component/simple-toast/util/simpleToastHooks";
 import useLocationWithState from "../../../core/util/hook/useLocationWithState";
 import webStorage, {STORED_KEYS} from "../../../core/util/storage/web/webStorage";
+import {appDBManager} from "../../../core/app/db";
+import {useModalDispatchContext} from "../../../component/modal/context/ModalContext";
+import {CHANGE_PASSCODE_MODAL_ID} from "../../../settings/page/settings/util/settingsConstants";
+import {
+  encryptedWebStorageUtils,
+  getCommonAppState
+} from "../../../core/util/storage/web/webStorageUtils";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 
 const initialCreatePasswordForm = {
   password: "",
@@ -33,14 +39,15 @@ type LocationState = {
 };
 
 interface PasswordCreatePageProps {
-  type?: "default" | "connect";
+  type?: "default" | "connect" | "change";
 }
 
+// eslint-disable-next-line complexity
 function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
   const navigate = useNavigate();
   const {from} = useLocationWithState<LocationState>();
   const {
-    state: {hashedMasterkey: userHasKey},
+    state: {hashedMasterkey: userHasKey, masterkey},
     dispatch: dispatchAppState
   } = useAppContext();
   const {
@@ -49,9 +56,6 @@ function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
   } = useFormito(initialCreatePasswordForm);
   const simpleToaster = useSimpleToaster();
   const validationInfo = validatePasswordCreateForm(password, passwordConfirmation);
-  const passwordFormFieldClassname = classNames(
-    "password-create__form__password-form-field"
-  );
   const isButtonDisabled =
     !password ||
     !passwordConfirmation ||
@@ -59,6 +63,8 @@ function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
     validationInfo.passwordConfirmation.length > 0;
   const [isPasswordConfirmStarted, setPasswordConfirmStarted] = useState(false);
   const hashedMasterKeyRef = useRef(userHasKey);
+  const dispatchModalStateAction = useModalDispatchContext();
+  const {refetchAccounts} = usePortfolioContext() || {};
 
   useEffect(
     // clean up formito state on unmount
@@ -77,7 +83,7 @@ function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
   return (
     <div className={`password-create password-create--${type}`}>
       <p className={"typography--h2 text-color--main password-create__title"}>
-        {"Create a passcode"}
+        {type === "change" ? "Set new passcode" : "Create a passcode"}
       </p>
 
       <InfoBox
@@ -101,12 +107,12 @@ function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
       <form className={"password-create__form"} onSubmit={onPasswordSubmit}>
         <FormField
           labelledBy={"Password"}
-          label={"Create Passcode"}
-          customClassName={passwordFormFieldClassname}
+          label={`${type === "change" ? "New" : "Create"} Passcode`}
+          customClassName={"password-create__form__password-form-field"}
           errorMessages={password ? validationInfo.password : undefined}>
           <PeraPasswordInput
             customClassName={"password-create__form__password-input"}
-            placeholder={"Enter passcode"}
+            placeholder={`Enter ${type === "change" ? "your new" : ""} passcode`}
             hideIcon={password && <PasswordHiddenIcon />}
             revealIcon={password && <PasswordVisibleIcon />}
             infoIcon={
@@ -129,7 +135,7 @@ function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
           errorMessages={validationInfo.passwordConfirmation}>
           <PeraPasswordInput
             customClassName={"password-create__form__password-input"}
-            placeholder={"Enter your passcode again"}
+            placeholder={`Enter your ${type === "change" ? "new" : ""} passcode again`}
             hideIcon={passwordConfirmation && <PasswordHiddenIcon />}
             revealIcon={passwordConfirmation && <PasswordVisibleIcon />}
             infoIcon={
@@ -151,43 +157,75 @@ function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
           customClassName={"password-create__form__cta"}
           type={"submit"}
           size={"large"}>
-          {"Submit"}
+          {type === "change" ? "Change Passcode" : "Submit"}
         </Button>
+
+        {type === "change" && (
+          <Button
+            customClassName={"password-create__form__cta"}
+            buttonType={"light"}
+            type={"button"}
+            size={"large"}
+            onClick={handleChangePasswordCloseClick}>
+            {"Cancel"}
+          </Button>
+        )}
       </form>
 
-      <p
-        className={
-          "typography--tiny text-color--gray password-create__terms-and-conditions"
-        }>
-        {"By creating an account, you agree to Pera Wallet’s "}
+      {type !== "change" && (
+        <p
+          className={
+            "typography--tiny text-color--gray password-create__terms-and-conditions"
+          }>
+          {"By creating an account, you agree to Pera Wallet’s "}
 
-        <a
-          className={"typography--bold-tiny password-create__terms-and-conditions__link"}
-          href={"https://perawallet.app/terms-and-services/"}
-          target={"_blank"}
-          rel={"noopener noreferrer"}>
-          {"Terms and Conditions"}
-        </a>
+          <a
+            className={
+              "typography--bold-tiny password-create__terms-and-conditions__link"
+            }
+            href={"https://perawallet.app/terms-and-services/"}
+            target={"_blank"}
+            rel={"noopener noreferrer"}>
+            {"Terms and Conditions"}
+          </a>
 
-        {" and "}
+          {" and "}
 
-        <a
-          className={"typography--bold-tiny password-create__terms-and-conditions__link"}
-          href={"https://perawallet.app/privacy-policy/"}
-          target={"_blank"}
-          rel={"noopener noreferrer"}>
-          {"Privacy Policy"}
-        </a>
-      </p>
+          <a
+            className={
+              "typography--bold-tiny password-create__terms-and-conditions__link"
+            }
+            href={"https://perawallet.app/privacy-policy/"}
+            target={"_blank"}
+            rel={"noopener noreferrer"}>
+            {"Privacy Policy"}
+          </a>
+        </p>
+      )}
     </div>
   );
 
-  function onPasswordSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
+  async function onPasswordSubmit(event: React.SyntheticEvent<HTMLFormElement>) {
     setPasswordConfirmStarted(true);
     event.preventDefault();
 
     try {
       const hashedMasterkey = hashPassword(password);
+
+      if (type === "change") {
+        const {hashedMasterkey: oldPasswordHash} = getCommonAppState();
+
+        if (hashedMasterkey === oldPasswordHash) {
+          simpleToaster.display({
+            type: "error",
+            message: "New passcode couldn't be same with the old one."
+          });
+
+          return;
+        }
+
+        await handleChangePasscode(password);
+      }
 
       webStorage.local.setItem(STORED_KEYS.HASHED_MASTERKEY, hashedMasterkey);
 
@@ -198,16 +236,77 @@ function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
 
       if (type === "default") {
         navigate(from?.pathname || ROUTES.ACCOUNT.ROUTE);
+      } else if (type === "change") {
+        handleChangePasswordCloseClick();
+
+        refetchAccounts();
+
+        simpleToaster.display({
+          type: "success",
+          message: "Changed passcode successfully."
+        });
       }
     } catch (error) {
       console.error(error);
+
       simpleToaster.display({
         type: "error",
-        message: "There is an error creating your account, please try again later."
+        message: `There is an error ${
+          type === "change" ? "changing your password" : "creating your account"
+        }, please try again later.`
       });
     } finally {
       setPasswordConfirmStarted(false);
     }
+  }
+
+  async function handleChangePasscode(newPasscode: string) {
+    if (type !== "change" || !masterkey) return;
+
+    const oldPasscode = masterkey;
+
+    // Indexed DB
+    const accounts = await appDBManager.decryptTableEntries(
+      "accounts",
+      oldPasscode
+    )("address");
+    const sessions = await appDBManager.decryptTableEntries(
+      "sessions",
+      oldPasscode
+    )("url");
+
+    const dbEntryPromises = [];
+
+    for (const address in accounts) {
+      const accountPk = accounts[address].pk;
+      let account = accounts[address];
+
+      // it could be watch or ledger account
+      if (accountPk) {
+        const decryptedPk = await decryptSK(accountPk, oldPasscode!);
+
+        const newEncryptedPk = await encryptSK(decryptedPk, newPasscode);
+
+        account = {...account, pk: newEncryptedPk};
+      }
+
+      dbEntryPromises.push(appDBManager.set("accounts", newPasscode!)(address, account));
+    }
+
+    for (const url in sessions) {
+      dbEntryPromises.push(
+        appDBManager.set("sessions", newPasscode!)(url, sessions[url])
+      );
+    }
+
+    // WebStorage Encrypted Infos
+    const deviceInfo = (await encryptedWebStorageUtils(oldPasscode!).get(
+      STORED_KEYS.DEVICE_INFO
+    )) as DeviceInfo;
+
+    await encryptedWebStorageUtils(newPasscode).set(STORED_KEYS.DEVICE_INFO, deviceInfo);
+
+    await Promise.all(dbEntryPromises);
   }
 
   function handleFieldChange(event: React.SyntheticEvent<HTMLInputElement>) {
@@ -218,6 +317,15 @@ function PasswordCreatePage({type = "default"}: PasswordCreatePageProps) {
       }
     });
   }
+
+  function handleChangePasswordCloseClick() {
+    if (type !== "change") return;
+
+    dispatchModalStateAction({
+      type: "CLOSE_MODAL",
+      payload: {id: CHANGE_PASSCODE_MODAL_ID}
+    });
+  }
 }
 
-export default withGoBackLink(PasswordCreatePage, ROUTES.BASE);
+export default PasswordCreatePage;

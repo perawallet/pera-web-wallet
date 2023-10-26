@@ -5,11 +5,14 @@ import "./_pera-connect-banner.scss";
 import classNames from "classnames";
 
 import Image from "../image/Image";
+import {getFirstChars} from "../../core/util/string/stringUtils";
 
 interface PeraConnectBannerProps {
   currentSession: AppSession | null;
   customClassName?: string;
 }
+
+const DAPP_FAVICON_PLACEHOLDER_CHAR_COUNT = 2;
 
 function PeraConnectBanner({currentSession, customClassName}: PeraConnectBannerProps) {
   return (
@@ -17,6 +20,11 @@ function PeraConnectBanner({currentSession, customClassName}: PeraConnectBannerP
       {currentSession?.favicon ? (
         <Image
           customClassName={"pera-connect-banner__app-meta__favicon"}
+          customPlaceholder={
+            <div className={"pera-connect-banner__app-meta__favicon__placeholder"}>
+              {getFirstChars(currentSession!.title, DAPP_FAVICON_PLACEHOLDER_CHAR_COUNT)}
+            </div>
+          }
           src={currentSession?.favicon || ""}
           alt={currentSession?.title || "dApp Favicon"}
         />

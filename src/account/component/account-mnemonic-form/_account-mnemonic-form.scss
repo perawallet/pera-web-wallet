@@ -9,6 +9,11 @@
   height: 72px;
 
   margin: 0;
+
+  &.form-field--has-error {
+    border: 1px solid var(--input-border-error);
+    box-shadow: var(--shadow-error);
+  }
 }
 
 .account-mnemonic-form__grid-input .input {
@@ -16,7 +21,7 @@
 }
 
 .account-mnemonic-form__cta {
-  width: 424px;
+  width: 100%;
   grid-column: 1/-1;
 
   margin: auto auto 0;

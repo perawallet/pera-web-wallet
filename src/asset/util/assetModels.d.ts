@@ -34,6 +34,7 @@ interface Asset {
   name: string;
   logo: string | null;
   unit_name: string;
+  type: "algo" | "standard_asset" | "dapp_asset" | "collectible";
   fraction_decimals: number;
   total: string;
   usd_value: string | null;

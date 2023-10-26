@@ -22,7 +22,7 @@
     }
 
     .sidebar__nav-link {
-      @include text-color--gray-light();
+      @include text-color--gray-lighter();
 
       pointer-events: none;
 
@@ -42,6 +42,7 @@
 .sidebar-layout__content {
   width: 100%;
 
+  margin-top: 32px;
   padding-bottom: 40px;
   padding-left: var(--sidebar-width);
 }

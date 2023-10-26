@@ -21,7 +21,7 @@
 
 .send-txn-address__my-accounts {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 11px);
   left: -2px;
 
   z-index: var(--send-txn-select-account-z-index);
@@ -34,9 +34,9 @@
 
   padding: 0;
 
+  background-color: var(--layer-1);
   border: none;
-
-  box-shadow: var(--shadow-small);
+  box-shadow: var(--shadow-1);
 
   &:focus-within {
     border: none;
@@ -57,7 +57,7 @@
   .selectable-account-list__list {
     max-height: 234px;
 
-    background: var(--white);
+    padding: 16px;
 
     .list {
       display: grid;

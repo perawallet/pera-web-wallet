@@ -23,8 +23,13 @@
   margin-bottom: 48px;
 }
 
-.account-import-pera-success__spinner {
-  margin: auto;
+.account-import-pera-success__skeleton {
+  max-height: 240px;
+
+  box-sizing: content-box;
+
+  margin-bottom: 48px;
+  padding: 20px 0;
 }
 
 .account-import-pera-success__info-box {
@@ -43,12 +48,12 @@
 
   margin-top: 14px;
 
-  background: white;
+  background: var(--layer-1);
   border-radius: 100%;
   box-shadow: var(--shadow-large);
 
-  .check-mark-icon path {
-    fill: var(--purple-500);
+  .checkmark-icon path {
+    fill: var(--helper-peace-900);
   }
 }
 
@@ -64,7 +69,7 @@
 
   padding: 20px 28px;
 
-  background: var(--gray-100);
+  background: var(--layer-2);
   border-radius: 12px;
 }
 

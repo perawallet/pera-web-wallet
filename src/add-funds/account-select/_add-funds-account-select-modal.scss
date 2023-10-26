@@ -1,0 +1,34 @@
+.add-funds-account-select-modal-container {
+  .modal__body {
+    padding: 0;
+  }
+}
+
+.add-funds-account-select-modal {
+  width: 480px;
+
+  .searchable-list__search {
+    margin: 0 28px;
+  }
+}
+
+.add-funds-account-select-modal__go-back-button-container {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 32px;
+  padding: 28px 28px 0 0;
+}
+
+.add-funds-account-select-modal__go-back-button {
+  &.button--custom {
+    margin-left: 8px;
+    padding: 0 16px;
+  }
+}
+
+.add-funds-account-select-modal__go-back-button-icon {
+  path {
+    fill: var(--text-main);
+  }
+}

@@ -12,6 +12,10 @@ function getPageHeaderBackButtonText(goBackLink: string) {
       text = "Accounts";
       break;
 
+    case ROUTES.ACCOUNT.IMPORT.FULL_PATH:
+      text = "Import Account";
+      break;
+
     case ROUTES.BASE:
       text = "Home";
       break;

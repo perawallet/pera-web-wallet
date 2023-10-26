@@ -1,11 +1,20 @@
-:root {
-  --shadow-small: 0 0 1px rgba(12, 26, 75, 0.24), 0 3px 8px -1px rgba(50, 50, 71, 0.05);
-  --shadow-default: 0 0 1px rgba(12, 26, 75, 0.1), 0 4px 20px -2px rgba(50, 50, 71, 0.08);
-  --shadow-large: 0 0 1px rgba(12, 26, 75, 0.1), 0 10px 16px rgba(20, 37, 63, 0.06);
-  --shadow-xlarge: 0 0 1px rgba(12, 26, 75, 0.1), 0 20px 24px rgba(20, 37, 63, 0.06);
-  --shadow-xxlarge: 0 0 1px rgba(12, 26, 75, 0.1), 0 30px 40px rgba(20, 37, 63, 0.08);
+.light-theme {
+  --shadow-1: 0 2px 6px rgba(var(--black-rgb), 0.12);
+  --shadow-2: 0 0 0 1px rgba(var(--black-rgb), 0.05),
+    0 2px 4px rgba(var(--black-rgb), 0.04), 0 2px 4px -1px rgba(var(--black-rgb), 0.08);
+  --shadow-3: 0 1px 2px rgba(var(--black-rgb), 0.06),
+    0 12px 52px rgba(var(--black-rgb), 0.16);
+  --shadow-inline: inset 0 1px 1px rgba(var(--black-rgb), 0.04);
+  --shadow-pressed: 0 0 0 3px rgba(172, 142, 255, 0.14);
+}
 
-  --shadow-pressed: 0 0 0 3px var(--secondary-button-bg);
-  --shadow-error: 0 0 0 3px rgba(255, 81, 91, 0.14);
-  --shadow-disabled: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+.dark-theme {
+  --shadow-1: 0 0 0 1px rgba(var(--white-rgb), 0.1), 0 2px 4px rgba(var(--black-rgb), 0.1),
+    0 2px 4px -1px rgba(var(--black-rgb), 0.16);
+  --shadow-2: 0 0 0 1px rgba(var(--white-rgb), 0.16),
+    0 4px 8px rgba(var(--black-rgb), 0.08), 0 4px 28px rgba(var(--black-rgb), 0.28);
+  --shadow-3: 0 0 0 1px rgba(var(--white-rgb), 0.16),
+    0 4px 8px rgba(var(--black-rgb), 0.4), 0 4px 30px rgba(var(--black-rgb), 0.4);
+  --shadow-inline: inset 0 1px 1px rgba(var(--black-rgb), 0.04);
+  --shadow-pressed: 0 0 0 3px rgba(172, 142, 255, 0.14);
 }

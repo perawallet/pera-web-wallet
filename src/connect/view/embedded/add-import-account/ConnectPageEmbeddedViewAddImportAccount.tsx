@@ -3,6 +3,7 @@ import {ReactComponent as ChevronRightIcon} from "../../../../core/ui/icons/chev
 
 import "./_connect-page-embedded-view-add-import-account.scss";
 
+import {useSearchParams} from "react-router-dom";
 import classNames from "classnames";
 
 import Button from "../../../../component/button/Button";
@@ -23,6 +24,8 @@ function ConnectPageEmbeddedViewAddImportAccount({
     state: {hashedMasterkey, hasAccounts}
   } = useAppContext();
   const userHasPasscodeButNoAccount = hashedMasterkey && !hasAccounts;
+  const [searchParams] = useSearchParams();
+  const isCompactMode = searchParams.get("compactMode");
   const description = userHasPasscodeButNoAccount
     ? "You haven't added any Algorand accounts yet."
     : "To start using Pera Wallet on your desktop, create or import an account.";
@@ -36,7 +39,10 @@ function ConnectPageEmbeddedViewAddImportAccount({
   }
 
   return (
-    <div className={"connect-page-embedded-view-add-import-account"}>
+    <div
+      className={classNames("connect-page-embedded-view-add-import-account", {
+        "connect-page-embedded-view-add-import-account--compact": isCompactMode
+      })}>
       <div>
         <div className={"connect-page-embedded-view-add-import-account__icon-wrapper"}>
           <PeraWebIcon />

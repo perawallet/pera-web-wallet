@@ -1,0 +1,13 @@
+.skeleton {
+  background: var(--skeleton);
+
+  background-size: 200% 100%;
+
+  animation: 1.5s skeleton-shine linear infinite;
+}
+
+@keyframes skeleton-shine {
+  to {
+    background-position-x: -200%;
+  }
+}

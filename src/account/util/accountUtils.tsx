@@ -1,6 +1,3 @@
-import {ReactComponent as AccountLedgerIcon} from "../../core/ui/icons/account-ledger.svg";
-import {ReactComponent as AccountDefaultIcon} from "../../core/ui/icons/account-default.svg";
-
 import algosdk from "algosdk";
 
 import {
@@ -8,7 +5,7 @@ import {
   ACCOUNT_NAME_TRUNCATE_LENGTH,
   MAX_AVAILABLE_ACCOUNTS
 } from "./accountConstants";
-import {PortfolioOverview} from "../../overview/util/hook/usePortfolioOverview";
+import {ARCStandardMobileSyncAccount, MobileSyncAccount} from "../accountModels";
 
 /**
  * Shortens the given account address
@@ -89,17 +86,6 @@ function getLastAccountAddress(accounts: AppDBScheme["accounts"]) {
   })[0].address;
 }
 
-function getLastAccountType(accounts: AppDBScheme["accounts"]) {
-  const accountAddressArray = Object.values(accounts);
-
-  return accountAddressArray.sort((left, right) => {
-    const leftDate = left.date?.getTime() || 0;
-    const rightDate = right.date?.getTime() || 0;
-
-    return rightDate - leftDate;
-  })[0].type;
-}
-
 /**
  * Gets privateKey and derive mnemonic
  * Uses this mnemonic to get AccountInfo via algosdk.mnemonicToSecretKey method
@@ -114,39 +100,28 @@ function deriveAccountFromPrivateKey(privateKey: Uint8Array) {
   return algosdk.mnemonicToSecretKey(mnemonic);
 }
 
-function getAccountIcon({
-  type = "standard",
-  width,
-  height
-}: {
-  type?: AccountType;
-  width: number;
-  height: number;
-}) {
-  let icon: React.ReactNode;
-
-  switch (type) {
-    case "ledger":
-      icon = <AccountLedgerIcon width={width} height={height} />;
-      break;
-    default:
-      icon = <AccountDefaultIcon width={width} height={height} />;
-      break;
-  }
-
-  return icon;
-}
-
 function getHighestBalanceAccount(
   accounts: PortfolioOverview["accounts"]
 ): AccountOverview | undefined {
-  return accounts.sort(
+  return Object.values(accounts).sort(
     (account1, account2) =>
       Number(account2.total_algo_value) - Number(account1.total_algo_value)
   )[0];
 }
 
-/* eslint-enable no-magic-numbers */
+function isARCStandardMobileSyncAccount(
+  account: MobileSyncAccount
+): account is ARCStandardMobileSyncAccount {
+  return (account as ARCStandardMobileSyncAccount).account_type !== undefined;
+}
+
+function getAccountType(account: Partial<AccountOverview>): AccountType {
+  if (account?.bip32 !== undefined) return "ledger";
+
+  if (account?.pk !== undefined) return "standard";
+
+  return "watch";
+}
 
 export {
   trimAccountAddress,
@@ -154,7 +129,7 @@ export {
   validateAccountCreateForm,
   deriveAccountFromPrivateKey,
   getLastAccountAddress,
-  getLastAccountType,
-  getAccountIcon,
-  getHighestBalanceAccount
+  getAccountType,
+  getHighestBalanceAccount,
+  isARCStandardMobileSyncAccount
 };

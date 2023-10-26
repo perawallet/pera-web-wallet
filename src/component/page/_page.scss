@@ -7,15 +7,13 @@
     }
   }
 
-  &--with-banner {
+  &--with-pera-connect-banner {
     .page__header-wrapper {
       background-color: var(--gray-800);
     }
 
     .page-header {
       background-color: var(--background);
-
-      border-radius: 24px 24px 0 0;
     }
   }
 }
@@ -28,5 +26,9 @@
 }
 
 .page__header-wrapper {
-  background-color: var(--background);
+  position: sticky;
+  top: 0;
+  z-index: var(--page-header-z-index);
+
+  background-color: #dcd6ff;
 }

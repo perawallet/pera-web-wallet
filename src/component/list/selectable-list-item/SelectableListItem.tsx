@@ -44,8 +44,8 @@ function SelectableListItem(props: SelectableListItemProps) {
             id,
             content: "",
             inputProps: {
-              name: `selectable-list-item__checkbox--${id}`,
-              htmlFor: `selectable-list-item__checkbox--${id}`,
+              name: `selectable-list-item__checkbox`,
+              htmlFor: id,
               value: isSelected ? id : ""
             }
           }}

@@ -2,10 +2,9 @@ import "./_account-rename-modal.scss";
 
 import Button from "../../../component/button/Button";
 import AccountNameForm from "../account-name-form/AccountNameForm";
-import {useAppContext} from "../../../core/app/AppContext";
 import {useModalDispatchContext} from "../../../component/modal/context/ModalContext";
 import {useSimpleToaster} from "../../../component/simple-toast/util/simpleToastHooks";
-import {appDBManager} from "../../../core/app/db";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 
 interface AccountRenameModalProps {
   account: AppDBAccount;
@@ -14,10 +13,7 @@ interface AccountRenameModalProps {
 export const ACCOUNT_RENAME_MODAL_ID = "account-rename-modal";
 
 function AccountRenameModal({account}: AccountRenameModalProps) {
-  const {
-    state: {masterkey},
-    dispatch: dispatchAppState
-  } = useAppContext();
+  const {renameAccount} = usePortfolioContext()!;
   const dispatchModalStateAction = useModalDispatchContext();
   const simpleToaster = useSimpleToaster();
 
@@ -34,7 +30,7 @@ function AccountRenameModal({account}: AccountRenameModalProps) {
       />
 
       <Button
-        buttonType={"ghost"}
+        buttonType={"light"}
         size={"large"}
         customClassName={"account-rename-modal__cancel-cta"}
         onClick={handleCancelClick}>
@@ -44,19 +40,7 @@ function AccountRenameModal({account}: AccountRenameModalProps) {
   );
 
   async function handleRenameAccountSubmit(accountName: string) {
-    const {address, pk, date} = account;
-
-    const renamedAccount = {
-      type: "standard" as AccountType,
-      name: accountName,
-      address,
-      pk,
-      date
-    };
-
-    await appDBManager.set("accounts", masterkey!)(address, renamedAccount);
-
-    dispatchAppState({type: "SET_ACCOUNT", account: renamedAccount});
+    await renameAccount(account.address, accountName);
 
     closeModal();
 

@@ -2,7 +2,7 @@
 import "./_send-txn-confirm.scss";
 
 import {List, ListItem} from "@hipo/react-ui-toolkit";
-import algosdk, {Transaction} from "algosdk";
+import algosdk from "algosdk";
 import {useState} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
 
@@ -10,12 +10,8 @@ import {trimAccountAddress, trimAccountName} from "../../../account/util/account
 import Button from "../../../component/button/Button";
 import GoBackButton from "../../../component/go-back-button/GoBackButton";
 import {useSimpleToaster} from "../../../component/simple-toast/util/simpleToastHooks";
-import {useAppContext} from "../../../core/app/AppContext";
 import ROUTES from "../../../core/route/routes";
 import {ALGO_UNIT} from "../../../core/ui/typography/typographyConstants";
-import algod from "../../../core/util/algod/algod";
-import {decryptSK} from "../../../core/util/nacl/naclUtils";
-import {encodeString} from "../../../core/util/string/stringUtils";
 import {useSendTxnFlowContext} from "../../context/SendTxnFlowContext";
 import {defaultPriceFormatter} from "../../../core/util/number/numberUtils";
 import {
@@ -24,15 +20,14 @@ import {
   isALGO
 } from "../../../core/util/asset/assetUtils";
 import FormatUSDBalance from "../../../component/format-balance/usd/FormatUSDBalance";
-import {ALGORAND_DEFAULT_TXN_WAIT_ROUNDS} from "../../util/sendTxnConstants";
+import useTxnSigner from "../../../core/util/hook/useTxnSigner";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 
 const CONFIRM_ACCOUNT_ADDRESS_DIVIDE_LENGTH = 30;
 
 function SendTxnConfirm() {
   const navigate = useNavigate();
-  const {
-    state: {accounts, masterkey}
-  } = useAppContext();
+  const {accounts} = usePortfolioContext()!;
   const {
     formitoState: {
       senderAddress,
@@ -47,6 +42,7 @@ function SendTxnConfirm() {
   const {display} = useSimpleToaster();
   const [isTxnPending, setIsTxnPending] = useState(false);
   const {algoFormatter} = defaultPriceFormatter();
+  const signer = useTxnSigner();
 
   if (!recipientAddress) {
     return <Navigate to={ROUTES.SEND_TXN.ROUTE} />;
@@ -80,7 +76,7 @@ function SendTxnConfirm() {
         customClassName={"send-txn-confirm__list"}>
         {({title, description}) => (
           <ListItem customClassName={"send-txn-confirm__list-item"}>
-            <p className={"text-color--gray-light"}>{title}</p>
+            <p className={"text-color--gray-lighter"}>{title}</p>
 
             <div
               className={"send-txn-confirm__list-item-content typography--medium-body"}>
@@ -101,57 +97,34 @@ function SendTxnConfirm() {
   );
 
   async function handleSignTransaction() {
+    if (!signer || !selectedAsset) return;
+
     try {
       setIsTxnPending(true);
 
-      let txnToSign: Transaction;
-      const isAssetTxn = selectedAsset && selectedAsset.name !== "ALGO";
+      await (selectedAsset.name === "ALGO"
+        ? signer.paymentTxn({
+            from: senderAddress!,
+            to: recipientAddress!,
+            amount: algosdk.algosToMicroalgos(Number(txnAmount!)),
+            note: txnNote
+          })
+        : signer.assetTransferTxn({
+            from: senderAddress!,
+            to: recipientAddress!,
+            assetIndex: selectedAsset.asset_id,
+            amount: fractionDecimalToInteger(
+              Number(txnAmount!),
+              selectedAsset?.fraction_decimals
+            ),
+            note: txnNote
+          })
+      ).sign(senderAddress!, {sendNetwork: true});
 
-      // prepare txn parameters
-      const suggestedParams = await algod.client.getTransactionParams().do();
-      let txnPayload: Parameters<
-        | typeof algosdk.makePaymentTxnWithSuggestedParamsFromObject
-        | typeof algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject
-      >[0] = {
-        from: senderAddress!,
-        to: recipientAddress!,
-        amount: algosdk.algosToMicroalgos(Number(txnAmount!)),
-        suggestedParams,
-        note: encodeString(txnNote || "")
-      };
-
-      if (isAssetTxn) {
-        const assetAmount = fractionDecimalToInteger(
-          Number(txnAmount!),
-          selectedAsset?.fraction_decimals
-        );
-
-        txnPayload = {
-          ...txnPayload,
-          amount: Math.round(assetAmount),
-          assetIndex: selectedAsset.asset_id
-        };
-        txnToSign = algosdk.makeAssetTransferTxnWithSuggestedParamsFromObject(txnPayload);
-      }
-      // payment txn
-      else {
-        txnToSign = algosdk.makePaymentTxnWithSuggestedParamsFromObject(txnPayload);
-      }
-
-      // decrypt secret_key and sign
-      const decryptedKey = accounts[senderAddress!].pk;
-      const sk = await decryptSK(decryptedKey, masterkey!);
-      const signedTxn = txnToSign.signTxn(sk!);
-
-      // send node and wait for confirmation for routing to overview
-      await algod.client.sendRawTransaction(signedTxn).do();
-      await algosdk.waitForConfirmation(
-        algod.client,
-        txnToSign.txID().toString(),
-        ALGORAND_DEFAULT_TXN_WAIT_ROUNDS
-      );
-
-      navigate(ROUTES.SEND_TXN.SUCCESS.FULL_PATH, {state: {txnId: txnToSign.txID()}});
+      navigate(ROUTES.SEND_TXN.SUCCESS.FULL_PATH, {
+        // eslint-disable-next-line no-underscore-dangle
+        state: {txnId: signer._transaction!.txID()}
+      });
     } catch (error: any) {
       let message = "Please try again later.";
 
@@ -176,7 +149,7 @@ function SendTxnConfirm() {
           <>
             {<p>{`${trimAccountName(accounts[senderAddress!].name!)} Account `}</p>}
 
-            <p className={"typography--secondary-body text-color--gray-light"}>
+            <p className={"typography--secondary-body text-color--gray-lighter"}>
               {trimAccountAddress(senderAddress || "")}
             </p>
           </>

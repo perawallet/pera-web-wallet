@@ -4,33 +4,31 @@ import {ReactComponent as CheckmarkIcon} from "../../../../../core/ui/icons/chec
 
 import {useEffect} from "react";
 import {Navigate, useNavigate} from "react-router-dom";
-import {List, ListItem, Spinner} from "@hipo/react-ui-toolkit";
+import {List, ListItem} from "@hipo/react-ui-toolkit";
 
 import Button from "../../../../../component/button/Button";
 import ROUTES from "../../../../../core/route/routes";
 import AccountListItemContent from "../../../../component/account-list/account-list-item-content/AccountListItemContent";
-import {useAppContext} from "../../../../../core/app/AppContext";
 import useLocationWithState from "../../../../../core/util/hook/useLocationWithState";
-import useAsyncProcess from "../../../../../core/network/async-process/useAsyncProcess";
-import {peraApi} from "../../../../../core/util/pera/api/peraApi";
-import {PortfolioOverview} from "../../../../../overview/util/hook/usePortfolioOverview";
-import {trimAccountAddress, trimAccountName} from "../../../../util/accountUtils";
 import {AccountComponentFlows} from "../../../../util/accountTypes";
 import {useConnectFlowContext} from "../../../../../connect/context/ConnectFlowContext";
+import {getPortfolioOverviewData} from "../../../../../overview/util/portfolioOverviewUtils";
+import {useAppContext} from "../../../../../core/app/AppContext";
+import useAsyncProcess from "../../../../../core/network/async-process/useAsyncProcess";
+import useDBAccounts from "../../../../../core/util/hook/useDBAccounts";
+import Skeleton from "../../../../../component/skeleton/Skeleton";
 
 interface AccountImportPeraSuccessProps {
   flow?: AccountComponentFlows;
 }
 
 type LocationState = {
-  importedAccounts: PortfolioOverview["accounts"];
+  importedAccounts: AppDBAccount[];
 };
 
 function AccountImportPeraSuccess({flow = "default"}: AccountImportPeraSuccessProps) {
   const navigate = useNavigate();
-  const {
-    state: {accounts}
-  } = useAppContext();
+  const dbAccounts = useDBAccounts();
   const {formitoState, dispatchFormitoAction} = useConnectFlowContext();
   const {importedAccounts: importedAccountFromLocationState} =
     useLocationWithState<LocationState>();
@@ -40,11 +38,16 @@ function AccountImportPeraSuccess({flow = "default"}: AccountImportPeraSuccessPr
       ? formitoState.importedAccountsFromMobile
       : importedAccountFromLocationState;
   const {
-    state: {data: importedAccountsOverview, isRequestPending, isRequestFetched},
+    state: {data: importedAccountsOverview},
     runAsyncProcess
   } = useAsyncProcess<PortfolioOverview>();
+  const {
+    state: {algoPrice}
+  } = useAppContext();
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     if (!importedAccounts) {
       if (isInConnectFlow) {
         dispatchFormitoAction({
@@ -58,14 +61,27 @@ function AccountImportPeraSuccess({flow = "default"}: AccountImportPeraSuccessPr
       return;
     }
 
+    if (!algoPrice || !dbAccounts) return;
+
     runAsyncProcess(
-      peraApi.getMultipleAccountOverview({
-        account_addresses: importedAccounts.map(
-          (importedAccount) => importedAccount.address
-        )
+      getPortfolioOverviewData({
+        algoPrice,
+        addresses: importedAccounts.map((importedAccount) => importedAccount.address),
+        abortSignal: abortController.signal,
+        accounts: dbAccounts
       })
     );
-  }, [importedAccounts, runAsyncProcess, dispatchFormitoAction, isInConnectFlow]);
+
+    // eslint-disable-next-line consistent-return
+    return () => abortController.abort();
+  }, [
+    importedAccounts,
+    runAsyncProcess,
+    dispatchFormitoAction,
+    isInConnectFlow,
+    algoPrice,
+    dbAccounts
+  ]);
 
   if (!importedAccounts && !isInConnectFlow) {
     return <Navigate to={ROUTES.ACCOUNT.IMPORT.PERA_SYNC.ROUTE} />;
@@ -89,25 +105,24 @@ function AccountImportPeraSuccess({flow = "default"}: AccountImportPeraSuccessPr
         </p>
       </div>
 
-      {isRequestPending && (
-        <div className={"account-import-pera-success__spinner"}>
-          <Spinner />
-        </div>
+      {!importedAccountsOverview && (
+        <Skeleton
+          // eslint-disable-next-line no-magic-numbers
+          height={(importedAccounts?.length || 1) * 44}
+          borderRadius={12}
+          customClassName={"account-import-pera-success__skeleton"}
+        />
       )}
 
-      {isRequestFetched && (
+      {importedAccountsOverview && (
         <div className={"account-import-pera-success__content"}>
           <List
-            items={getAccountOverviewList()}
+            items={Object.values(importedAccountsOverview.accounts)}
             customClassName={"account-import-pera-success__account-list"}>
-            {({address, total_algo_value}) => (
+            {(account) => (
               <ListItem
                 customClassName={"account-import-pera-success__account-list-item"}>
-                <AccountListItemContent
-                  name={getAccountName(address)}
-                  address={address}
-                  balance={total_algo_value}
-                />
+                <AccountListItemContent account={account} />
               </ListItem>
             )}
           </List>
@@ -136,35 +151,6 @@ function AccountImportPeraSuccess({flow = "default"}: AccountImportPeraSuccessPr
         connectFlowView: "select-account"
       }
     });
-  }
-
-  function getAccountOverviewList() {
-    const overview: Record<string, AccountOverview> = {};
-
-    importedAccountsOverview?.accounts.forEach((account) => {
-      overview[account.address] = account;
-    });
-
-    importedAccounts?.forEach((importedAccount) => {
-      // newly created account on mobile
-      // zero balanced not existed on network
-      if (importedAccount.address in overview === false) {
-        overview[importedAccount.address] = {
-          ...importedAccount,
-          standard_asset_count: 1,
-          total_algo_value: "0"
-        };
-      }
-    });
-
-    return Object.values(overview);
-  }
-
-  function getAccountName(address: string): string {
-    const accountName = accounts[address]?.name;
-
-    // in case of accountName is an empty string
-    return accountName ? trimAccountName(accountName) : trimAccountAddress(address);
   }
 }
 

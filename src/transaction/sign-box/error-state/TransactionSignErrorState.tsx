@@ -2,6 +2,7 @@ import {ReactComponent as CloseIcon} from "../../../core/ui/icons/close.svg";
 
 import "./_transaction-sign-error-state.scss";
 
+import {useSearchParams} from "react-router-dom";
 import classNames from "classnames";
 
 import Button from "../../../component/button/Button";
@@ -22,8 +23,14 @@ function TransactionSignErrorState({
   handleSignCancel,
   shouldRenderSettingsLink = false
 }: TransactionSignErrorStateProps) {
+  const [searchParams] = useSearchParams();
+  const isCompactMode = searchParams.get("compactMode");
+
   return (
-    <div className={"transaction-sign-error-state"}>
+    <div
+      className={classNames("transaction-sign-error-state", {
+        "transaction-sign-error-state--compact": isCompactMode
+      })}>
       <TransactionSignAppMeta />
 
       <div className={"transaction-sign-error-state__content"}>

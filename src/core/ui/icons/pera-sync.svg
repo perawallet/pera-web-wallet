@@ -1,10 +1,7 @@
-<svg width="196" height="80" viewBox="0 0 196 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M35.2 8H14.8C11.0445 8 8 11.134 8 15V57C8 60.866 11.0445 64 14.8 64H35.2C38.9555 64 42 60.866 42 57V15C42 11.134 38.9555 8 35.2 8Z" stroke="#6B46FE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M183.5 18H144.5C140.91 18 138 21.0445 138 24.8V45.2C138 48.9555 140.91 52 144.5 52H183.5C187.09 52 190 48.9555 190 45.2V24.8C190 21.0445 187.09 18 183.5 18Z" stroke="#6B46FE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M154 64H174" stroke="#6B46FE" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
-<circle cx="26" cy="36" r="4" fill="#6B46FE" fill-opacity="0.15"/>
-<circle cx="58" cy="36" r="4" fill="#6B46FE" fill-opacity="0.2"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M95.3058 32.6677L87.9373 25.2992L92.1799 21.0566L104.67 33.5466L106.791 35.668L104.67 37.7893L92.1799 50.2793L87.9373 46.0367L95.3062 38.6677L74 38.6677L74 32.6677L95.3058 32.6677Z" fill="#6B46FE" fill-opacity="0.3"/>
-<circle cx="122" cy="36" r="4" fill="#6B46FE" fill-opacity="0.6"/>
-<circle cx="164" cy="36" r="4" fill="#6B46FE"/>
+<svg width="146" height="32" viewBox="0 0 146 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M69.7226 8.39052C70.2433 7.86983 71.0875 7.86983 71.6082 8.39052L78.2748 15.0572C78.5249 15.3072 78.6654 15.6464 78.6654 16C78.6654 16.3536 78.5249 16.6928 78.2748 16.9428L71.6082 23.6095C71.0875 24.1302 70.2433 24.1302 69.7226 23.6095C69.2019 23.0888 69.2019 22.2446 69.7226 21.7239L74.1131 17.3333H58.6654C57.929 17.3333 57.332 16.7364 57.332 16C57.332 15.2636 57.929 14.6667 58.6654 14.6667L74.1131 14.6667L69.7226 10.2761C69.2019 9.75544 69.2019 8.91122 69.7226 8.39052Z" fill="var(--helper-purple-900)"/>
+<circle opacity="0.2" cx="4" cy="16" r="3" fill="var(--helper-purple-900)" stroke="var(--helper-purple-900)" stroke-width="2"/>
+<circle opacity="0.4" cx="36" cy="16" r="3" fill="var(--helper-purple-900)" stroke="var(--helper-purple-900)" stroke-width="2"/>
+<circle opacity="0.4" cx="100" cy="16" r="3" fill="var(--helper-purple-900)" stroke="var(--helper-purple-900)" stroke-width="2"/>
+<circle opacity="0.2" cx="142" cy="16" r="3" fill="var(--helper-purple-900)" stroke="var(--helper-purple-900)" stroke-width="2"/>
 </svg>

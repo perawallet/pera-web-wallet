@@ -7,6 +7,8 @@
 
   &:active,
   &:focus {
+    --button-bg: unset;
+
     box-shadow: none;
   }
 }
@@ -16,7 +18,9 @@
 
   margin-bottom: 18px;
 
-  padding: 0 16px;
+  .checkbox-input-label__icon {
+    margin: 0;
+  }
 }
 
 .selectable-account-list__list {
@@ -27,18 +31,13 @@
 
   overflow-y: auto;
 
-  padding: 16px 32px 0 16px;
+  padding: 16px 0;
 
-  background: var(--background);
   border-radius: 12px;
 }
 
 .selectable-account-list__list-item {
   position: relative;
-
-  &:last-child {
-    margin-bottom: 16px;
-  }
 
   &:not(:last-child):after {
     position: absolute;
@@ -47,8 +46,26 @@
 
     width: 100%;
 
-    border-bottom: solid 1px var(--gray-200);
+    border-bottom: solid 1px var(--border-default);
 
     content: "";
+  }
+}
+
+.selectable-account-list__cta {
+  width: 100%;
+
+  margin-top: 30px;
+}
+
+.selectable-account-list__load-more {
+  margin: 8px auto auto;
+
+  color: var(--helper-purple-900);
+
+  .chevron-down-icon {
+    margin-left: 8px;
+
+    fill: var(--helper-purple-900);
   }
 }

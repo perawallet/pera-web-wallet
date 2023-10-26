@@ -8,7 +8,7 @@
 }
 
 .account-import-passphrase__description {
-  margin: 16px 0 116px;
+  margin: 16px 0 48px;
 }
 
 .account-import-passphrase__icon-wrapper {
@@ -22,11 +22,11 @@
   margin: 52px auto 32px;
 
   border-radius: 100%;
-  box-shadow: var(--shadow-xlarge);
+  box-shadow: var(--shadow-2);
 
   .key-icon {
     path {
-      fill: var(--helper-purple-default);
+      fill: var(--helper-purple-900);
     }
   }
 }

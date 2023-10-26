@@ -1,9 +1,10 @@
 .transaction-sign-detail-message {
   display: grid;
+  align-items: center;
   grid-template-columns: 24px auto;
   gap: 12px;
 
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   padding: 16px;
 
   border-radius: 16px;
@@ -11,23 +12,24 @@
   word-break: break-word;
 
   &--warning {
-    color: var(--helper-red-default);
-    background-color: var(--red-50);
+    color: var(--helper-red-900);
+    background-color: var(--helper-red-100);
 
     .warning-icon {
       path {
-        fill: var(--helper-red-default);
+        fill: var(--helper-red-900);
       }
     }
   }
 
   &--info {
-    background-color: var(--card-default);
-    box-shadow: var(--shadow-small);
+    color: var(--helper-purple-900);
+    background-color: var(--helper-purple-100);
+    box-shadow: var(--shadow-1);
 
     .info-icon {
       path {
-        fill: var(--gray-500);
+        fill: var(--helper-purple-900);
       }
     }
   }

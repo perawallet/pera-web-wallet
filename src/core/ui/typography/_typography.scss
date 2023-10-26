@@ -40,6 +40,10 @@
   @include typography--secondary-body();
 }
 
+.typography--secondary-medium-body {
+  @include typography--secondary-medium-body();
+}
+
 .typography--secondary-bold-body {
   @include typography--secondary-bold-body();
 }
@@ -81,8 +85,8 @@
     @include text-color--gray();
   }
 
-  &--gray-light {
-    @include text-color--gray-light();
+  &--gray-lighter {
+    @include text-color--gray-lighter();
   }
 
   &--gray-lightest {

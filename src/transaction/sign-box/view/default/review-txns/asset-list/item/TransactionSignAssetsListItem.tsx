@@ -105,26 +105,29 @@ function TransactionSignAssetsListItem({
           </div>
         )}
 
-        <div className={"transaction-sign-assets-list-item__asset-detail"}>
-          <p className={"typography--medium-body"}>{getAssetTitle()}</p>
+        <div
+          className={"transaction-sign-assets-list-item__asset-detail has-space-between"}>
+          <div>
+            <p className={"typography--medium-body"}>{getAssetTitle()}</p>
 
-          {getAssetDescription()}
+            {getAssetDescription()}
+          </div>
+
+          {(transactionHasRekey(transaction, userAddress) ||
+            transactionHasCloseRemainder(transaction) ||
+            transactionHasClearState(transaction)) && (
+            <Button buttonType={"custom"} onClick={handleChangeView}>
+              <div className={"transaction-sign-assets-list-item__warning"}>
+                <WarningIcon width={20} height={20} />
+
+                <span className={"typography--secondary-bold-body text-color--danger"}>
+                  {"Warning"}
+                </span>
+              </div>
+            </Button>
+          )}
         </div>
       </div>
-
-      {(transactionHasRekey(transaction) ||
-        transactionHasCloseRemainder(transaction) ||
-        transactionHasClearState(transaction)) && (
-        <Button buttonType={"custom"} onClick={handleChangeView}>
-          <div className={"transaction-sign-assets-list-item__warning"}>
-            <WarningIcon width={20} height={20} />
-
-            <span className={"typography--secondary-bold-body text-color--danger"}>
-              {"Warning"}
-            </span>
-          </div>
-        </Button>
-      )}
     </ListItem>
   );
 
@@ -197,7 +200,7 @@ function TransactionSignAssetsListItem({
       return (
         <div
           className={
-            "typography--secondary-body text-color--gray-light align-center--vertically transaction-sign-assets-list-item__collectible-description"
+            "typography--secondary-body text-color--gray-lighter align-center--vertically transaction-sign-assets-list-item__collectible-description"
           }>
           {`${transactionAsset?.name} `}
 
@@ -210,14 +213,14 @@ function TransactionSignAssetsListItem({
 
     if (assetAmountUSDValue) {
       return (
-        <p className={"typography--secondary-body text-color--gray-light"}>
+        <p className={"typography--secondary-body text-color--gray-lighter"}>
           {`≈ $${assetAmountUSDValue}`}
         </p>
       );
     }
 
     return (
-      <p className={"typography--secondary-body text-color--gray-light"}>
+      <p className={"typography--secondary-body text-color--gray-lighter"}>
         {transactionAsset?.asset_id}
       </p>
     );

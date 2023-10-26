@@ -4,58 +4,49 @@ import {ReactComponent as WarningIcon} from "../../../../core/ui/icons/warning.s
 import "./_asset-optin-account-link.scss";
 
 import {Link} from "react-router-dom";
+import {algosToMicroalgos, microalgosToAlgos} from "algosdk";
 
-import {getAccountIcon, trimAccountName} from "../../../../account/util/accountUtils";
+import {trimAccountName} from "../../../../account/util/accountUtils";
 import ROUTES from "../../../../core/route/routes";
 import {defaultPriceFormatter} from "../../../../core/util/number/numberUtils";
 import {ALGO_UNIT} from "../../../../core/ui/typography/typographyConstants";
 import {usePortfolioContext} from "../../../../overview/context/PortfolioOverviewContext";
-import {useAppContext} from "../../../../core/app/AppContext";
 import SimpleLoader from "../../../../component/loader/simple/SimpleLoader";
-
-interface AssetOptinAccountLinkProps {
-  account: AppDBAccount;
-}
+import useAccountIcon from "../../../../core/util/hook/useAccountIcon";
 
 const TRIM_ACCOUNT_NAME_LENGTH = 18;
 
-function AssetOptinAccountLink({account}: AssetOptinAccountLinkProps) {
-  const {
-    state: {accounts}
-  } = useAppContext();
+// eslint-disable-next-line no-magic-numbers
+const MIN_OPT_IN_TXN_COST = algosToMicroalgos(0.2);
+
+function AssetOptinAccountLink({address}: {address: string}) {
+  const {accounts} = usePortfolioContext()!;
+  const account = accounts[address];
   const {algoFormatter} = defaultPriceFormatter();
-  const portfolioOverview = usePortfolioContext();
-  const accountPortfolio = portfolioOverview?.accounts.find(
-    (portfolioAccount) => portfolioAccount.address === account.address
-  );
-  const accountPortfolioBalance = accountPortfolio
-    ? parseFloat(accountPortfolio.total_algo_value)
-    : 0;
+  const {renderAccountIcon} = useAccountIcon();
 
   return (
     <Link to={ROUTES.ASSET_OPTIN.ACCOUNTS.ROUTE} className={"asset-optin-account-link"}>
-      <div className={"asset-optin-account-link__name"}>
-        {getAccountIcon({
-          type: accounts[account.address].type,
-          width: 32,
-          height: 32
-        })}
+      <div className={"asset-optin-account-link__content"}>
+        <div className={"asset-optin-account-link__name"}>
+          {renderAccountIcon({account})}
 
-        <div>
-          <p className={"typography--secondary-body text-color--gray-light"}>
-            {"Selected account"}
-          </p>
+          <div>
+            <p className={"typography--secondary-body text-color--gray-lighter"}>
+              {"Selected account"}
+            </p>
 
-          <p className={"typography--body text-color--main"}>
-            {trimAccountName(account.name, TRIM_ACCOUNT_NAME_LENGTH)}
-          </p>
+            <p className={"typography--body text-color--main"}>
+              {trimAccountName(account.name, TRIM_ACCOUNT_NAME_LENGTH)}
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div className={"asset-optin-account-link__balance"}>
-        {renderAccountBalance()}
+        <div className={"asset-optin-account-link__balance"}>
+          {renderAccountBalance()}
 
-        <ChevronRightIcon />
+          <ChevronRightIcon />
+        </div>
       </div>
     </Link>
   );
@@ -63,9 +54,15 @@ function AssetOptinAccountLink({account}: AssetOptinAccountLinkProps) {
   function renderAccountBalance() {
     let node;
 
-    if (!accountPortfolio) return <SimpleLoader />;
+    if (!account) return <SimpleLoader />;
 
-    if (accountPortfolioBalance > 0) {
+    const accountPortfolioBalance = account ? parseFloat(account.total_algo_value) : 0;
+
+    if (
+      account.minimum_balance &&
+      accountPortfolioBalance >= account.minimum_balance &&
+      accountPortfolioBalance > MIN_OPT_IN_TXN_COST
+    ) {
       node = (
         <p
           className={
@@ -85,7 +82,7 @@ function AssetOptinAccountLink({account}: AssetOptinAccountLinkProps) {
             {"Balance too low"}
           </p>
           <p className={"typography--bold-body text-color--main text--right"}>
-            {`${ALGO_UNIT}0.00`}
+            {`${ALGO_UNIT}${microalgosToAlgos(accountPortfolioBalance)}`}
           </p>
         </div>
       );

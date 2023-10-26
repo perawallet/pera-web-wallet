@@ -39,7 +39,7 @@ function SendTxnInfoModal({
             }
             target={"_blank"}
             rel={"noreferrer"}
-            className={"send-txn__info-modal-link typography--secondary-bold-body"}>
+            className={"send-txn__info-modal-link"}>
             {" visit here →"}
           </a>
         </div>

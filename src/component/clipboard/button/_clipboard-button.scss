@@ -11,13 +11,15 @@
 
   .copy-icon {
     path {
-      fill: var(--primary-button-text);
+      fill: var(--light-button-text);
     }
   }
 }
 
 .clipboard-button__content__text {
   width: max-content;
+
+  color: var(--light-button-text);
 }
 
 .clipboard-button__copied-message {

@@ -1,8 +1,5 @@
 import "./_account-create.scss";
 
-import algosdk from "algosdk";
-import {useMemo} from "react";
-
 import ROUTES from "../../../core/route/routes";
 import {useAppContext} from "../../../core/app/AppContext";
 import AccountNameForm from "../../component/account-name-form/AccountNameForm";
@@ -11,6 +8,7 @@ import useNavigateFlow from "../../../core/route/navigate/useNavigateFlow";
 import {AccountComponentFlows} from "../../util/accountTypes";
 import {useConnectFlowContext} from "../../../connect/context/ConnectFlowContext";
 import {appDBManager} from "../../../core/app/db";
+import {useAccountCreateContext} from "../../flow/create/AccountCreateFlow";
 
 interface AccountCreateProps {
   flow?: AccountComponentFlows;
@@ -19,10 +17,10 @@ interface AccountCreateProps {
 function AccountCreate({flow = "default"}: AccountCreateProps) {
   const navigate = useNavigateFlow();
   const {
-    state: {masterkey},
+    state: {masterkey, hasAccounts},
     dispatch: dispatchAppState
   } = useAppContext();
-  const account = useMemo(() => algosdk.generateAccount(), []);
+  const {account} = useAccountCreateContext();
   const {dispatchFormitoAction} = useConnectFlowContext();
 
   return (
@@ -53,22 +51,17 @@ function AccountCreate({flow = "default"}: AccountCreateProps) {
 
     await appDBManager.set("accounts", masterkey!)(account.addr, newAccount);
 
-    dispatchAppState({
-      type: "SET_ACCOUNT",
-      account: newAccount
-    });
+    if (!hasAccounts) {
+      dispatchAppState({type: "SET_HAS_ACCOUNTS", hasAccounts: true});
+    }
 
     if (flow === "connect") {
       dispatchFormitoAction({
         type: "SET_FORM_VALUE",
-        payload: {
-          createAccountViews: "animation"
-        }
+        payload: {createAccountViews: "backup"}
       });
     } else {
-      navigate(ROUTES.ACCOUNT.CREATE.PENDING.ROUTE, {
-        state: {creationType: "create"}
-      });
+      navigate(ROUTES.ACCOUNT.CREATE.PASSPHRASE.ROUTE);
     }
   }
 }

@@ -1,10 +1,8 @@
 #simple-toast-root {
   position: fixed;
-  top: 32px;
+  top: 100px;
   left: 50%;
   z-index: var(--simple-toast-z-index);
-
-  z-index: 4;
 
   transform: translateX(-50%);
 }
@@ -19,32 +17,41 @@
 
   padding: 10px 24px;
 
-  color: var(--text-gray);
-  background-color: var(--card-default);
-  border-radius: 12px;
-  box-shadow: var(--shadow-large);
+  color: var(--text-contrast);
 
-  animation: simpleToastFadeIn var(--default-animation) forwards,
-    simpleToastFadeOut var(--default-animation) 3.75s forwards;
+  border-radius: 12px;
+
+  white-space: pre-wrap;
+
+  animation: simple-toast-fade-in var(--default-animation) forwards,
+    simple-toast-fade-out var(--default-animation) 3.75s forwards;
+
+  &--success {
+    background-color: var(--helper-peace-800);
+  }
+
+  &--info {
+    background-color: var(--helper-blue-800);
+  }
 
   &--error {
-    color: var(--helper-red-default);
+    background-color: var(--helper-red-800);
   }
 
   .tick-circle-icon {
     path {
-      fill: var(--helper-green-default);
+      fill: var(--text-contrast);
     }
   }
 
   .danger-icon {
     path {
-      fill: var(--helper-red-default);
+      fill: var(--text-contrast);
     }
   }
 }
 
-@keyframes simpleToastFadeIn {
+@keyframes simple-toast-fade-in {
   from {
     opacity: 0;
   }
@@ -56,7 +63,7 @@
   }
 }
 
-@keyframes simpleToastFadeOut {
+@keyframes simple-toast-fade-out {
   from {
     opacity: 1;
   }

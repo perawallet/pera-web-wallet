@@ -16,9 +16,11 @@ function TransactionSignTransactionActions({
   handleSignCancel
 }: TransactionSignTransactionActionsProps) {
   const {
-    formitoState: {isSignStarted, txns, currentSession}
+    formitoState: {isSignStarted, txns, arbitraryData, currentSession}
   } = useTransactionSignFlowContext();
-  const signIsRequired = checkIfSignRequiredForTransactions(txns, currentSession!);
+  const signIsRequired =
+    (arbitraryData && arbitraryData?.data.length > 0) ||
+    checkIfSignRequiredForTransactions(txns, currentSession!);
 
   return (
     <div

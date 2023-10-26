@@ -3,8 +3,7 @@ import {ReactComponent as PlusIcon} from "../../../../../core/ui/icons/plus.svg"
 
 import "./_asset-optin-list-item.scss";
 
-import {useState} from "react";
-import algosdk, {Transaction} from "algosdk";
+import {useEffect, useState} from "react";
 
 import Button from "../../../../../component/button/Button";
 import {useModalDispatchContext} from "../../../../../component/modal/context/ModalContext";
@@ -12,41 +11,46 @@ import AssetListItem from "../../../../components/list/item/AssetListItem";
 import AssetOptinConfirmationModal, {
   ASSET_OPTIN_CONFIRMATION_MODAL_ID
 } from "../../../modal/confirmation/AssetOptinConfirmationModal";
-import algod from "../../../../../core/util/algod/algod";
-import {decryptSK} from "../../../../../core/util/nacl/naclUtils";
-import {useAppContext} from "../../../../../core/app/AppContext";
 import {useSimpleToaster} from "../../../../../component/simple-toast/util/simpleToastHooks";
 import {NO_OP} from "../../../../../core/util/array/arrayUtils";
 import {usePortfolioContext} from "../../../../../overview/context/PortfolioOverviewContext";
-import {ALGORAND_DEFAULT_TXN_WAIT_ROUNDS} from "../../../../../send-txn/util/sendTxnConstants";
+import useTxnSigner from "../../../../../core/util/hook/useTxnSigner";
+import {assetDBManager} from "../../../../../core/app/db";
 
 interface AssetOptinListItemProps {
   asset: Asset;
-  account: AppDBAccount;
+  address: string;
+  signer: ReturnType<typeof useTxnSigner>;
 }
 
-function AssetOptinListItem({asset, account}: AssetOptinListItemProps) {
+function AssetOptinListItem({asset, address, signer}: AssetOptinListItemProps) {
   const dispatchModalStateAction = useModalDispatchContext();
   const [optinState, setOptinState] = useState<"not-started" | "pending" | "done">(
     "not-started"
   );
-  const accountPortfolio = usePortfolioContext()?.accounts.find(
-    (portfolioAccount) => portfolioAccount.address === account.address
-  );
-  const {
-    state: {accounts, masterkey}
-  } = useAppContext();
+  const account = usePortfolioContext()!.accounts[address];
   const simpleToaster = useSimpleToaster();
-  const accountPortfolioBalance = accountPortfolio
-    ? parseFloat(accountPortfolio.total_algo_value)
-    : 0;
+  const accountPortfolioBalance = account ? parseFloat(account.total_algo_value) : 0;
+
+  useEffect(() => {
+    assetDBManager.getAllByAccountAddress(address).then((assets) => {
+      if (assets.some(({asset_id}) => asset_id === asset.asset_id)) {
+        setOptinState("done");
+
+        simpleToaster.display({
+          message: `${asset.unit_name} successfully added to your account`,
+          type: "success"
+        });
+      }
+    });
+  }, [address, asset.asset_id, asset.unit_name, simpleToaster]);
 
   return (
     <AssetListItem
       asset={asset}
       rightSide={
         <Button
-          buttonType={"secondary"}
+          buttonType={"light"}
           onClick={handleOptinClick}
           isDisabled={optinState === "done"}
           shouldHideChildrenOnSpinnerView={true}
@@ -70,7 +74,7 @@ function AssetOptinListItem({asset, account}: AssetOptinListItemProps) {
             children: (
               <AssetOptinConfirmationModal
                 asset={asset}
-                account={accounts[account.address]}
+                account={account}
                 onApprove={handleApproveOptin}
                 onClose={closeConfirmationModal}
               />
@@ -87,31 +91,20 @@ function AssetOptinListItem({asset, account}: AssetOptinListItemProps) {
     }
   }
 
-  async function handleApproveOptin(optinTxn: Transaction) {
-    setOptinState("pending");
-
-    closeConfirmationModal();
+  async function handleApproveOptin() {
+    if (!signer) return;
 
     try {
-      // Decrypt secret_key and sign Opt-in txn
-      const sk = await decryptSK(account.pk, masterkey!);
-      const signedOptinTxn = optinTxn.signTxn(sk!);
+      setOptinState("pending");
 
-      // Send txn to network
-      await algod.client.sendRawTransaction(signedOptinTxn).do();
-      await algosdk.waitForConfirmation(
-        algod.client,
-        optinTxn.txID().toString(),
-        ALGORAND_DEFAULT_TXN_WAIT_ROUNDS
-      );
+      closeConfirmationModal();
 
-      simpleToaster.display({
-        message: `${asset.unit_name} successfully added to your account`,
-        type: "success"
-      });
-
-      setOptinState("done");
+      await signer
+        .optInTxn({address: account.address, assetIndex: asset.asset_id})
+        .sign(account.address, {sendNetwork: true});
     } catch (error) {
+      console.error(error);
+
       setOptinState("not-started");
 
       simpleToaster.display({

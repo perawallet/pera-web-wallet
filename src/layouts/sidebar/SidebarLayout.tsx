@@ -11,6 +11,7 @@ import {
   sidebarStateReducer
 } from "./sidebarStateReducer";
 import PageHeader from "../../component/page/header/PageHeader";
+import PageBanner from "../../component/page/banner/PageBanner";
 
 function SidebarLayout() {
   const [state, dispatch] = useReducer(sidebarStateReducer, initialSidebarState);
@@ -22,7 +23,11 @@ function SidebarLayout() {
 
   return (
     <div className={sidebarLayoutClassnames}>
-      <PageHeader customClassName={"sidebar-layout__topbar"} />
+      <div className={"page__header-wrapper sidebar-layout__topbar"}>
+        <PageBanner />
+
+        <PageHeader />
+      </div>
 
       <div className={"sidebar-layout__content"}>
         <Sidebar />

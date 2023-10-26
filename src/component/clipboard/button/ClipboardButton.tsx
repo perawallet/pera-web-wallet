@@ -22,6 +22,7 @@ function ClipboardButton({
   children,
   "aria-label": ariaLabel,
   customClassName,
+  size = "large",
   ...otherProps
 }: ClipboardButtonProps) {
   const clipboard = useClipboard();
@@ -31,6 +32,7 @@ function ClipboardButton({
     <Button
       customClassName={classNames("clipboard-button button--fluid", customClassName)}
       aria-label={ariaLabel || "Copy to clipboard"}
+      size={size}
       onClick={copy}
       {...otherProps}>
       <div className={"clipboard-button__content"}>

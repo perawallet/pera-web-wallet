@@ -9,6 +9,28 @@
 
   border-radius: 16px;
   box-shadow: var(--shadow-small);
+
+  &--arbitrary-data {
+    height: 738px;
+  }
+
+  &--compact {
+    height: var(--pera-wallet-modal-compact-height);
+
+    .transaction-sign-review-transactions {
+      height: 238px;
+
+      padding: 20px 20px 0;
+    }
+
+    .transaction-sign-transaction-actions {
+      padding: 20px;
+    }
+
+    .transaction-sign-arbitrary-data-view__account-container {
+      padding: 0;
+    }
+  }
 }
 
 .transaction-sign-box__spinner-wrapper {

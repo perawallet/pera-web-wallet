@@ -4,34 +4,23 @@ import "./_asset-optin-page.scss";
 
 import {useSearchParams} from "react-router-dom";
 
-import {useAppContext} from "../../../core/app/AppContext";
 import AssetOptinAccountLink from "../components/account-link/AssetOptinAccountLink";
 import AssetOptinList from "../components/list/AssetOptinList";
 import {getHighestBalanceAccount} from "../../../account/util/accountUtils";
 import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 import EmptyAccountList from "../../../account/component/list/empty/EmptyAccountList";
-import Button from "../../../component/button/Button";
 import {useModalDispatchContext} from "../../../component/modal/context/ModalContext";
+import Button from "../../../component/button/Button";
 import AssetOptinInfoModal from "../modal/info/AssetOptinInfoModal";
-import PeraLoader from "../../../component/loader/pera/PeraLoader";
 import {ASSET_OPTIN_INFO_MODAL_ID} from "../modal/info/util/assetOptinInfoModalConstants";
 
 export const ASSET_OPTIN_PAGE_SEARCH_PARAM = "address";
 
 function AssetOptinPage() {
-  const {
-    state: {accounts}
-  } = useAppContext();
-  const dispatchModalStateAction = useModalDispatchContext();
-  const portfolioOverview = usePortfolioContext();
-  const highestBalanceAccount = getHighestBalanceAccount(
-    portfolioOverview?.accounts || []
-  );
+  const {accounts} = usePortfolioContext()!;
+  const highestBalanceAccount = getHighestBalanceAccount(accounts);
   const [searchParams] = useSearchParams();
-
-  if (!portfolioOverview) {
-    return <PeraLoader mode={"gray"} customClassName={"pera-loader--align-center"} />;
-  }
+  const dispatchModalStateAction = useModalDispatchContext();
 
   const accountAddress =
     searchParams.get(ASSET_OPTIN_PAGE_SEARCH_PARAM) || highestBalanceAccount?.address;
@@ -52,9 +41,9 @@ function AssetOptinPage() {
 
       {account ? (
         <>
-          <AssetOptinList account={account} />
+          <AssetOptinList address={account.address} />
 
-          <AssetOptinAccountLink account={account} />
+          <AssetOptinAccountLink address={account.address} />
         </>
       ) : (
         <EmptyAccountList />

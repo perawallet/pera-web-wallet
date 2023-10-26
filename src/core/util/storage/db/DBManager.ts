@@ -301,7 +301,7 @@ class DBManager<Model extends {[x: string]: any}> {
   public setAll<T extends keyof Model>(table: T) {
     const dbRequest = this.connectDB();
 
-    return <V extends Model[T]>(entries: V[]): Promise<boolean> =>
+    return <V extends Model[T]>(entries: V[]): Promise<void> =>
       new Promise((resolve, reject) => {
         dbRequest.onerror = (error) => {
           console.error(error);
@@ -320,7 +320,7 @@ class DBManager<Model extends {[x: string]: any}> {
           }
 
           transaction.oncomplete = () => {
-            resolve(true);
+            resolve();
           };
 
           transaction.onerror = (error) => {

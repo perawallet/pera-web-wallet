@@ -1,5 +1,7 @@
 import algosdk from "algosdk";
 
+import {MEMORY_CONVERSION_UNIT, MEMORY_UNITS} from "./numberConstants";
+
 export type FormatNumberOptions = Omit<Intl.NumberFormatOptions, "style"> & {
   style?: Intl.NumberFormatPartTypes | "percent";
   locale?: string;
@@ -131,4 +133,18 @@ function defaultPriceFormatter() {
   return {algoFormatter, usdFormatter};
 }
 
-export {formatNumber, decimalToPercent, formatPrice, defaultPriceFormatter};
+function formatBytes(bytes: number): `${string} ${typeof MEMORY_UNITS[number]}` {
+  let i = 0,
+    result = bytes;
+
+  for (i; result >= MEMORY_CONVERSION_UNIT && i < MEMORY_UNITS.length; i++) {
+    result /= MEMORY_CONVERSION_UNIT;
+  }
+
+  return `${formatNumber({
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 3
+  })(result)} ${MEMORY_UNITS[i]}`;
+}
+
+export {formatNumber, decimalToPercent, formatPrice, defaultPriceFormatter, formatBytes};

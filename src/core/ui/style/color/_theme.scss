@@ -1,63 +1,105 @@
-// TODO: Define light/dark theme classes when theme is activated
+.light-theme {
+  --background: var(--white);
 
-:root {
-  --background: var(--gray-100);
+  // Logomark
+  --logomark-bg: var(--gray-900);
+  --logomark-icon: var(--white);
+  --logomark-type: var(--gray-900);
 
-  --card-default: var(--white);
+  // Layer
+  --layer-1: var(--white);
+  --layer-2: var(--gray-100);
+  --layer-3: var(--gray-200);
 
-  --overlay: rgba(178, 181, 197, 0.5);
+  // Text Colors
+  --text-main: var(--gray-900);
+  --text-gray: var(--gray-600);
+  --text-gray-lighter: var(--gray-500);
+  --text-gray-lightest: var(--gray-400);
+  --text-contrast: var(--white);
 
-  --text-main: var(--gray-700);
-  --text-gray: var(--gray-500);
-  --text-gray-light: var(--gray-400);
-  --text-gray-lightest: var(--gray-300);
+  // Border
+  --border-default: rgba(var(--black-rgb), 0.05);
+  --border-medium: rgba(var(--black-rgb), 0.1);
 
-  --primary-button-bg: var(--purple-500);
-  --primary-button-text: var(--white);
-  --primary-button-hover-text: var(--white);
-  --primary-button-hover-bg: var(--purple-600);
-  --primary-button-disabled-bg: var(--gray-200);
-  --primary-button-disabled-text: var(--gray-400);
+  // Overlay
+  --overlay: rgba(var(--black-rgb), 0.64);
 
-  --secondary-button-bg: var(--purple-100);
-  --secondary-button-text: var(--purple-500);
-  --secondary-button-hover-bg: var(--purple-200);
-  --secondary-button-hover-text: var(--purple-500);
-  --secondary-button-disabled-bg: var(--gray-200);
-  --secondary-button-disabled-text: var(--gray-400);
+  // Popover
+  --popover-bg: var(--gray-800);
+  --popover-text: var(--white);
 
-  --light-button-bg: var(--white);
-  --light-button-text: var(--gray-500);
-  --light-button-hover-bg: var(--white);
-  --light-button-hover-text: var(--gray-700);
-  --light-button-disabled-bg: var(--gray-200);
-  --light-button-disabled-text: var(--gray-400);
+  // Dropdown
+  --dropdown-bg: var(--white);
 
-  --ghost-button-text: var(--gray-500);
-  --ghost-button-hover-text: var(--gray-700);
-  --ghost-button-pressed-bg: var(--purple-100);
-  --ghost-button-pressed-text: var(--purple-500);
-  --ghost-button-disabled-text: var(--gray-400);
+  // Skeleton
+  --skeleton: linear-gradient(90deg, #efefef 0%, rgba(246, 246, 246, 0) 100%);
 
-  --input-bg: var(--white);
-  --input-border: var(--gray-200);
-  --input-border-hover: var(--purple-500);
-  --input-border-error: var(--red-500);
-  --input-disabled-bg: var(--gray-100);
+  // Banner
+  --banner-text: var(--white);
 
-  --helper-orange-darker: var(--orange-700);
-  --helper-orange-default: var(--orange-500);
-  --helper-orange-lighter: var(--orange-200);
-  --helper-purple-darker: var(--purple-700);
-  --helper-purple-default: var(--purple-500);
-  --helper-purple-lighter: var(--purple-100);
-  --helper-green-darker: var(--green-700);
-  --helper-green-default: var(--green-500);
-  --helper-green-lighter: var(--green-100);
-  --helper-red-darker: var(--red-700);
-  --helper-red-default: var(--red-500);
-  --helper-red-lighter: var(--red-200);
-  --helper-yellow-darker: var(--yellow-700);
-  --helper-yellow-default: var(--yellow-500);
-  --helper-yellow-lighter: var(--yellow-200);
+  // Purple Helpers
+  --helper-purple-900: var(--purple-600);
+  --helper-purple-800: rgba(var(--purple-600-rgb), 0.9);
+  --helper-purple-300: rgba(var(--purple-600-rgb), 0.35);
+  --helper-purple-200: rgba(var(--purple-600-rgb), 0.2);
+  --helper-purple-100: rgba(var(--purple-600-rgb), 0.1);
+
+  // Red Helpers
+  --helper-red-900: var(--red-600);
+  --helper-red-800: rgba(var(--red-600-rgb), 0.9);
+  --helper-red-300: rgba(var(--red-600-rgb), 0.35);
+  --helper-red-200: rgba(var(--red-600-rgb), 0.2);
+  --helper-red-100: rgba(var(--red-600-rgb), 0.1);
+
+  // Yellow Helpers
+  --helper-yellow-900: var(--yellow-600);
+  --helper-yellow-800: rgba(var(--yellow-600-rgb), 0.9);
+  --helper-yellow-300: rgba(var(--yellow-600-rgb), 0.35);
+  --helper-yellow-200: rgba(var(--yellow-600-rgb), 0.2);
+  --helper-yellow-100: rgba(var(--yellow-600-rgb), 0.1);
+
+  // Blue Helpers
+  --helper-blue-900: var(--blue-600);
+  --helper-blue-800: rgba(var(--blue-600-rgb), 0.9);
+  --helper-blue-300: rgba(var(--blue-600-rgb), 0.35);
+  --helper-blue-200: rgba(var(--blue-600-rgb), 0.2);
+  --helper-blue-100: rgba(var(--blue-600-rgb), 0.1);
+
+  // Pink Helpers
+  --helper-pink-900: var(--pink-600);
+  --helper-pink-800: rgba(var(--pink-600-rgb), 0.9);
+  --helper-pink-300: rgba(var(--pink-600-rgb), 0.35);
+  --helper-pink-200: rgba(var(--pink-600-rgb), 0.2);
+  --helper-pink-100: rgba(var(--pink-600-rgb), 0.1);
+
+  // Peace Helpers
+  --helper-peace-900: var(--turquoise-600);
+  --helper-peace-800: rgba(var(--turquoise-600-rgb), 0.9);
+  --helper-peace-300: rgba(var(--turquoise-600-rgb), 0.35);
+  --helper-peace-200: rgba(var(--turquoise-600-rgb), 0.2);
+  --helper-peace-100: rgba(var(--turquoise-600-rgb), 0.1);
+
+  // Turquoise Helpers
+  --helper-turquoise-900: var(--turquoise-600);
+  --helper-turquoise-800: rgba(var(--turquoise-600-rgb), 0.9);
+  --helper-turquoise-300: rgba(var(--turquoise-600-rgb), 0.35);
+  --helper-turquoise-200: rgba(var(--turquoise-600-rgb), 0.2);
+  --helper-turquoise-100: rgba(var(--turquoise-600-rgb), 0.1);
+
+  // Lime Helpers
+  --helper-lime-900: var(--green-500);
+  --helper-lime-800: rgba(var(--green-500-rgb), 0.9);
+  --helper-lime-300: rgba(var(--green-500-rgb), 0.32);
+  --helper-lime-200: rgba(var(--green-500-rgb), 0.2);
+  --helper-lime-100: rgba(var(--green-500-rgb), 0.1);
+
+  // Gray Helpers
+  --helper-gray-900: var(--gray-500);
+  --helper-gray-800: rgba(var(--gray-500-rgb), 0.9);
+  --helper-gray-300: rgba(var(--gray-500-rgb), 0.32);
+  --helper-gray-200: rgba(var(--gray-500-rgb), 0.2);
+  --helper-gray-100: rgba(var(--gray-500-rgb), 0.1);
+
+  color-scheme: light;
 }

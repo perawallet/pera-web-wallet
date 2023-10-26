@@ -9,6 +9,10 @@
 }
 
 .transaction-sign-detail-raw-view__header__back-button.button {
+  .arrow-left-icon path {
+    fill: var(--text-main);
+  }
+
   &:hover,
   &:focus {
     .arrow-left-icon path {
@@ -43,9 +47,9 @@
   margin: 0 28px 28px;
   padding: 16px;
 
-  background-color: var(--card-default);
+  background-color: var(--layer-2);
   border-radius: 12px;
-  box-shadow: var(--shadow-small);
+  box-shadow: var(--shadow-inline);
 
   word-break: break-word;
 }

@@ -1,5 +1,6 @@
 import {ReactComponent as ExportIcon} from "../../../core/ui/icons/export.svg";
 
+import {useEffect, useState} from "react";
 import classNames from "classnames";
 
 import "./_explore-item-card.scss";
@@ -13,25 +14,33 @@ interface ExploreItemCardProps {
 
 function ExploreItemCard({item, customClassName}: ExploreItemCardProps) {
   const {name, description, cover, logo, cta_text, cta_url} = item;
+  const [dynamicImages, setDynamicImages] = useState<{cover: string; logo: string}>();
+
+  useEffect(() => {
+    (async () => {
+      const [coverSrc, logoSrc] = await Promise.all([
+        import(`../../util/assets/${cover}`),
+        import(`../../util/assets/${logo}`)
+      ]);
+
+      setDynamicImages({cover: coverSrc.default, logo: logoSrc.default});
+    })();
+  }, [cover, logo]);
 
   return (
     <div className={classNames("explore-item-card", customClassName)}>
-      <Image
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        src={require(`../../util/assets/${cover}`).default}
-        customClassName={"explore-item-card__cover"}
-      />
-      <Image
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        src={require(`../../util/assets/${logo}`).default}
-        customClassName={"explore-item-card__logo"}
-      />
+      <Image src={dynamicImages?.cover} customClassName={"explore-item-card__cover"} />
+
+      <Image src={dynamicImages?.logo} customClassName={"explore-item-card__logo"} />
+
       <div className={"explore-item-card__name typography--caption text-color--gray"}>
         {name}
       </div>
+
       <div className={"explore-item-card__description typography--small-subhead"}>
         {description}
       </div>
+
       <a
         href={cta_url}
         className={"explore-item-card__cta button button--light"}

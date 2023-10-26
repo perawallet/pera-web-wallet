@@ -25,14 +25,13 @@
 
   &--placeholder {
     display: grid;
+    place-content: center;
 
     width: 40px;
     height: 40px;
 
     background-color: var(--light-button-disabled-bg);
     border-radius: 50%;
-
-    place-content: center;
   }
 }
 
@@ -65,20 +64,20 @@
 
   padding: 8px 12px;
 
-  color: var(--helper-green-darker);
-  background-color: var(--helper-green-lighter);
+  color: var(--helper-peace-900);
+  background-color: var(--helper-peace-100);
   border-radius: 12px;
 }
 
 .pera-connect-session__disconnect-cta {
   margin-left: auto;
 
-  background-color: var(--red-100);
+  background-color: var(--helper-red-100);
   border-radius: 12px;
 
   .unlink-icon {
     path {
-      fill: var(--helper-red-default);
+      fill: var(--helper-red-900);
     }
   }
 }

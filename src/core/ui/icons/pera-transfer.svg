@@ -1,12 +1,7 @@
 <svg width="196" height="80" viewBox="0 0 196 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M183.2 8H162.8C159.044 8 156 11.134 156 15V57C156 60.866 159.044 64 162.8 64H183.2C186.956 64 190 60.866 190 57V15C190 11.134 186.956 8 183.2 8Z" stroke="#6B46FE" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<circle opacity="0.2" cx="174" cy="36" r="4" fill="#6B46FE"/>
-<circle opacity="0.4" cx="76" cy="36" r="4" fill="#6B46FE"/>
-<g opacity="0.6">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M115.72 33.6687L106.644 24.5931L109.473 21.7647L121.963 34.2547L123.377 35.6689L121.963 37.0831L109.473 49.5732L106.644 46.7447L115.72 37.6687L92 37.6687L92 33.6687L115.72 33.6687Z" fill="#6B46FE"/>
-</g>
-<circle opacity="0.4" cx="140" cy="36" r="4" fill="#6B46FE"/>
-<path d="M53.5 18H14.5C10.9101 18 8 21.0445 8 24.8V45.2C8 48.9555 10.9101 52 14.5 52H53.5C57.0899 52 60 48.9555 60 45.2V24.8C60 21.0445 57.0899 18 53.5 18Z" stroke="#6B46FE" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M24 64H44" stroke="#6B46FE" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-<circle opacity="0.2" cx="34" cy="36" r="4" fill="#6B46FE"/>
+<circle opacity="0.2" cx="174" cy="36" r="2" fill="var(--purple-400)" stroke="var(--purple-400)" stroke-width="2"/>
+<circle opacity="0.4" cx="76" cy="36" r="2" fill="var(--purple-400)" stroke="var(--purple-400)" stroke-width="2"/>
+<circle opacity="0.4" cx="140" cy="36" r="2" fill="var(--purple-400)" stroke="var(--purple-400)" stroke-width="2"/>
+<circle opacity="0.2" cx="34" cy="36" r="2" fill="var(--purple-400)" stroke="var(--purple-400)" stroke-width="2"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M110.833 27.9149C111.386 27.3617 112.283 27.3617 112.836 27.9149L119.92 34.9983C120.185 35.2639 120.335 35.6243 120.335 36C120.335 36.3757 120.185 36.7361 119.92 37.0017L112.836 44.0851C112.283 44.6383 111.386 44.6383 110.833 44.0851C110.28 43.5318 110.28 42.6348 110.833 42.0816L115.498 37.4167L99.0846 37.4167C98.3022 37.4167 97.668 36.7824 97.668 36C97.668 35.2176 98.3022 34.5833 99.0846 34.5833L115.498 34.5833L110.833 29.9184C110.28 29.3652 110.28 28.4682 110.833 27.9149Z" fill="var(--purple-400)"/>
 </svg>

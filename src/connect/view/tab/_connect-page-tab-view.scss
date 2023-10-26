@@ -12,6 +12,8 @@
   &--add-import-account {
     width: 100%;
 
+    margin-top: 32px;
+
     .connect-page-tab-view__content {
       width: 100%;
 
@@ -97,7 +99,7 @@
 
   border-radius: 12px;
 
-  animation: 0.3s slideAnimationForBanner ease-out;
+  animation: 0.3s slide-animation-for-banner ease-out;
 }
 
 .connect-page-tab-view-banner__app-meta__favicon {
@@ -111,7 +113,7 @@
   border-radius: 100%;
 }
 
-@keyframes slideAnimationForBanner {
+@keyframes slide-animation-for-banner {
   0% {
     opacity: 0;
   }

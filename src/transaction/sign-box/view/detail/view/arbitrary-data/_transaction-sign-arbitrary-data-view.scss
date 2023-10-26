@@ -1,0 +1,181 @@
+@import "../../../../../../core/ui/typography/_typography-mixins.scss";
+
+.transaction-sign-arbitrary-data-view__container {
+  display: flex;
+  flex-direction: column;
+
+  height: 100%;
+
+  padding: 28px;
+
+  &--single {
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    padding: 0;
+  }
+}
+
+.transaction-sign-arbitrary-data-view__icon-wrapper {
+  display: grid;
+  place-content: center;
+
+  width: 60px;
+  height: 60px;
+
+  margin-bottom: 12px;
+
+  border-radius: 100%;
+  box-shadow: var(--shadow-default);
+}
+
+.transaction-sign-arbitrary-data-view__single-description {
+  max-height: 96px;
+
+  overflow-y: auto;
+
+  word-break: break-all;
+}
+
+.transaction-sign-arbitrary-data-view__see-details {
+  --button-color: var(--secondary-button-text);
+
+  margin-bottom: 112px;
+  padding: 0;
+
+  &:hover,
+  &:focus {
+    --button-color: var(--secondary-button-text);
+    --bg-color: var(--white);
+  }
+}
+
+.transaction-sign-arbitrary-data-view__account-container {
+  position: relative;
+
+  padding: 22px 16px;
+
+  border-radius: 12px;
+  box-shadow: var(--shadow-small);
+
+  .account-list-item-content {
+    .account-balance {
+      display: none;
+    }
+
+    &:after {
+      display: none;
+    }
+  }
+
+  .transaction-sign-arbitrary-data-view__dApp {
+    display: flex;
+    align-items: center;
+
+    gap: 16px;
+
+    .transaction-sign-arbitrary-data-view__account-container__favicon {
+      border-radius: 50%;
+    }
+  }
+
+  .transaction-sign-arbitrary-data-view__to {
+    position: relative;
+
+    margin: 20px 0;
+
+    border-bottom: 1px solid var(--border-default);
+  }
+}
+
+.transaction-sign-arbitrary-data-view__list {
+  margin-top: 16px;
+}
+
+.transaction-sign-arbitrary-data-view__list-item {
+  padding: 16px 0;
+
+  border-bottom: 1px solid var(--border-default);
+
+  &:last-child {
+    max-height: 180px;
+
+    overflow-y: auto;
+
+    border-bottom: unset;
+
+    .transaction-sign-arbitrary-data-view__list-item-description {
+      @include typography--body();
+
+      color: var(--text-gray-light);
+    }
+  }
+}
+
+.transaction-sign-arbitrary-data-view__txn-tag {
+  width: max-content;
+
+  margin-top: 24px;
+  padding: 6px 12px;
+
+  color: var(--light-button-text);
+  background-color: var(--light-button-bg);
+  border-radius: 16px;
+}
+
+.transaction-sign-arbitrary-data-view__header {
+  position: relative;
+
+  margin-bottom: 32px;
+
+  text-align: center;
+}
+
+.transaction-sign-arbitrary-data-view__header__back-button.button {
+  position: absolute;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  &:hover,
+  &:focus {
+    .arrow-left-icon path {
+      fill: var(--ghost-button-text);
+    }
+  }
+}
+
+.transaction-sign-arbitrary-data-view__header__copy-button.button {
+  --button-color: var(--secondary-button-text);
+
+  &.button--fluid {
+    width: max-content;
+  }
+
+  &:hover,
+  &:focus {
+    opacity: 0.8;
+  }
+
+  .chevron-right-icon {
+    width: 16px;
+    height: 16px;
+
+    path {
+      fill: var(--secondary-button-text);
+    }
+  }
+}
+
+.transaction-sign-arbitrary-data-view__raw-transaction {
+  margin: 0 28px 28px;
+  padding: 16px;
+
+  background-color: var(--card-default);
+  border-radius: 12px;
+  box-shadow: var(--shadow-small);
+
+  word-break: break-word;
+}

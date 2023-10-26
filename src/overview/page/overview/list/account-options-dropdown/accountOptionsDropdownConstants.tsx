@@ -1,12 +1,31 @@
 import {ReactComponent as CopyIcon} from "../../../../../core/ui/icons/copy.svg";
 import {ReactComponent as QRCodeIcon} from "../../../../../core/ui/icons/qr-code.svg";
 import {ReactComponent as KeyIcon} from "../../../../../core/ui/icons/key.svg";
+import {ReactComponent as RekeyIcon} from "../../../../../core/ui/icons/rekey.svg";
+import {ReactComponent as UndoIcon} from "../../../../../core/ui/icons/undo.svg";
 import {ReactComponent as ShareIcon} from "../../../../../core/ui/icons/share.svg";
 import {ReactComponent as OptinIcon} from "../../../../../core/ui/icons/opt-in.svg";
 import {ReactComponent as PenIcon} from "../../../../../core/ui/icons/pen.svg";
 import {ReactComponent as UnlinkIcon} from "../../../../../core/ui/icons/unlink.svg";
 
-export const ACCOUNT_DROPDOWN_OPTIONS = [
+export type AccountDropdownOption = {
+  id:
+    | "copy-address"
+    | "show-qr"
+    | "show-passphrase"
+    | "rekey-undo"
+    | "rekey-ledger"
+    | "rekey-standard"
+    | "send-transaction"
+    | "opt-in-to-asset"
+    | "rename-account"
+    | "remove-account";
+  title: string;
+  icon: React.ReactNode;
+  description?: string;
+};
+
+export const ACCOUNT_DROPDOWN_OPTIONS: AccountDropdownOption[] = [
   {
     id: "copy-address",
     title: "Copy address",
@@ -21,6 +40,22 @@ export const ACCOUNT_DROPDOWN_OPTIONS = [
     id: "show-passphrase",
     title: "View passphrase",
     icon: <KeyIcon width={16} height={16} />
+  },
+  {
+    id: "rekey-undo",
+    title: "Undo Rekey",
+    icon: <UndoIcon width={16} height={16} />,
+    description: "Algo Wallet"
+  },
+  {
+    id: "rekey-ledger",
+    title: "Rekey to Ledger",
+    icon: <RekeyIcon width={16} height={16} />
+  },
+  {
+    id: "rekey-standard",
+    title: "Rekey to Standard",
+    icon: <RekeyIcon width={16} height={16} />
   },
   {
     id: "send-transaction",
@@ -42,4 +77,4 @@ export const ACCOUNT_DROPDOWN_OPTIONS = [
     title: "Remove account",
     icon: <UnlinkIcon width={16} height={16} />
   }
-] as const;
+];

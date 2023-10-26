@@ -8,6 +8,11 @@
   .form-field {
     margin: 0;
   }
+
+  > *:nth-child(-n + 2) {
+    border: none;
+    box-shadow: var(--shadow-2);
+  }
 }
 
 .send-txn-form__asset-img {

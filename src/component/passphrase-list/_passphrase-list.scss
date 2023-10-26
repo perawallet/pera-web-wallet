@@ -1,0 +1,38 @@
+.passphrase-list {
+  display: grid;
+  grid-template-rows: repeat(9, 1fr);
+  grid-template-columns: repeat(3, auto);
+  grid-gap: 8px 12px;
+
+  grid-auto-flow: column;
+
+  margin: 16px auto 24px;
+  padding: 24px 8px;
+
+  background-color: var(--layer-2);
+  border-radius: 12px;
+
+  counter-reset: item;
+}
+
+.passphrase-list-item {
+  transform: translateX(28px);
+  list-style-type: none;
+
+  &:before {
+    display: inline-block;
+    /* stylelint-disable-next-line unit-allowed-list */
+    width: 2ch;
+
+    margin-right: 8px;
+
+    color: var(--text-gray-lighter);
+
+    content: counter(item) "";
+    counter-increment: item;
+  }
+
+  &:nth-child(8n + 1):not(:last-child) {
+    grid-row: 1;
+  }
+}

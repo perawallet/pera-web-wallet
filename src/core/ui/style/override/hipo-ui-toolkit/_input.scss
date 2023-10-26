@@ -1,5 +1,13 @@
 @import "../../../typography/_typography-mixins.scss";
 
+:root {
+  --input-bg: var(--layer-1);
+  --input-border: var(--border-medium);
+  --input-border-hover: var(--helper-purple-900);
+  --input-border-error: var(--helper-red-900);
+  --input-disabled-bg: var(--layer-3);
+}
+
 .input {
   @include typography--button();
 

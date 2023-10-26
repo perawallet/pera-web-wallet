@@ -11,7 +11,7 @@
       color: var(--text-main);
 
       .send-txn__info-tip-icon path {
-        fill: var(--helper-purple-default);
+        fill: var(--helper-purple-900);
       }
 
       .info-modal__description-list-item__icon-wrapper {
@@ -21,16 +21,16 @@
 
     &:not(:first-of-type) {
       .send-txn__info-tip-icon path {
-        fill: var(--text-gray-light);
+        fill: var(--text-gray-lighter);
       }
     }
   }
 }
 
 .send-txn__info-modal-link {
-  color: var(--helper-purple-default);
+  color: var(--helper-purple-900);
 }
 
 .send-txn__info-warning {
-  color: var(--helper-red-default);
+  color: var(--helper-red-900);
 }

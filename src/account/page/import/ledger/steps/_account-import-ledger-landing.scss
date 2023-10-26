@@ -1,0 +1,69 @@
+.account-import-ledger__pair-options-group {
+  display: grid;
+  gap: 32px;
+}
+
+.account-import-ledger__steps-button-group {
+  display: grid;
+  gap: 12px;
+
+  margin-top: 74px;
+
+  &--horizontal {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 60px;
+
+    width: 428px;
+
+    margin-top: 40px;
+
+    .account-import-ledger__cta {
+      width: auto;
+
+      &:first-child {
+        padding: 0;
+
+        color: var(--secondary-button-text);
+      }
+    }
+  }
+}
+
+.account-import-ledger__ledger-note {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 24px;
+
+  .account-import-ledger__icon-container {
+    display: grid;
+    place-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    background-color: var(--helper-purple-100);
+    border-radius: 100%;
+
+    svg path,
+    svg circle {
+      fill: var(--helper-purple-900);
+    }
+  }
+}
+
+.account-import-ledger__info-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 32px;
+
+  .info-icon {
+    path {
+      fill: var(--text-gray);
+    }
+  }
+}

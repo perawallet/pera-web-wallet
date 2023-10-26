@@ -1,0 +1,14 @@
+.algo-price-change-percentage {
+  display: flex;
+
+  padding: 4px 8px;
+
+  color: var(--gray-900);
+  background-color: rgba(var(--purple-600-rgb), 0.2);
+
+  border-radius: 40px;
+
+  .algo-price-change-percentage__text {
+    font-weight: 400;
+  }
+}

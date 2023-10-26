@@ -11,6 +11,7 @@ import useNavigateFlow from "../../../../../core/route/navigate/useNavigateFlow"
 import {useConnectFlowContext} from "../../../../../connect/context/ConnectFlowContext";
 import {AccountComponentFlows} from "../../../../util/accountTypes";
 import {appDBManager} from "../../../../../core/app/db";
+import {useSimpleToaster} from "../../../../../component/simple-toast/util/simpleToastHooks";
 
 type LocationState = {account: Account};
 
@@ -29,9 +30,10 @@ function AccountImportPassphraseName({
   const importedAccount =
     isInConnectFlow && formitoState ? formitoState.importedAccountInFlow : account;
   const {
-    state: {masterkey},
+    state: {masterkey, hasAccounts},
     dispatch: dispatchAppState
   } = useAppContext();
+  const simpleToaster = useSimpleToaster();
 
   return (
     <div className={"account-import-passphrase-name"}>
@@ -55,33 +57,39 @@ function AccountImportPassphraseName({
   async function handleAccountImportNaming(accountName: string) {
     if (!importedAccount || !masterkey) return;
 
-    const pk = await encryptSK(importedAccount.sk, masterkey!);
+    try {
+      const pk = await encryptSK(importedAccount.sk, masterkey!);
 
-    const newAccount = {
-      type: "standard" as AccountType,
-      name: accountName,
-      address: importedAccount.addr,
-      pk,
-      date: new Date()
-    };
+      const newAccount = {
+        name: accountName,
+        address: importedAccount.addr,
+        pk,
+        date: new Date()
+      };
 
-    await appDBManager.set("accounts", masterkey)(importedAccount.addr, newAccount);
+      await appDBManager.set("accounts", masterkey)(importedAccount.addr, newAccount);
 
-    dispatchAppState({type: "SET_ACCOUNT", account: newAccount});
-
-    if (!isInConnectFlow) {
-      navigate(ROUTES.ACCOUNT.IMPORT.PASSPHRASE.PENDING.FULL_PATH, {
-        state: {creationType: "import"}
-      });
-      return;
-    }
-
-    dispatchFormitoAction({
-      type: "SET_FORM_VALUE",
-      payload: {
-        importAccountViews: "animation"
+      if (!hasAccounts) {
+        dispatchAppState({type: "SET_HAS_ACCOUNTS", hasAccounts: true});
       }
-    });
+
+      if (!isInConnectFlow) {
+        navigate(ROUTES.ACCOUNT.IMPORT.PASSPHRASE.PENDING.FULL_PATH);
+        return;
+      }
+
+      dispatchFormitoAction({
+        type: "SET_FORM_VALUE",
+        payload: {
+          importAccountViews: "animation"
+        }
+      });
+    } catch {
+      simpleToaster.display({
+        message: `Account couldn't be imported.`,
+        type: "error"
+      });
+    }
   }
 }
 

@@ -4,6 +4,12 @@
   gap: 16px;
 
   margin-bottom: 32px;
+
+  .arrow-left-icon {
+    path {
+      fill: var(--text-main);
+    }
+  }
 }
 
 .go-back-button {

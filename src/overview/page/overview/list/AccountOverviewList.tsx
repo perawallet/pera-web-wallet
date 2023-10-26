@@ -4,37 +4,23 @@ import {List} from "@hipo/react-ui-toolkit";
 import classNames from "classnames";
 
 import AccountOverviewListItem from "./account-overview-list-item/AccountOverviewListItem";
-import {PortfolioOverview} from "../../../util/hook/usePortfolioOverview";
 import {sortAlphabetically} from "../../../../core/util/array/arrayUtils";
+import {usePortfolioContext} from "../../../context/PortfolioOverviewContext";
 
 export interface AccountOverviewListProps {
-  accounts: PortfolioOverview["accounts"];
   className?: string;
 }
 
-function AccountOverviewList({accounts, className}: AccountOverviewListProps) {
+function AccountOverviewList({className}: AccountOverviewListProps) {
+  const portfolioOverview = usePortfolioContext();
   const accountOverviewListClassname = classNames("account-overview-list", className);
 
   return (
     <List
       listItemKeyGenerator={listItemKeyGenerator}
       customClassName={accountOverviewListClassname}
-      items={sortAlphabetically(accounts, "name")}>
-      {({
-        total_usd_value,
-        total_algo_value,
-        address,
-        standard_asset_count,
-        collectible_count
-      }) => (
-        <AccountOverviewListItem
-          accountUSDValue={total_usd_value}
-          accountALGOValue={total_algo_value}
-          address={address}
-          assetCount={standard_asset_count}
-          collectibleCount={collectible_count}
-        />
-      )}
+      items={sortAlphabetically(Object.values(portfolioOverview!.accounts), "name")}>
+      {(account) => <AccountOverviewListItem account={account} />}
     </List>
   );
 

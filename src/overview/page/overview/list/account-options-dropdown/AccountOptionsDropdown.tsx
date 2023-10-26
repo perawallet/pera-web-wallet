@@ -1,12 +1,15 @@
+/* eslint-disable no-case-declarations */
 import "./_account-options-dropdown.scss";
 
 import {ReactComponent as MoreIcon} from "../../../../../core/ui/icons/more.svg";
 
-import React from "react";
 import {useNavigate} from "react-router-dom";
 import {Select, List} from "@hipo/react-ui-toolkit";
 
-import {ACCOUNT_DROPDOWN_OPTIONS} from "./accountOptionsDropdownConstants";
+import {
+  ACCOUNT_DROPDOWN_OPTIONS,
+  AccountDropdownOption
+} from "./accountOptionsDropdownConstants";
 import useClipboard from "../../../../../component/clipboard/useClipboard";
 import {useSimpleToaster} from "../../../../../component/simple-toast/util/simpleToastHooks";
 import {useModalDispatchContext} from "../../../../../component/modal/context/ModalContext";
@@ -16,7 +19,7 @@ import AccountRemoveModal, {
 import AccountRenameModal, {
   ACCOUNT_RENAME_MODAL_ID
 } from "../../../../../account/component/account-rename-modal/AccountRenameModal";
-import {useAppContext} from "../../../../../core/app/AppContext";
+import {usePortfolioContext} from "../../../../context/PortfolioOverviewContext";
 import AccountShowQRModal, {
   ACCOUNT_SHOW_QR_MODAL_ID
 } from "../../../show-qr/AccountShowQR";
@@ -31,18 +34,19 @@ import AssetOptinInfoModal from "../../../../../asset/opt-in/modal/info/AssetOpt
 import {ASSET_OPTIN_INFO_MODAL_ID} from "../../../../../asset/opt-in/modal/info/util/assetOptinInfoModalConstants";
 import webStorage, {STORED_KEYS} from "../../../../../core/util/storage/web/webStorage";
 import {ASSET_OPTIN_PAGE_SEARCH_PARAM} from "../../../../../asset/opt-in/page/AssetOptinPage";
+import AccountRekeyModal, {
+  AccountRekeyModalProps
+} from "../../../../../account/component/account-rekey-modal/AccountRekeyModal";
+import {ACCOUNT_REKEY_MODAL_ID} from "../../../../../account/component/account-rekey-modal/accountRekeyModalConstants";
+import {getAccountType} from "../../../../../account/util/accountUtils";
 
 interface AccountOptionsDropdownProps {
   address: AccountOverview["address"];
 }
 
-export type AccountDropdownOption = {id: string; title: string; icon: React.ReactNode};
-
 function AccountOptionsDropdown({address}: AccountOptionsDropdownProps) {
   const navigate = useNavigate();
-  const {
-    state: {accounts}
-  } = useAppContext();
+  const {accounts} = usePortfolioContext()!;
   const {copyToClipboard} = useClipboard();
   const simpleToaster = useSimpleToaster();
   const dispatchModalStateAction = useModalDispatchContext();
@@ -70,7 +74,16 @@ function AccountOptionsDropdown({address}: AccountOptionsDropdownProps) {
               customClassName={"account-options-dropdown__list-item"}>
               {option.icon}
 
-              <p className={"typography--caption"}>{option.title}</p>
+              <div>
+                <p className={"typography--caption"}>{option.title}</p>
+
+                <p
+                  className={
+                    "typography--tiny text-color--gray-lighter account-options-dropdown__list-item__description"
+                  }>
+                  {option.description}
+                </p>
+              </div>
             </Select.Item>
           )}
         </List>
@@ -81,7 +94,7 @@ function AccountOptionsDropdown({address}: AccountOptionsDropdownProps) {
   function handleOptionSelect(option: AccountDropdownOption | null) {
     if (!option) return;
 
-    switch (option.id as typeof ACCOUNT_DROPDOWN_OPTIONS[number]["id"]) {
+    switch (option.id) {
       case "copy-address":
         copyToClipboard(address);
 
@@ -105,6 +118,15 @@ function AccountOptionsDropdown({address}: AccountOptionsDropdownProps) {
         break;
 
       case "show-passphrase":
+        if (!accounts[address]?.pk) {
+          simpleToaster.display({
+            type: "info",
+            message: `Account passphrase is not included in the wallet.`
+          });
+
+          break;
+        }
+
         dispatchModalStateAction({
           type: "OPEN_MODAL",
           payload: {
@@ -136,6 +158,12 @@ function AccountOptionsDropdown({address}: AccountOptionsDropdownProps) {
             }
           }
         });
+        break;
+
+      case "rekey-undo":
+      case "rekey-ledger":
+      case "rekey-standard":
+        handleOpenRekeyingModal(option.id);
         break;
 
       case "remove-account":
@@ -211,6 +239,57 @@ function AccountOptionsDropdown({address}: AccountOptionsDropdownProps) {
   function closeModal() {
     dispatchModalStateAction({
       type: "CLOSE_ALL_MODALS"
+    });
+  }
+
+  function handleOpenRekeyingModal(rekeyType: AccountRekeyModalProps["rekeyType"]) {
+    let toasterMessage: string | undefined;
+    const rekeyedToAddress = accounts[address].rekeyed_to;
+
+    const accountType = rekeyType.replace("rekey-", "");
+
+    if (rekeyType === "rekey-undo") {
+      if (!rekeyedToAddress) {
+        toasterMessage = "This account is not a rekeyed account.";
+      }
+    } else if (!rekeyedToAddress && getAccountType(accounts[address]) === "ledger") {
+      toasterMessage = "Rekeying ledger accounts is not supported yet.";
+    } else if (
+      !Object.values(accounts).some(
+        (account) =>
+          account.address !== address && getAccountType(account) === accountType
+      )
+    ) {
+      toasterMessage = `There is no ${accountType} account to rekey in your wallet`;
+    } else if (
+      Object.values(accounts).find((account) => account.rekeyed_to === address)
+    ) {
+      toasterMessage = "Authorized accounts can not be rekeyed.";
+    }
+
+    if (toasterMessage) {
+      simpleToaster.display({
+        type: "error",
+        message: toasterMessage
+      });
+
+      return;
+    }
+
+    dispatchModalStateAction({
+      type: "OPEN_MODAL",
+      payload: {
+        item: {
+          id: ACCOUNT_REKEY_MODAL_ID,
+          modalContentLabel: "Rekey account",
+          customClassName: "account-options-dropdown__rekey-account-modal",
+          children: (
+            <AccountRekeyModal rekeyType={rekeyType} account={accounts[address]} />
+          ),
+          shouldCloseOnOverlayClick: true,
+          shouldCloseOnEsc: true
+        }
+      }
     });
   }
 }

@@ -1,44 +1,72 @@
+.account-remove-modal {
+  width: 360px;
+  min-height: 404px;
+}
+
 .account-remove-modal__hero {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  margin-bottom: 48px;
 
   text-align: center;
 }
 
 .account-remove-modal__hero-unlink-icon-wrapper {
   display: grid;
-
-  width: 106px;
-  height: 106px;
-
-  margin: 28px auto 32px;
-
-  background-color: var(--card-default);
-  border-radius: 100%;
-  box-shadow: var(--shadow-large);
-
   place-content: center;
+
+  width: 96px;
+  height: 96px;
+
+  margin: 0 auto 32px;
+
+  background-color: var(--layer-1);
+  border-radius: 100%;
+  box-shadow: var(--shadow-1);
 
   .unlink-icon {
     path {
-      fill: var(--helper-red-default);
+      fill: var(--helper-red-900);
     }
   }
 }
 
 .account-remove-modal__hero-title {
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 }
 
 .account-remove-modal__confirm-cta {
   width: 100%;
+
+  margin-top: 32px;
 }
 
 .account-remove-modal__cancel-cta {
   width: 100%;
 
-  margin-top: 8px;
+  margin-top: 12px;
+}
+
+.account-remove-modal__info-box {
+  margin-top: 32px;
+
+  .info-box-content {
+    gap: 4px;
+
+    text-align: left;
+  }
+
+  .info-box-content__title {
+    color: var(--helper-red-900);
+  }
+
+  .info-box-icon {
+    background-color: var(--helper-red-100);
+
+    .info-icon {
+      path {
+        fill: var(--helper-red-900);
+      }
+    }
+  }
 }

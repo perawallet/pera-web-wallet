@@ -11,9 +11,10 @@
 .modal__body {
   padding: 28px;
 
-  background: var(--card-default);
+  background: var(--background);
 
   border-radius: 16px;
+  box-shadow: var(--shadow-1);
 }
 
 .ReactModal__Body--open {

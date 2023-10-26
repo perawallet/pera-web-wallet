@@ -5,6 +5,7 @@ import "./_connect-page-select-account.scss";
 import {useEffect} from "react";
 import classNames from "classnames";
 import {useToaster} from "@hipo/react-ui-toolkit";
+import {useSearchParams} from "react-router-dom";
 
 import Button from "../../component/button/Button";
 import Image from "../../component/image/Image";
@@ -17,35 +18,38 @@ import {NETWORK_MISMATCH_MESSAGE} from "../../core/util/algod/algodConstants";
 import ConnectPageAccountList from "./account-list/ConnectPageAccountList";
 
 interface ConnectPageSelectAccountProps {
-  handleConnectClick: VoidFunction;
   sendNetworkMismacthError: VoidFunction;
   shouldShowToast?: boolean;
+  type?: "default" | "embedded";
 }
 
 function ConnectPageSelectAccount({
-  handleConnectClick,
   sendNetworkMismacthError,
-  shouldShowToast = false
+  shouldShowToast = false,
+  type = "default"
 }: ConnectPageSelectAccountProps) {
   const {
-    state: {accounts, preferredNetwork}
+    state: {preferredNetwork}
   } = useAppContext();
   const {
     formitoState: {
+      dbAccounts: accounts,
       currentSession,
       hasMessageReceived,
       selectedAccounts,
-      isConnectStarted
+      isConnectStarted,
+      handleConnectClick
     },
     dispatchFormitoAction
   } = useConnectFlowContext();
-  const accountsArray = Object.values(accounts);
+  const [searchParams] = useSearchParams();
+  const isCompactMode = searchParams.get("compactMode");
+  const accountsArray = Object.values(accounts || {});
   const accountCount = accountsArray.length || 0;
   const hasNetworkMismatch = Boolean(
     currentSession?.chainId &&
       currentSession.chainId !== getChainIdForNetwork(preferredNetwork)
   );
-
   const toaster = useToaster();
 
   useEffect(() => {
@@ -72,9 +76,7 @@ function ConnectPageSelectAccount({
     if (currentSession && accountCount === 1 && !isConnectStarted) {
       dispatchFormitoAction({
         type: "SET_FORM_VALUE",
-        payload: {
-          selectedAccounts: accountsArray
-        }
+        payload: {selectedAccounts: accountsArray}
       });
     }
   }, [
@@ -91,13 +93,16 @@ function ConnectPageSelectAccount({
       selectedAccounts?.length === accountCount &&
       !isConnectStarted
     ) {
-      handleConnectClick();
+      handleConnectClick(selectedAccounts);
     }
   }, [accountCount, selectedAccounts, handleConnectClick, isConnectStarted]);
 
-  if (hasMessageReceived && currentSession && accountCount > 1) {
+  if (accounts && hasMessageReceived && currentSession && accountCount > 1) {
     return (
-      <div className={"connect-page-select-account__content"}>
+      <div
+        className={classNames("connect-page-select-account__content", {
+          "connect-page-select-account__content--compact": isCompactMode
+        })}>
         <div className={"connect-page-select-account__app-information"}>
           <div className={"connect-page-select-account__app-meta"}>
             {currentSession?.favicon ? (
@@ -134,35 +139,37 @@ function ConnectPageSelectAccount({
             </a>
           </div>
 
-          <div
-            className={
-              "has-space-between connect-page-select-account__select-account-text-wrapper"
-            }>
+          <div className={"connect-page-select-account__select-account-list"}>
             <div
               className={
-                "text-color--gray connect-page-select-account__select-account-text"
+                "has-space-between connect-page-select-account__select-account-text-wrapper"
               }>
-              {`Select Account (${accountCount})`}
+              <div
+                className={
+                  "text-color--gray connect-page-select-account__select-account-text"
+                }>
+                {`Select Account (${accountCount})`}
+              </div>
+
+              <Button
+                customClassName={"connect-page-select-account__select-all-button"}
+                onClick={handleSelectAllAccounts}
+                buttonType={"ghost"}>
+                {selectedAccounts?.length === accountsArray.length
+                  ? "Deselect All"
+                  : "Select All"}
+              </Button>
             </div>
 
-            <Button
-              customClassName={"connect-page-select-account__select-all-button"}
-              onClick={handleSelectAllAccounts}
-              buttonType={"ghost"}>
-              {selectedAccounts?.length === accountsArray.length
-                ? "Deselect All"
-                : "Select All"}
-            </Button>
+            <ConnectPageAccountList />
           </div>
-
-          <ConnectPageAccountList />
         </div>
 
         <div
           className={classNames("connect-page-select-account__connect-button-wrapper", {
             "connect-page-select-account__connect-button-wrapper--border":
               // eslint-disable-next-line no-magic-numbers
-              accountsArray.length >= 2
+              accountsArray.length >= 2 && type === "embedded"
           })}>
           <Button
             buttonType={"primary"}
@@ -171,7 +178,7 @@ function ConnectPageSelectAccount({
               !selectedAccounts || selectedAccounts?.length === 0 || hasNetworkMismatch
             }
             shouldDisplaySpinner={isConnectStarted}
-            onClick={handleConnectClick}>
+            onClick={handleConnectButtonClick}>
             {"Connect"}
           </Button>
         </div>
@@ -186,7 +193,7 @@ function ConnectPageSelectAccount({
       {!currentSession && (
         <h1
           className={
-            "typography--subhead text--color-main connect-page-select-account__please-wait-text"
+            "typography--subhead text-color--main connect-page-select-account__please-wait-text"
           }>
           {"Establishing connection..."}
         </h1>
@@ -195,7 +202,7 @@ function ConnectPageSelectAccount({
       {currentSession && accountCount === 1 && (
         <h1
           className={
-            "typography--subhead text--color-main connect-page-select-account__please-wait-text"
+            "typography--subhead text-color--main connect-page-select-account__please-wait-text"
           }>
           {`Connecting you to ${currentSession.title}...`}
         </h1>
@@ -203,20 +210,20 @@ function ConnectPageSelectAccount({
     </div>
   );
 
+  async function handleConnectButtonClick() {
+    await handleConnectClick(selectedAccounts!);
+  }
+
   function handleSelectAllAccounts() {
     if (selectedAccounts?.length === accountCount) {
       dispatchFormitoAction({
         type: "SET_FORM_VALUE",
-        payload: {
-          selectedAccounts: []
-        }
+        payload: {selectedAccounts: []}
       });
     } else {
       dispatchFormitoAction({
         type: "SET_FORM_VALUE",
-        payload: {
-          selectedAccounts: accountsArray
-        }
+        payload: {selectedAccounts: accountsArray}
       });
     }
   }

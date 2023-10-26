@@ -1,13 +1,34 @@
+@import "../../../../../core/ui/typography/_typography-mixins.scss";
+
 .transaction-sign-app-meta {
+  justify-content: center;
   gap: 18px;
 
   padding: 20px;
 
-  border-bottom: 1px solid var(--gray-100);
-
   .chevron-right-icon {
     path {
       fill: var(--text-gray-lightest);
+    }
+  }
+
+  &--compact {
+    display: grid;
+    grid-template-columns: 150px 16px 150px;
+    gap: 14px;
+
+    .transaction-sign-app-meta__dapp-details,
+    .transaction-sign-app-meta__signer-account-details {
+      width: 120px;
+
+      overflow: hidden;
+
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .transaction-sign-app-meta__signer-account-details {
+      width: 150px;
     }
   }
 }
@@ -47,4 +68,19 @@
   .image__img {
     border-radius: 50%;
   }
+}
+
+.transaction-sign-app-meta__favicon__placeholder {
+  @include typography--tagline();
+
+  display: grid;
+  place-content: center;
+
+  width: 28px;
+  height: 28px;
+
+  padding: 2px;
+
+  background-color: var(--layer-2);
+  border-radius: 50%;
 }

@@ -10,6 +10,10 @@
   background: var(--card-default);
 
   transform: translate(-50%, -50%);
+
+  .transaction-sign-review-transactions {
+    height: var(--pera-wallet-modal-transaction-sign-review-box-height);
+  }
 }
 
 .transaction-sign-embedded-view__spinner-wrapper {

@@ -18,14 +18,13 @@ import ROUTES from "../../../core/route/routes";
 import LinkButton from "../../../component/button/LinkButton";
 import {isALGO} from "../../../core/util/asset/assetUtils";
 import {generateAlgoExplorerLink} from "../../../core/util/algoExplorer/algoExplorerUtils";
-import {useAppContext} from "../../../core/app/AppContext";
+import {ALGO_UNIT} from "../../../core/ui/typography/typographyConstants";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 
 type LocationState = {txnId: string};
 
 function SendTxnSuccess() {
-  const {
-    state: {accounts}
-  } = useAppContext();
+  const {accounts} = usePortfolioContext()!;
   const {
     formitoState: {senderAddress, selectedAsset, recipientAddress, txnAmount}
   } = useSendTxnFlowContext();
@@ -53,7 +52,7 @@ function SendTxnSuccess() {
       <List items={generateTxnSummary()} customClassName={"send-txn-success__list"}>
         {([from, middle, to]) => (
           <ListItem customClassName={"send-txn-success__list-item"}>
-            <p className={"text-color--gray-light"}>{from}</p>
+            <span className={"text-color--gray-light"}>{from}</span>
 
             {middle && middle}
 
@@ -83,7 +82,9 @@ function SendTxnSuccess() {
   );
 
   function generateTxnSummary() {
-    let amount = `${algoFormatter(algosdk.algosToMicroalgos(Number(txnAmount)))} ALGO`;
+    let amount = `${ALGO_UNIT}${algoFormatter(
+      algosdk.algosToMicroalgos(Number(txnAmount))
+    )}`;
 
     if (selectedAsset && !isALGO(selectedAsset)) {
       amount = `${txnAmount} ${selectedAsset.unit_name}`;
@@ -96,7 +97,7 @@ function SendTxnSuccess() {
             accounts[senderAddress!].name
           )} Account `}</p>
 
-          <p className={"typography--secondary-body text-color--gray-light"}>
+          <p className={"typography--secondary-body text-color--gray-lighter"}>
             {trimAccountAddress(senderAddress!)}
           </p>
         </>,

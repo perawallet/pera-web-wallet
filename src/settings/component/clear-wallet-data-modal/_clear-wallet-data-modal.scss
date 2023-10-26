@@ -2,30 +2,27 @@
   flex-direction: column;
 
   width: 480px;
-
-  padding-top: 28px;
 }
 
 .clear-wallet-data-modal__icon-wrapper {
   display: grid;
+  place-content: center;
 
-  width: 106px;
-  height: 106px;
+  width: 96px;
+  height: 96px;
 
   margin-bottom: 32px;
 
-  background-color: var(--card-default);
+  background-color: var(--layer-1);
   border-radius: 50%;
-  box-shadow: var(--shadow-large);
-
-  place-content: center;
+  box-shadow: var(--shadow-1);
 
   .safe-icon {
     width: 48px;
     height: 48px;
 
     path {
-      fill: var(--helper-red-default);
+      fill: var(--helper-red-900);
     }
   }
 
@@ -37,7 +34,7 @@
 .clear-wallet-data-modal__heading {
   width: 295px;
 
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 
   text-align: center;
 }
@@ -47,7 +44,7 @@
   align-items: center;
   gap: 12px;
 
-  margin: 32px auto 64px;
+  margin: 32px auto 48px;
 }
 
 .clear-wallet-data-modal__helper-link {
@@ -59,18 +56,17 @@
 
 .clear-wallet-data-modal__helper-icon-wrapper {
   display: grid;
+  place-content: center;
 
   width: 28px;
   height: 28px;
 
-  background-color: var(--helper-orange-lighter);
+  background-color: var(--helper-yellow-100);
   border-radius: 50%;
-
-  place-content: center;
 
   .key-icon {
     path {
-      fill: var(--helper-orange-darker);
+      fill: var(--helper-red-900);
     }
   }
 }
@@ -80,7 +76,7 @@
 }
 
 .clear-wallet-data-modal__confirmation-description {
-  margin: 16px 0 32px;
+  margin: 12px 0 32px;
 }
 
 .clear-wallet-data-modal__confirmation-form {
@@ -98,5 +94,5 @@
 .clear-wallet-data-modal__cancel-cta {
   width: 100%;
 
-  margin-top: 8px;
+  margin-top: 12px;
 }

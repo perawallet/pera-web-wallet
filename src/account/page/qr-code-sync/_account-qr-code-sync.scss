@@ -6,13 +6,17 @@
   margin: 60px 0 26px;
 
   text-align: center;
+
+  #react-qrcode-logo {
+    box-shadow: var(--shadow-3);
+  }
 }
 
 .account-import-pera__qr-code-success-icon-wrapper {
   width: 80px;
   height: 80px;
 
-  background: var(--purple-500);
+  background: var(--helper-purple-900);
   border-radius: 100%;
 }
 
@@ -31,8 +35,6 @@
 }
 
 .account-import-pera__instruction-list-item {
-  color: var(--gray-700);
-
   &:not(:last-child) {
     margin-bottom: 16px;
   }
@@ -47,8 +49,16 @@
 
   margin-right: 16px;
 
-  color: var(--purple-500);
-  background: rgba(107 70 254 / 10%);
+  color: var(--helper-purple-900);
+  background: var(--helper-purple-100);
 
   border-radius: 100%;
+}
+
+.account-import-pera__instruction-list-item-text {
+  color: var(--text-main);
+}
+
+.account-import-pera-qr__cta {
+  margin-top: 64px;
 }

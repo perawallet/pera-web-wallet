@@ -13,7 +13,8 @@ const SYNC_WEB_TO_MOBILE_CONSTANTS = {
   TITLE: "Transfer to Pera Mobile",
   INSTRUCTIONS: [
     "Scan this QR code on Pera Mobile",
-    "Follow the instructions on your app"
+    "Follow the instructions on your app",
+    "Your accounts will be transferred to Pera Mobile"
   ]
 };
 

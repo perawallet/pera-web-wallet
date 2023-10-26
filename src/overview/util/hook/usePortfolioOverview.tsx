@@ -1,200 +1,194 @@
-import {useCallback, useEffect, useReducer, useRef} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 
 import {peraApi} from "../../../core/util/pera/api/peraApi";
-import HttpStatusCodes from "../../../core/network/httpStatusCodes";
 import {useAppContext} from "../../../core/app/AppContext";
-import useAsyncProcess from "../../../core/network/async-process/useAsyncProcess";
-import {AccountASA} from "../../../core/util/pera/api/peraApiModels";
-import {STORED_KEYS} from "../../../core/util/storage/web/webStorage";
-import {encryptedWebStorageUtils} from "../../../core/util/storage/web/webStorageUtils";
-import {assetDBManager} from "../../../core/app/db";
+import useInterval from "../../../core/util/hook/useInterval";
+import {
+  getPortfolioOverviewData,
+  mapNewlyCreatedUserAccounts
+} from "../portfolioOverviewUtils";
+import {SECOND_IN_MS} from "../../../core/util/time/timeConstants";
+import {appDBManager} from "../../../core/app/db";
 
-export type PortfolioOverview = Omit<AppDBOverview, "accounts"> & {
-  accounts: (AccountOverview & {accountName?: string})[];
-};
+// eslint-disable-next-line no-magic-numbers
+const PORTFOLIO_OVERVIEW_POLLING_INTERVAL = SECOND_IN_MS * 3.5;
 
-const defaultPortfolioContextState: PortfolioOverview = {
-  current_round: "",
-  portfolio_value_usd: "",
-  portfolio_value_algo: "",
-  accounts: []
-};
-
-function usePortfolioOverview(options?: {
-  interval?: number;
-}): PortfolioOverview | undefined {
+function usePortfolioOverview() {
   const {
-    state: {accounts, preferredNetwork, masterkey}
+    state: {preferredNetwork, masterkey, algoPrice, hasAccounts},
+    dispatch: dispatchAppState
   } = useAppContext();
   const preferredNetworkRef = useRef(preferredNetwork);
-  const lastKnownPortfolioOverviewRef = useRef<PortfolioOverview | undefined>(
-    Object.keys(accounts).length === 0 ? defaultPortfolioContextState : undefined
-  );
-  const {
-    state: {data: walletAssetsDetail},
-    runAsyncProcess: runFetchAssetDetailsAsyncProcess
-  } = useAsyncProcess<AccountASA[]>();
+  const isLoadingRef = useRef(false);
+  const isLockedApp = useRef(false);
+  const [overview, setOverview] = useState<PortfolioOverview | undefined>();
 
-  // https://reactjs.org/docs/hooks-faq.html#is-there-something-like-forceupdate
-  const [_, triggerUpdate] = useReducer((x) => x + 1, 0);
-
-  // asset-details fetching on bg in case of overview change
-  // set fetched asset-detail values in DB
   useEffect(() => {
-    (async () => {
-      if (walletAssetsDetail) {
-        try {
-          await assetDBManager.setAllAssets()(walletAssetsDetail);
+    // reset overview data when network changing
+    if (preferredNetworkRef.current !== preferredNetwork || !masterkey) {
+      setOverview(undefined);
+    }
+  }, [preferredNetwork, masterkey]);
 
-          triggerUpdate();
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    })();
-  }, [walletAssetsDetail]);
+  const poll = useCallback(async () => {
+    const isTabFocused = document.hasFocus();
+    const abortController = new AbortController();
 
-  const addNewlyCreatedUserAccounts = useCallback(
-    (overviewData?: AppDBOverview) => {
-      if (!overviewData) return undefined;
+    isLockedApp.current = !masterkey;
 
-      return {
-        ...overviewData,
+    if (!masterkey || (!isTabFocused && overview) || !algoPrice || isLoadingRef.current) {
+      return;
+    }
 
-        // add newly created but not activated accounts in block
-        // these accounts not returned by BE
-        accounts: Object.values(accounts).map((account) => {
-          const foundAccount = overviewData?.accounts.find(
-            (accountOverview) => accountOverview.address === account.address
-          );
-
-          if (foundAccount) {
-            return {
-              ...foundAccount,
-              accountName: accounts[account.address]?.name || account.address
-            };
-          }
-
-          return {
-            address: account.address,
-            accountName: account.name,
-            name: null,
-            collectible_count: 0,
-            standard_asset_count: 1,
-            total_algo_value: "0.00",
-            total_usd_value: "0.00"
-          };
-        })
-      };
-    },
-    [accounts]
-  );
-
-  const fetchLastKnownOverviewData = useCallback(
-    async (fetchOptions?: {refresh?: boolean}) => {
-      const isTabFocused = document.hasFocus();
-
-      if (!masterkey || !isTabFocused || Object.keys(accounts).length <= 0) {
-        return;
+    if (!hasAccounts) {
+      if (!overview) {
+        setOverview({
+          portfolio_value_usd: "0.00",
+          portfolio_value_algo: "0.00",
+          accounts: {},
+          current_round: null
+        });
       }
 
-      let shouldTriggerUpdate = fetchOptions?.refresh || false;
-      let staleOverviewData = lastKnownPortfolioOverviewRef.current;
-      let revalidatedOverviewData: PortfolioOverview | undefined;
+      return;
+    }
 
-      if (!staleOverviewData) {
-        staleOverviewData = (await encryptedWebStorageUtils(masterkey).get(
-          STORED_KEYS.STALE_PORTFOLIO_OVERVIEW
-        )) as PortfolioOverview | undefined;
+    try {
+      isLoadingRef.current = true;
 
-        // first render getting stale data
-        shouldTriggerUpdate = true;
-      }
+      const accounts = await appDBManager.decryptTableEntries(
+        "accounts",
+        masterkey!
+      )("address");
 
-      try {
-        revalidatedOverviewData = await peraApi.getMultipleAccountOverview({
+      // network toggled
+      // account added/removed
+      // app is unlocked
+      const forceRefresh =
+        preferredNetworkRef.current !== preferredNetwork ||
+        isLockedApp.current ||
+        (overview &&
+          Object.keys(accounts).length !== Object.keys(overview?.accounts).length);
+
+      const shouldRefresh = await peraApi.getShouldRefresh(
+        {
           account_addresses: Object.keys(accounts),
-          last_known_round: fetchOptions?.refresh
-            ? undefined
-            : staleOverviewData?.current_round,
-          exclude_opt_ins: true
+          last_refreshed_round: forceRefresh ? null : overview?.current_round || null
+        },
+        {signal: abortController.signal}
+      );
+
+      if (shouldRefresh.refresh) {
+        const overviewData = await getPortfolioOverviewData({
+          algoPrice,
+          addresses: Object.keys(accounts),
+          shouldRefresh,
+          abortSignal: abortController.signal,
+          accounts
         });
 
-        // fetch asset details on bg
-        runFetchAssetDetailsAsyncProcess(
-          peraApi.getAllMultipleAccountAssets(
-            revalidatedOverviewData.accounts.map((account) => account.address)
-          )
-        );
+        const mappedOverview = mapNewlyCreatedUserAccounts({
+          accounts,
+          overview: overviewData
+        });
 
-        // trigger update with new values
-        shouldTriggerUpdate = true;
-      } catch (error: any) {
-        // if NOT_MODIFIED, return stale data
-        if (error.statusCode !== HttpStatusCodes.NOT_MODIFIED) {
-          // Internal Server Error
-          console.error(error);
-        }
-      } finally {
-        let overviewData = staleOverviewData;
-
-        if (revalidatedOverviewData) {
-          overviewData = revalidatedOverviewData;
-        }
-
-        const overviewDataWithNewAccounts = addNewlyCreatedUserAccounts(overviewData);
-
-        if (overviewDataWithNewAccounts) {
-          await encryptedWebStorageUtils(masterkey).set(
-            STORED_KEYS.STALE_PORTFOLIO_OVERVIEW,
-            overviewDataWithNewAccounts
-          );
-
-          lastKnownPortfolioOverviewRef.current = overviewDataWithNewAccounts;
-        }
-
-        if (shouldTriggerUpdate) {
-          triggerUpdate();
-        }
+        setOverview(mappedOverview);
       }
-    },
-    [accounts, addNewlyCreatedUserAccounts, masterkey, runFetchAssetDetailsAsyncProcess]
-  );
-
-  // send initial request and set the timer for polling if interval is given
-  useEffect(() => {
-    let intervalId: NodeJS.Timer | undefined;
-
-    fetchLastKnownOverviewData();
-
-    if (options?.interval) {
-      intervalId = setInterval(() => fetchLastKnownOverviewData(), options?.interval);
-    }
-
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-  }, [fetchLastKnownOverviewData, options?.interval]);
-
-  // fetch immediately cases
-  // network changed or account added
-  useEffect(() => {
-    if (
-      preferredNetworkRef.current !== preferredNetwork ||
-      (lastKnownPortfolioOverviewRef.current &&
-        Object.keys(accounts).length !==
-          lastKnownPortfolioOverviewRef?.current.accounts.length)
-    ) {
-      fetchLastKnownOverviewData({refresh: true});
-
+    } catch (error: any) {
+      console.error(error);
+    } finally {
+      isLoadingRef.current = false;
+      isLockedApp.current = false;
       preferredNetworkRef.current = preferredNetwork;
-      lastKnownPortfolioOverviewRef.current = undefined;
     }
-  }, [accounts, fetchLastKnownOverviewData, preferredNetwork]);
 
-  return lastKnownPortfolioOverviewRef.current;
+    abortController.abort();
+  }, [algoPrice, hasAccounts, masterkey, overview, preferredNetwork]);
+
+  useInterval(poll, PORTFOLIO_OVERVIEW_POLLING_INTERVAL, {
+    shouldRunCallbackAtStart: true
+  });
+
+  if (!overview) return undefined;
+
+  const {accounts, ...portfolioValues} = overview;
+
+  return {
+    overview: portfolioValues,
+    accounts,
+    addAccounts,
+    renameAccount,
+    deleteAccount,
+    refetchAccounts
+  };
+
+  async function addAccounts(addedAccounts: Record<string, AccountOverview>) {
+    if (Object.keys(addedAccounts).length < 0) return;
+
+    const newAccounts = {...overview!.accounts};
+
+    // eslint-disable-next-line guard-for-in
+    for (const address in addedAccounts) {
+      const {
+        name = address,
+        date = new Date(),
+        bip32,
+        usbOnly,
+        pk
+      } = addedAccounts[address];
+
+      const appDBAccount: AppDBAccount = {
+        name,
+        address,
+        date,
+
+        ...(bip32 && {bip32, usbOnly}),
+        ...(pk && {pk})
+      };
+
+      await appDBManager.set("accounts", masterkey!)(address, appDBAccount);
+
+      newAccounts[address] = addedAccounts[address];
+    }
+
+    if (overview) {
+      setOverview({
+        ...overview,
+        accounts: newAccounts
+      });
+    }
+  }
+
+  async function renameAccount(address: string, name: string) {
+    if (!overview) return;
+
+    const {[address]: renamedAccount} = overview.accounts;
+
+    await appDBManager.set("accounts", masterkey!)(address, {...renamedAccount, name});
+
+    setOverview({
+      ...overview,
+      accounts: {...overview.accounts, [address]: {...renamedAccount, name}}
+    });
+  }
+
+  async function deleteAccount(address: string) {
+    if (!overview) return;
+
+    await appDBManager.delete("accounts")({key: address, encryptionKey: masterkey!});
+
+    const {[address]: renamedAccount, ...otherAccounts} = overview.accounts;
+
+    if (Object.keys(otherAccounts).length === 0) {
+      dispatchAppState({type: "SET_HAS_ACCOUNTS", hasAccounts: false});
+    }
+
+    setOverview({...overview, accounts: otherAccounts});
+  }
+
+  function refetchAccounts() {
+    setOverview(undefined);
+  }
 }
 
 export default usePortfolioOverview;

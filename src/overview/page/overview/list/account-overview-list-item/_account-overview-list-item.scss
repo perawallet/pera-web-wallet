@@ -3,16 +3,21 @@
 
   display: grid;
   align-items: center;
-  grid-template-columns: auto 28px 28px;
-  gap: 16px;
+  grid-template-columns: auto 68px;
 
-  margin: 0 16px;
-  padding-right: 12px;
+  padding: 0 16px;
 
   transition: background-color var(--default-animation);
 
+  &:not(:last-of-type) {
+    .account-overview-list-item__grid-wrapper,
+    .account-overview-list-item__actions {
+      border-bottom: 1px solid var(--border-default);
+    }
+  }
+
   &:hover {
-    background-color: var(--purple-50);
+    background-color: var(--helper-gray-100);
     border-radius: 12px;
   }
 }
@@ -20,30 +25,43 @@
 .account-overview-list-item__link {
   display: grid;
   align-items: center;
-  grid-template-columns: 32px 1fr 96px 96px minmax(144px, max-content);
+  grid-template-columns: 32px auto;
   gap: 16px;
-
-  padding: 12px 0 12px 12px;
 
   &:hover {
     cursor: pointer;
   }
 }
 
+.account-overview-list-item__grid-wrapper {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 96px 96px minmax(144px, max-content) 28px 28px;
+  gap: 16px;
+
+  padding: 22px 0;
+}
+
 .account-overview-list-item__grid-cell {
   display: grid;
 
-  text-align: center;
-
-  &:nth-child(2) {
+  &:nth-child(1) {
     text-align: left;
   }
 
-  &:nth-child(5n) {
+  &:nth-child(4n) {
     margin-right: 20px;
 
     text-align: right;
   }
+}
+
+.account-overview-list-item__actions {
+  display: grid;
+  grid-template-columns: 28px 28px;
+  gap: 12px;
+
+  padding: 30px 0;
 }
 
 .account-overview-list-item__clipboard-button {

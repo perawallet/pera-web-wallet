@@ -2,7 +2,7 @@ import {ReactComponent as AsaVerifiedIcon} from "../../../core/ui/icons/asa-veri
 import {ReactComponent as AsaTrustedIcon} from "../../../core/ui/icons/asa-trusted.svg";
 import {ReactComponent as AsaSuspiciousIcon} from "../../../core/ui/icons/asa-suspicious.svg";
 
-import {Asset as AlgoSDKAsset} from "algosdk/dist/types/src/client/v2/algod/models/types";
+import {Asset as AlgoSDKAsset} from "algosdk/dist/types/client/v2/algod/models/types";
 
 import {formatNumber} from "../number/numberUtils";
 import {AccountASA} from "../pera/api/peraApiModels";

@@ -1,6 +1,5 @@
 import {useCallback, useEffect, useRef, useState} from "react";
 
-import useOnUnmount from "../../util/hook/useOnUnmount";
 import {INITIAL_ASYNC_PROCESS_STATE} from "./asyncProcessConstants";
 
 function useAsyncProcess<Data>(options?: UseAsyncProcessOptions<Data>) {
@@ -41,13 +40,18 @@ function useAsyncProcess<Data>(options?: UseAsyncProcessOptions<Data>) {
           });
         })
         .catch((error) => {
-          console.error(error);
-          asyncStateSetter({
-            isRequestPending: false,
-            isRequestFetched: true,
-            data: null,
-            error
-          });
+          if (error?.data?.type === "Cancelled") {
+            asyncStateSetter(INITIAL_ASYNC_PROCESS_STATE);
+          } else {
+            console.error(error);
+
+            asyncStateSetter({
+              isRequestPending: false,
+              isRequestFetched: true,
+              data: null,
+              error
+            });
+          }
         });
 
       return promise;
@@ -59,9 +63,13 @@ function useAsyncProcess<Data>(options?: UseAsyncProcessOptions<Data>) {
     latestDataRef.current = asyncState.data;
   }, [asyncState.data]);
 
-  useOnUnmount(() => {
-    isUnmountedRef.current = true;
-  });
+  useEffect(() => {
+    isUnmountedRef.current = false;
+
+    return () => {
+      isUnmountedRef.current = true;
+    };
+  }, []);
 
   return {
     state: asyncState,

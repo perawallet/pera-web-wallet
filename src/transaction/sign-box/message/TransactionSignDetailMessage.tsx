@@ -3,7 +3,7 @@ import {ReactComponent as InfoIcon} from "../../../core/ui/icons/info.svg";
 
 import "./_transaction-sign-detail-message.scss";
 
-interface TransactionSignDetailMessageProps {
+export interface TransactionSignDetailMessageProps {
   message: string;
   type: "warning" | "info";
 }

@@ -1,0 +1,12 @@
+.dark-theme {
+  .banner__close-cta {
+    &:hover {
+      background-color: rgba(var(--black-rgb), 0.15);
+      border-radius: 50%;
+
+      .close-icon path {
+        fill: var(--banner-text);
+      }
+    }
+  }
+}

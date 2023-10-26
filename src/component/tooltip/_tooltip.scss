@@ -5,19 +5,19 @@
 
     padding: 10px 20px;
 
-    background: var(--text-main);
+    background-color: var(--popover-bg);
     border: none;
     border-radius: 12px;
 
     &.place-top {
       &:before,
       &:after {
-        border-top-color: var(--text-main);
+        border-top-color: var(--popover-bg);
       }
     }
   }
 }
 
 .tooltip-content {
-  color: var(--primary-button-text);
+  color: var(--popover-text);
 }

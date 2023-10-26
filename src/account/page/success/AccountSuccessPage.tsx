@@ -1,21 +1,24 @@
 import checkmarkAnimation from "../../../core/ui/animation/Checkmark.json";
+import checkmarkDarkAnimation from "../../../core/ui/animation/Checkmark.dark.json";
 
 import "./_account-success-page.scss";
 
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import Lottie from "lottie-react";
 
 import ROUTES from "../../../core/route/routes";
 import AccountSuccessCard from "./card/AccountSuccessCard";
 import ExploreItemList from "../../../explore/item/list/ExploreItemList";
 import {getExploreItems} from "../../../explore/util/exploreUtils";
-import {useAppContext} from "../../../core/app/AppContext";
 import {getLastAccountAddress} from "../../util/accountUtils";
 import LinkButton from "../../../component/button/LinkButton";
 import webStorage, {STORED_KEYS} from "../../../core/util/storage/web/webStorage";
 import Button from "../../../component/button/Button";
 import {useConnectFlowContext} from "../../../connect/context/ConnectFlowContext";
 import {AccountComponentFlows} from "../../util/accountTypes";
+import {appDBManager} from "../../../core/app/db";
+import {useAppContext} from "../../../core/app/AppContext";
+
 export interface AccountSuccessPageProps {
   type: "CREATE" | "IMPORT";
   flow?: AccountComponentFlows;
@@ -23,22 +26,41 @@ export interface AccountSuccessPageProps {
 
 function AccountSuccessPage({type, flow = "default"}: AccountSuccessPageProps) {
   const {
-    state: {accounts}
+    state: {masterkey, theme}
   } = useAppContext();
   const {formitoState, dispatchFormitoAction} = useConnectFlowContext();
-  const createdAccountName = accounts[getLastAccountAddress(accounts)].name;
+  const [lastAddedAccount, setLastAddedAccount] = useState<AppDBAccount | undefined>();
 
   useEffect(() => {
-    if (type === "CREATE") {
-      webStorage.local.setItem(STORED_KEYS.CREATED_NEW_ACCOUNT, createdAccountName);
+    let ignore = false;
+
+    appDBManager
+      .decryptTableEntries(
+        "accounts",
+        masterkey!
+      )("address")
+      .then((accounts) => {
+        if (!ignore) {
+          setLastAddedAccount(accounts[getLastAccountAddress(accounts)]);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [masterkey]);
+
+  useEffect(() => {
+    if (type === "CREATE" && lastAddedAccount) {
+      webStorage.local.setItem(STORED_KEYS.CREATED_NEW_ACCOUNT, lastAddedAccount.name);
     }
-  });
+  }, [lastAddedAccount, type]);
 
   return (
     <section className={"account-success-page"}>
       <div className={"animation--slide-in animation--slide-in--delay--4"}>
         <Lottie
-          animationData={checkmarkAnimation}
+          animationData={theme === "light" ? checkmarkAnimation : checkmarkDarkAnimation}
           loop={false}
           className={"account-success-page__checkmark-animation"}
         />
@@ -68,7 +90,7 @@ function AccountSuccessPage({type, flow = "default"}: AccountSuccessPageProps) {
         </header>
       </div>
 
-      <AccountSuccessCard type={type} />
+      {lastAddedAccount && <AccountSuccessCard account={lastAddedAccount} />}
 
       {type === "IMPORT" && (
         <div

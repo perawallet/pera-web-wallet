@@ -3,13 +3,25 @@
 .asset-optin-page {
   @extend .card-layout;
 
+  position: static;
+
   display: flex;
   flex-direction: column;
 
-  width: 480px;
-  height: 600px;
+  width: 424px;
+  height: fit-content;
 
-  padding: 0;
+  padding: 0 0 100px;
+
+  .searchable-list {
+    height: 546px;
+
+    padding: 20px;
+
+    background-color: var(--layer-2);
+    border-radius: 12px;
+    box-shadow: var(--shadow-inline);
+  }
 
   .spinner {
     margin: auto;
@@ -21,7 +33,7 @@
   align-items: center;
   gap: 8px;
 
-  padding: 28px 28px 32px;
+  padding: 28px 0 32px;
 }
 
 .asset-optin-page__info-button {
@@ -35,5 +47,10 @@
   .info-icon {
     width: 20px;
     height: 20px;
+
+    path,
+    circle {
+      fill: var(--text-main);
+    }
   }
 }

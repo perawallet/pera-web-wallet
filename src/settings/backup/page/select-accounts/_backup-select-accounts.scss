@@ -1,0 +1,61 @@
+.backup-modal-accounts__wrapper,
+.backup-modal-accounts__wrapper--empty {
+  position: relative;
+
+  width: 424px;
+  height: 624px;
+
+  .selectable-account-list__list {
+    max-height: 440px;
+
+    padding: 0;
+  }
+
+  .tooltip-container {
+    height: 20px;
+  }
+
+  .go-back-button-container {
+    margin-bottom: 40px;
+  }
+
+  .selectable-account-list__select-all-checkbox-wrapper,
+  .selectable-account-list {
+    margin: 0;
+    padding: 20px;
+
+    background: var(--layer-2);
+  }
+
+  .selectable-account-list__select-all-checkbox-wrapper {
+    border-radius: 12px 12px 0 0;
+  }
+
+  .selectable-account-list {
+    border-radius: 0 0 12px 12px;
+  }
+}
+
+.backup-modal-accounts__wrapper--empty {
+  display: grid;
+  place-content: center;
+
+  width: 424px;
+  height: 620px;
+}
+
+.backup-modal-accounts__subheader {
+  margin-bottom: 32px;
+}
+
+.backup-modal-accounts__select-form {
+  min-height: 460px;
+
+  margin-top: 30px;
+
+  .selectable-account-list__cta {
+    position: absolute;
+    bottom: -56px;
+    left: 0;
+  }
+}

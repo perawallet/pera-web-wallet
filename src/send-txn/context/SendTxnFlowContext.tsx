@@ -5,7 +5,6 @@ import useFormito from "../../core/util/hook/formito/useFormito";
 import useLocationWithState from "../../core/util/hook/useLocationWithState";
 import {AccountASA} from "../../core/util/pera/api/peraApiModels";
 import {usePortfolioContext} from "../../overview/context/PortfolioOverviewContext";
-import PeraLoader from "../../component/loader/pera/PeraLoader";
 import webStorage, {STORED_KEYS} from "../../core/util/storage/web/webStorage";
 import {getHighestBalanceAccount} from "../../account/util/accountUtils";
 
@@ -22,7 +21,6 @@ export interface SendTxnFlowState {
   exchangePrice?: number;
   txnToSign?: Transaction;
 
-  minBalance?: number;
   hideSendTxnInfoModal: boolean;
 }
 
@@ -39,27 +37,32 @@ const SendTxnFlowContext = createContext(
 type LocationState = {address: AccountOverview["address"]};
 
 function SendTxnFlowContextProvider({children}: {children: React.ReactNode}) {
-  const portfolioOverview = usePortfolioContext();
+  const portfolioContext = usePortfolioContext();
   const {address: prefilledAccountAddress} = useLocationWithState<LocationState>();
 
-  if (!portfolioOverview) {
-    return <PeraLoader mode={"gray"} customClassName={"pera-loader--align-center"} />;
-  }
-
-  const {portfolio_value_usd, portfolio_value_algo} = portfolioOverview;
-  const senderAddress =
-    prefilledAccountAddress ||
-    // it returns undefined if there is no account in portfolio
-    getHighestBalanceAccount(portfolioOverview.accounts)?.address;
-
-  const initialState: SendTxnFlowState = {
+  let initialState: SendTxnFlowState = {
     ...initialSendTxnFlowState,
-    senderAddress,
-    exchangePrice:
-      Number(portfolio_value_usd) /
-      algosdk.microalgosToAlgos(Number(portfolio_value_algo)),
+    senderAddress: "",
     hideSendTxnInfoModal: !!webStorage.local.getItem(STORED_KEYS.HIDE_SEND_TXN_INFO_MODAL)
   };
+
+  if (portfolioContext) {
+    const {
+      accounts,
+      overview: {portfolio_value_algo = "", portfolio_value_usd = ""}
+    } = portfolioContext;
+    const senderAddress =
+      prefilledAccountAddress || getHighestBalanceAccount(accounts)?.address;
+    const exchangePrice =
+      Number(portfolio_value_usd) /
+      algosdk.microalgosToAlgos(Number(portfolio_value_algo));
+
+    initialState = {
+      ...initialState,
+      senderAddress,
+      exchangePrice
+    };
+  }
 
   return (
     <SendTxnFlowFormitoContainer state={initialState}>

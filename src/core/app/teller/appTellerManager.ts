@@ -1,5 +1,6 @@
 import Teller from "../../network/teller/Teller";
-import {PeraWalletTransaction} from "../../util/model/peraWalletModel";
+import {AlgorandChainIDs} from "../../util/algod/algodTypes";
+import {ArbitraryData, PeraWalletTransaction} from "../../util/model/peraWalletModel";
 
 export type PeraTeller =
   | {
@@ -30,6 +31,26 @@ export type PeraTeller =
       type: "SELECT_ACCOUNT_EMBEDDED_CALLBACK";
     }
   | {
+      type: "SIGN_DATA";
+      signer: string;
+      chainId: AlgorandChainIDs;
+      data: ArbitraryData[];
+    }
+  | {
+      type: "SIGN_DATA_CALLBACK";
+      signedData: {
+        signedData: string; // base64 encoded
+      }[];
+    }
+  | {
+      type: "SIGN_DATA_CALLBACK_ERROR";
+      error: string;
+    }
+  | {
+      type: "SIGN_DATA_NETWORK_MISMATCH";
+      error: string;
+    }
+  | {
       type: "SIGN_TXN";
       txn: PeraWalletTransaction[];
     }
@@ -38,11 +59,11 @@ export type PeraTeller =
       signedTxns: SignedTxn[];
     }
   | {
-      type: "SIGN_TXN_NETWORK_MISMATCH";
+      type: "SIGN_TXN_CALLBACK_ERROR";
       error: string;
     }
   | {
-      type: "SIGN_TXN_CALLBACK_ERROR";
+      type: "SIGN_TXN_NETWORK_MISMATCH";
       error: string;
     }
   | {
@@ -54,6 +75,12 @@ export type PeraTeller =
     }
   | {
       type: "TAB_OPEN_RECEIVED";
+    }
+  | {
+      type: "IFRAME_INITIALIZED";
+    }
+  | {
+      type: "IFRAME_INITIALIZED_RECEIVED";
     };
 
 const appTellerManager = new Teller<PeraTeller>({

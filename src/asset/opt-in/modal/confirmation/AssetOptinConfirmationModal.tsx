@@ -9,16 +9,17 @@ import classNames from "classnames";
 import AssetLogo from "../../../components/logo/AssetLogo";
 import {isNFT, renderVerificationTierIcon} from "../../../../core/util/asset/assetUtils";
 import ClipboardButton from "../../../../component/clipboard/button/ClipboardButton";
-import {getAccountIcon, trimAccountName} from "../../../../account/util/accountUtils";
+import {trimAccountName} from "../../../../account/util/accountUtils";
 import {ALGO_UNIT} from "../../../../core/ui/typography/typographyConstants";
 import {defaultPriceFormatter} from "../../../../core/util/number/numberUtils";
 import Button from "../../../../component/button/Button";
 import {generateAssetOptinTxn} from "../../util/assetOptinUtils";
 import {getAssetImgSrc} from "../../../../core/util/image/imageUtils";
+import useAccountIcon from "../../../../core/util/hook/useAccountIcon";
 
 interface AssetOptinConfirmationModalProps {
   asset: Asset;
-  account: AppDBAccount;
+  account: AccountOverview;
   onApprove: (txn: Transaction) => void;
   onClose: VoidFunction;
 }
@@ -33,6 +34,7 @@ function AssetOptinConfirmationModal({
 }: AssetOptinConfirmationModalProps) {
   const {algoFormatter} = defaultPriceFormatter();
   const [optinTxn, setOptinTxn] = useState<Transaction | undefined>();
+  const {renderAccountIcon} = useAccountIcon();
 
   useEffect(() => {
     (async () => {
@@ -93,7 +95,7 @@ function AssetOptinConfirmationModal({
       </Button>
 
       <Button
-        buttonType={"ghost"}
+        buttonType={"light"}
         size={"large"}
         customClassName={"button--fluid"}
         onClick={onClose}>
@@ -122,7 +124,7 @@ function AssetOptinConfirmationModal({
         title: "Account",
         content: (
           <div className={"asset-optin-confirmation-modal__info-list-item__content"}>
-            {getAccountIcon({type: account.type, width: 24, height: 24})}
+            {renderAccountIcon({account, size: 24})}
 
             <p className={"typography--medium-body text-color--main"}>
               {trimAccountName(account.name)}

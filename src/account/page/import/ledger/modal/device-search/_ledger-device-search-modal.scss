@@ -1,0 +1,56 @@
+@import "../../../../../../core/ui/typography/typography-mixins";
+
+.ledger-device-search-modal {
+  display: flex;
+  align-items: space-between;
+
+  width: 424px;
+  height: 624px;
+
+  padding-top: 144px;
+
+  .info-modal__icon-wrapper {
+    width: fit-content;
+    height: fit-content;
+
+    background: transparent;
+
+    box-shadow: unset;
+  }
+
+  .info-modal__title {
+    height: 28px;
+  }
+
+  .info-modal__description-box {
+    height: 172px;
+
+    margin-top: auto;
+
+    .info-modal__description-list-item {
+      &:first-child {
+        @include typography--medium-body();
+      }
+
+      &:not(:first-child) {
+        color: var(--text-gray-lighter);
+      }
+    }
+
+    .tip-icon {
+      path {
+        fill: var(--helper-purple-900);
+      }
+    }
+
+    .info-icon {
+      path {
+        fill: var(--text-gray-lighter);
+      }
+    }
+  }
+
+  .info-modal__cta-group {
+    display: none;
+  }
+}

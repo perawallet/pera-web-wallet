@@ -1,16 +1,30 @@
 .asset-optin-account-link {
-  display: flex;
-  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+
+  width: 100%;
 
   margin-top: auto;
-  padding: 16px 40px 16px 28px;
+  padding: 18px 0;
 
-  border-top: 1px solid var(--gray-200);
+  background-color: var(--background);
+
+  border-top: 1px solid var(--border-default);
 
   &,
   &:visited {
-    color: currentColor;
+    color: currentcolor;
   }
+}
+
+.asset-optin-account-link__content {
+  display: flex;
+  justify-content: space-between;
+
+  width: 424px;
+
+  margin: auto;
 }
 
 .asset-optin-account-link__name {
@@ -23,6 +37,10 @@
   display: flex;
   align-items: center;
   gap: 16px;
+
+  .chevron-right-icon path {
+    fill: var(--text-main);
+  }
 }
 
 .asset-optin-account-link__balance-warning {
@@ -30,9 +48,9 @@
   align-items: center;
   gap: 4px;
 
-  color: var(--helper-red-default);
+  color: var(--helper-red-900);
 
   .warning-icon path {
-    fill: var(--helper-red-default);
+    fill: var(--helper-red-900);
   }
 }

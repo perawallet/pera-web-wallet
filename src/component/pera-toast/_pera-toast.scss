@@ -1,7 +1,12 @@
+#toast-root {
+  z-index: var(--simple-toast-z-index);
+}
+
 .toast-stack {
-  width: 404px;
+  width: 472px;
 
   padding: 32px;
+  padding-left: 100px;
 }
 
 .pera-toast {
@@ -14,9 +19,9 @@
   margin-top: 4px;
   padding: 16px 20px;
 
-  background-color: var(--card-default);
+  background-color: var(--layer-1);
   border-radius: 16px;
-  box-shadow: var(--shadow-xxlarge);
+  box-shadow: var(--shadow-3);
 
   &--small {
     width: 300px;
@@ -47,13 +52,13 @@
 
 .pera-toast--warning {
   .pera-toast__title {
-    color: var(--helper-red-darker);
+    color: var(--helper-red-900);
   }
 }
 
 .pera-toast--info {
   .pera-toast__title {
-    color: var(--helper-orange-darker);
+    color: var(--helper-blue-900);
   }
 }
 
@@ -73,21 +78,21 @@
 }
 
 .pera-toast__icon-wrapper--info {
-  background-color: var(--helper-orange-lighter);
+  background-color: var(--helper-blue-100);
 
   .key-icon {
     path {
-      fill: var(--helper-orange-darker);
+      fill: var(--helper-blue-900);
     }
   }
 }
 
 .pera-toast__icon-wrapper--warning {
-  background-color: var(--helper-red-lighter);
+  background-color: var(--helper-red-100);
 
   .info-icon {
     path {
-      fill: var(--helper-red-darker);
+      fill: var(--helper-red-900);
     }
   }
 }
@@ -102,7 +107,7 @@
 
   .close-icon {
     path {
-      fill: var(--text-gray-lightest);
+      fill: var(--text-gray-lighter);
     }
   }
 }

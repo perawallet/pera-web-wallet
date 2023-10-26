@@ -11,7 +11,7 @@
 
   margin: 186px auto 28px;
 
-  background-color: var(--helper-purple-default);
+  background-color: var(--helper-purple-900);
   border-radius: 50%;
 
   animation: accountCreationIconColor 1s forwards;
@@ -102,11 +102,11 @@
 
 @keyframes accountCreationIconColor {
   from {
-    background-color: var(--helper-purple-default);
+    background-color: var(--helper-purple-900);
   }
 
   to {
-    background-color: var(--helper-green-default);
+    background-color: var(--helper-peace-900);
   }
 }
 

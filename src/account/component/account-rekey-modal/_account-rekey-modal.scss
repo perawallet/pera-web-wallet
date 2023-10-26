@@ -1,0 +1,76 @@
+@import "../../../core/ui/typography/typography-mixins";
+
+.account-rekey__info-modal {
+  .account-rekey__header-icon path {
+    fill: var(--helper-purple-900);
+  }
+
+  .info-modal__description-list-item {
+    @include text-color--gray();
+    @include typography--secondary-body();
+
+    &:first-of-type {
+      @include typography--medium-body();
+
+      color: var(--text-main);
+
+      .account-rekey__info-tip-icon path {
+        fill: var(--helper-purple-900);
+      }
+
+      .info-modal__description-list-item__icon-wrapper {
+        background: none;
+      }
+    }
+
+    &:not(:first-of-type) {
+      .account-rekey__info-tip-icon path {
+        fill: var(--text-gray-lighter);
+      }
+    }
+  }
+}
+
+.account-rekey-modal {
+  display: flex;
+  flex-direction: column;
+
+  width: 420px;
+  height: 624px;
+
+  overflow: hidden;
+
+  .selectable-account-list__list {
+    height: auto;
+
+    max-height: 460px;
+  }
+}
+
+.account-rekey-modal__subtitle {
+  margin-bottom: 48px;
+}
+
+.account-rekey-modal__confirmation-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 100%;
+
+  .account-rekey-modal__confirmation-account {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+
+    &:first-child {
+      margin-top: 60px;
+    }
+
+    svg {
+      margin-bottom: 20px;
+    }
+  }
+}

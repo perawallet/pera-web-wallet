@@ -1,9 +1,15 @@
 /* eslint-disable max-lines */
-import algosdk, {isValidAddress, OnApplicationComplete, Transaction} from "algosdk";
+import algosdk, {
+  encodeAddress,
+  isValidAddress,
+  OnApplicationComplete,
+  Transaction
+} from "algosdk";
 
 import {GENESIS_HASH_BY_NETWORK} from "../../core/util/algod/algodConstants";
 import {base64ToUint8Array, uint8ArrayToBase64} from "../../core/util/blob/blobUtils";
-import {SignerTransaction} from "../../core/util/model/peraWalletModel";
+import {ArbitraryData, SignerTransaction} from "../../core/util/model/peraWalletModel";
+import {MAX_ALLOWED_TRANSACTION_IN_GROUP} from "./transactionContants";
 
 export interface TransactionTypeCounts {
   appl: number;
@@ -11,6 +17,7 @@ export interface TransactionTypeCounts {
   pay: number;
   axferReceive: number;
   acfg: number;
+  keyreg: number;
 }
 
 const TRANSACTION_TYPE_LABEL_MAP = {
@@ -18,7 +25,8 @@ const TRANSACTION_TYPE_LABEL_MAP = {
   axferReceive: "Receive",
   axfer: "Asset Transfer",
   pay: "Payment",
-  acfg: "Asset Config"
+  acfg: "Asset Config",
+  keyreg: "Key Registration"
 };
 
 function getTransactionTypeCounts(transactions: Transaction[], userAddress: string) {
@@ -36,7 +44,8 @@ function getTransactionTypeCounts(transactions: Transaction[], userAddress: stri
       axfer: 0,
       pay: 0,
       axferReceive: 0,
-      acfg: 0
+      acfg: 0,
+      keyreg: 0
     }
   );
 }
@@ -91,6 +100,8 @@ function seperateTransactionReceiveAndSpend(
         txns.receiveTransactions.push(txn);
       } else if (checkIfTransactionAssetConfig(txn)) {
         txns.assetConfigTransactions.push(txn);
+      } else if (checkIfTransactionKeyreg(txn)) {
+        txns.keyregTransactions.push(txn);
       } else {
         txns.spendTransactions.push(txn);
       }
@@ -102,7 +113,8 @@ function seperateTransactionReceiveAndSpend(
       spendTransactions: [] as Transaction[],
       optInTransactions: [] as Transaction[],
       applicationCallTransactions: [] as Transaction[],
-      assetConfigTransactions: [] as Transaction[]
+      assetConfigTransactions: [] as Transaction[],
+      keyregTransactions: [] as Transaction[]
     }
   );
 }
@@ -160,6 +172,10 @@ function checkIfTransactionOptIn(transaction: Transaction, userAddress: string) 
       (!transaction.amount || Number(transaction.amount) === 0) &&
       getTransactionType(transaction, userAddress) === "axferReceive"
   );
+}
+
+function checkIfTransactionKeyreg(transaction: Transaction) {
+  return transaction.type === "keyreg";
 }
 
 function checkIfTransactionApplicationCall(transaction: Transaction) {
@@ -234,8 +250,17 @@ function isAlgoTransferTransaction(transaction: Transaction) {
   return Boolean(!transaction.assetIndex && transaction.amount);
 }
 
-function transactionHasRekey(transaction: Transaction) {
-  return Boolean(transaction.reKeyTo);
+function transactionsHaveRekey(transactions: Transaction[], signerAddress: string) {
+  return transactions.some((transaction) =>
+    transactionHasRekey(transaction, signerAddress)
+  );
+}
+
+function transactionHasRekey(transaction: Transaction, signerAddress: string) {
+  return (
+    Boolean(transaction.reKeyTo) &&
+    encodeAddress(transaction.from.publicKey) === signerAddress
+  );
 }
 
 function transactionHasCloseRemainder(transaction: Transaction) {
@@ -377,6 +402,26 @@ function hasInvalidGroupOnTransactions(transactions: string[]) {
   return transactionGroups.some((txnGroup) => !verifyTransactionsGroupID(txnGroup));
 }
 
+/**
+ * Check if a transaction group has more than 16 transaction or not
+ * @param {string[]} base64 encoded Transaction[]
+ * @returns {boolean}
+ */
+function hasExceededGroupOnTransactions(transactions: string[]) {
+  const decodedTransactions = transactions.map((transaction) =>
+    algosdk.decodeUnsignedTransaction(base64ToUint8Array(transaction))
+  );
+  const transactionGroups = getTransactionGroups(decodedTransactions);
+
+  return transactionGroups.some(
+    (txnGroup) => txnGroup.length > MAX_ALLOWED_TRANSACTION_IN_GROUP
+  );
+}
+
+function isTxnArbitraryData(txn: Transaction | ArbitraryData): txn is ArbitraryData {
+  return (txn as ArbitraryData).data !== undefined;
+}
+
 export {
   getTransactionTypeCounts,
   getTransactionTypeCountTexts,
@@ -398,6 +443,7 @@ export {
   isSingleAuthTransaction,
   isAlgoTransferTransaction,
   transactionHasRekey,
+  transactionsHaveRekey,
   transactionHasCloseRemainder,
   checkAuthAddressesIsValid,
   transactionHasClearState,
@@ -409,7 +455,9 @@ export {
   isAllTransactionsEmpty,
   verifyTransactionsGroupID,
   hasInvalidGroupOnTransactions,
-  getTransactionGroups
+  getTransactionGroups,
+  hasExceededGroupOnTransactions,
+  isTxnArbitraryData
 };
 
 /* eslint-enable max-lines */

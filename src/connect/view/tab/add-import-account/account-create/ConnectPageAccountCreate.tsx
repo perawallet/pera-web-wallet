@@ -2,9 +2,19 @@ import AccountCreationAnimation from "../../../../../account/component/account-c
 import AccountCreate from "../../../../../account/page/create/AccountCreate";
 import AccountSuccessPage from "../../../../../account/page/success/AccountSuccessPage";
 import CardLayoutWithoutRoute from "../../../../../layouts/card-layout-without-route/CardLayoutWithoutRoute";
-import {useConnectFlowContext} from "../../../../context/ConnectFlowContext";
+import {
+  ConnectFlowAccountCreateViews,
+  useConnectFlowContext
+} from "../../../../context/ConnectFlowContext";
+import AccountPassphraseModal from "../../../../../account/component/account-passphrase-modal/AccountPassphraseModal";
 
-export type ConnectPageAccountCreateViews = "create" | "animation" | "success";
+const ConnectPageAccountCreateViews: Record<ConnectFlowAccountCreateViews, JSX.Element> =
+  {
+    create: <AccountCreate flow={"connect"} />,
+    backup: <AccountPassphraseModal flow={"connect"} />,
+    animation: <AccountCreationAnimation type={"CREATE"} flow={"connect"} />,
+    success: <AccountSuccessPage type={"CREATE"} flow={"connect"} />
+  };
 
 function ConnectPageAccountCreate() {
   const {
@@ -12,16 +22,12 @@ function ConnectPageAccountCreate() {
   } = useConnectFlowContext();
 
   if (createAccountViews === "success") {
-    return <AccountSuccessPage type={"CREATE"} flow={"connect"} />;
+    return ConnectPageAccountCreateViews[createAccountViews];
   }
 
   return (
     <CardLayoutWithoutRoute>
-      {createAccountViews === "animation" ? (
-        <AccountCreationAnimation type={"CREATE"} flow={"connect"} />
-      ) : (
-        <AccountCreate flow={"connect"} />
-      )}
+      {ConnectPageAccountCreateViews[createAccountViews]}
     </CardLayoutWithoutRoute>
   );
 }

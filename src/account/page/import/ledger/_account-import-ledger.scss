@@ -1,0 +1,113 @@
+.account-import-ledger {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 545px 615px;
+  gap: 16px;
+
+  padding-top: 50px;
+
+  &--last-step {
+    .account-import-ledger__cta {
+      margin-top: 40px;
+    }
+  }
+}
+
+.account-import-ledger__context {
+  display: flex;
+  flex-direction: column;
+
+  .account-import-ledger__title {
+    margin: 20px 0 16px;
+  }
+
+  .account-import-ledger__description {
+    max-width: 472px;
+
+    margin-bottom: 32px;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  .account-import-ledger__icon {
+    width: auto;
+    height: 80px;
+
+    margin-top: 64px;
+  }
+}
+
+.account-import-ledger__cta {
+  display: flex;
+  gap: 8px;
+
+  width: 424px;
+
+  white-space: pre;
+
+  .usb-icon g {
+    path {
+      fill: var(--text-contrast);
+    }
+  }
+
+  .bluetooth-icon {
+    path {
+      fill: var(--helper-purple-900);
+    }
+  }
+
+  &:disabled {
+    .usb-icon g,
+    .bluetooth-icon {
+      path {
+        fill: var(--primary-button-disabled-text);
+      }
+    }
+  }
+}
+
+.account-import-ledger__bluetooth-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 155px;
+  height: 118px;
+
+  margin: 0 0 28px 16px;
+
+  background-color: var(--layer-3);
+
+  border-radius: 16px;
+}
+
+.account-import-ledger__bluetooth-icon__content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.account-import-ledger__bluetooth-icon__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  background-color: var(--text-main);
+
+  border-radius: 6px;
+
+  .bluetooth-icon {
+    width: 18px;
+    height: 18px;
+
+    path {
+      fill: var(--text-contrast);
+    }
+  }
+}

@@ -1,15 +1,19 @@
+/* stylelint-disable custom-property-empty-line-before */
 @import "./_media-queries.scss";
 
 :root {
-  --page-content-max-width: 1040px;
+  --page-content-max-width: 1175px;
   --page-header-height: auto;
   --page-header-z-index: 1;
   --page-body-horizontal-padding: auto;
   --sidebar-width: 240px;
 
+  --pera-wallet-modal-compact-width: 380px;
+  --pera-wallet-modal-compact-height: 396px;
+  --pera-wallet-modal-transaction-sign-review-box-height: 398px;
+
   --simple-toast-z-index: 5;
   --send-txn-select-account-z-index: 2;
-
   --default-animation: 0.25s ease;
 }
 

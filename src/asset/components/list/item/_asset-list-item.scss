@@ -1,13 +1,7 @@
 .asset-list-item {
-  padding-bottom: 16px;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--gray-100);
-  }
-
   .list-item__click-wrapper {
     display: grid;
-    grid-template-columns: 32px 1fr auto;
+    grid-template-columns: 32px 1fr;
 
     grid-gap: 16px;
     grid-auto-flow: column;
@@ -18,6 +12,16 @@
       margin-left: 4px;
     }
   }
+
+  &:not(:last-of-type) {
+    .asset-list-item__grid-cell {
+      padding-bottom: 16px;
+
+      &:last-child {
+        border-bottom: 1px solid var(--border-default);
+      }
+    }
+  }
 }
 
 .asset-list-item__grid-cell {
@@ -26,9 +30,13 @@
   &:first-child {
     align-items: center;
   }
+}
 
-  &:last-child {
-    justify-items: flex-end;
+.asset-list-item__logo {
+  &.asset-logo {
+    .image__placeholder {
+      background-color: var(--background);
+    }
   }
 }
 

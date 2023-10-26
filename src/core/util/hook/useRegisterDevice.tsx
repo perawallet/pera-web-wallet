@@ -1,5 +1,6 @@
 import {useEffect, useMemo, useRef} from "react";
 
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 import {useAppContext} from "../../app/AppContext";
 import {PeraApi, peraApi} from "../pera/api/peraApi";
 import {PERA_API_CONFIG} from "../pera/api/peraApiConstants";
@@ -11,9 +12,10 @@ function useRegisterDevice() {
   const registerDeviceRef = useRef<boolean>(false);
   const updateDeviceRef = useRef<boolean>(false);
   const {
-    state: {masterkey, accounts, preferredNetwork},
+    state: {masterkey, preferredNetwork},
     dispatch: dispatchAppState
   } = useAppContext();
+  const {accounts} = usePortfolioContext() || {};
   const userAccountsRef = useRef<number>(accounts ? Object.keys(accounts).length : 0);
   const toggledNetwork = preferredNetwork === "mainnet" ? "testnet" : "mainnet";
   const toggledNetworkApi = useMemo(
@@ -31,7 +33,20 @@ function useRegisterDevice() {
     const isDeviceInfoExist = Boolean(webStorage.local.getItem(STORED_KEYS.DEVICE_INFO));
 
     (async () => {
-      if (isDeviceInfoExist || !masterkey) return;
+      if (!masterkey) return;
+
+      if (isDeviceInfoExist) {
+        const deviceInfo = (await encryptedWebStorageUtils(masterkey!).get(
+          STORED_KEYS.DEVICE_INFO
+        )) as DeviceInfo;
+
+        dispatchAppState({
+          type: "SET_DEVICE_ID",
+          deviceId: deviceInfo[preferredNetwork].deviceId
+        });
+
+        return;
+      }
 
       try {
         const [
@@ -45,6 +60,11 @@ function useRegisterDevice() {
         };
 
         await encryptedWebStorageUtils(masterkey).set(STORED_KEYS.DEVICE_INFO, device);
+
+        dispatchAppState({
+          type: "SET_DEVICE_ID",
+          deviceId: device[preferredNetwork].deviceId
+        });
 
         registerDeviceRef.current = true;
       } catch (error) {
