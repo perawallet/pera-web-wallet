@@ -9,12 +9,14 @@ import Button from "../../../component/button/Button";
 import Image from "../../../component/image/Image";
 import PeraToast from "../../../component/pera-toast/PeraToast";
 import {appDBManager} from "../../../core/app/db";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 
 function PeraConnectSession({session}: {session: AppDBSession}) {
   const {
-    state: {accounts, masterkey},
+    state: {masterkey},
     dispatch: dispatchAppState
   } = useAppContext();
+  const {accounts = {}} = usePortfolioContext() || {};
   const toaster = useToaster();
   // eslint-disable-next-line no-magic-numbers
   const placeholderLetters = session.title.slice(0, 2);
@@ -51,7 +53,7 @@ function PeraConnectSession({session}: {session: AppDBSession}) {
         </p>
 
         <List
-          items={session.accountAddresses}
+          items={session.accountAddresses.filter((address) => accounts[address])}
           customClassName={"pera-connect-session__account-list"}>
           {(accountAddress) => (
             <ListItem>

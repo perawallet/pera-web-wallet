@@ -61,25 +61,37 @@ function shuffleArray<T = any>(array: T[]): T[] {
 }
 
 function sortAlphabetically<T = any>(array: T[], compareKey: keyof T) {
-  array.sort((firstItem, secondItem) => {
-    let order = 0;
+  return array.sort((firstItem, secondItem) => {
+    const [first, second] = [firstItem, secondItem].map((item) =>
+      String(item[compareKey])
+    );
 
-    if (firstItem[compareKey] < secondItem[compareKey]) {
-      order = -1;
-    } else if (firstItem[compareKey] > secondItem[compareKey]) {
-      order = 1;
-    }
-
-    return order;
+    return first.localeCompare(second, "en");
   });
-
-  return array;
 }
 
-function generateKeyMapFromArray<T = Record<string, unknown>>(array: T[], key: keyof T) {
+function generateKeyMapFromArray<T extends Record<string, unknown>>(
+  array: T[],
+  key: keyof T
+) {
   if (array.length === 0) return {};
 
   return Object.fromEntries(array.map((item) => [item[key], item]));
+}
+
+function sumByKey<T extends PropertyKey>(list: {[K in T]: number | string}[], key: T) {
+  return list.reduce((sum, item) => sum + Number(item[key]), 0);
+}
+
+function separateIntoChunks<T = any>(array: T[], chunkSize: number): T[][] {
+  const separatedArray = [];
+  const arrayAmount = array.length / chunkSize;
+
+  for (let i = 0; i < arrayAmount; i++) {
+    separatedArray.push(array.slice(i * chunkSize, (i + 1) * chunkSize));
+  }
+
+  return separatedArray;
 }
 
 export {
@@ -88,5 +100,7 @@ export {
   replaceAtIndex,
   filterOutItemsByKey,
   shuffleArray,
-  sortAlphabetically
+  sortAlphabetically,
+  sumByKey,
+  separateIntoChunks
 };

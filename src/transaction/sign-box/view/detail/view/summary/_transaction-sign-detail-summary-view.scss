@@ -8,6 +8,10 @@
 }
 
 .transaction-sign-detail-summary-view__header__back-button.button {
+  .arrow-left-icon path {
+    fill: var(--text-main);
+  }
+
   &:hover,
   &:focus {
     .arrow-left-icon path {

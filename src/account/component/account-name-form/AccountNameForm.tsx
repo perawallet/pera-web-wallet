@@ -4,10 +4,10 @@ import {ComponentProps, SyntheticEvent} from "react";
 import {FormField, Input, useToaster} from "@hipo/react-ui-toolkit";
 
 import {validateAccountCreateForm} from "../../util/accountUtils";
-import {useAppContext} from "../../../core/app/AppContext";
 import PeraToast from "../../../component/pera-toast/PeraToast";
 import Button from "../../../component/button/Button";
 import useFormito from "../../../core/util/hook/formito/useFormito";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 
 interface AccountNameFormProps extends Omit<ComponentProps<"form">, "onSubmit"> {
   ctaText: string;
@@ -23,9 +23,7 @@ function AccountNameForm({
   description = "Name your account to easily identify it while using Pera Wallet. These names are stored locally, and can only be seen by you.",
   ...formProps
 }: AccountNameFormProps) {
-  const {
-    state: {accounts}
-  } = useAppContext();
+  const {accounts = {}} = usePortfolioContext() || {};
   const toaster = useToaster();
   const {
     formitoState: {accountName},
@@ -56,7 +54,7 @@ function AccountNameForm({
           {"How about "}
           <span
             className={
-              "text-color--gray-light account-name-form__name-input__placeholder__animated"
+              "text-color--gray-lighter account-name-form__name-input__placeholder__animated"
             }
           />
         </p>

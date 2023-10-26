@@ -41,6 +41,7 @@ const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
       return (
         // eslint-disable-next-line jsx-a11y/anchor-has-content
         <a
+          onClick={handleStopPropagation}
           href={otherProps.to as string}
           className={linkButtonClassname}
           rel={"noopener noreferrer"}
@@ -51,6 +52,10 @@ const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
     }
 
     return <Link ref={ref} className={linkButtonClassname} {...otherProps} />;
+
+    function handleStopPropagation(event: React.SyntheticEvent<HTMLAnchorElement>) {
+      event.stopPropagation();
+    }
   }
 );
 

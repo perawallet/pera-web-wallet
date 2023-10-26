@@ -7,8 +7,21 @@ import {useTransactionSignFlowContext} from "../../context/TransactionSignFlowCo
 
 function TransactionDetailsList() {
   const {
-    formitoState: {txns}
+    formitoState: {txns, arbitraryData}
   } = useTransactionSignFlowContext();
+
+  if (arbitraryData) {
+    return (
+      <List customClassName={"transaction-details-list"} items={arbitraryData.data}>
+        {(arbitraryDataItem, _, index) => (
+          <TransactionDetailsListItem
+            transaction={arbitraryDataItem}
+            transactionIndex={index!}
+          />
+        )}
+      </List>
+    );
+  }
 
   return (
     <List customClassName={"transaction-details-list"} items={txns}>

@@ -37,25 +37,29 @@ function AssetListItem({
         <AssetLogo
           src={getAssetImgSrc(asset)}
           assetName={asset.name}
-          customClassName={classNames({
+          customClassName={classNames("asset-list-item__logo", {
             "asset-list-item__logo--is-nft": isAssetType(asset) && isNFT(asset)
           })}
         />
       </div>
 
       <div className={"asset-list-item__grid-cell"}>
-        <div className={"align-center--vertically"}>
-          <span className={"typography--medium-body"}>{asset.name}</span>
+        <div className={"align-center--vertically has-space-between"}>
+          <div>
+            <div className={"align-center--vertically"}>
+              <span className={"typography--medium-body"}>{asset.name}</span>
 
-          {renderVerificationTierIcon(asset)}
+              {renderVerificationTierIcon(asset)}
+            </div>
+
+            <span className={"text-color--gray-lighter typography--secondary-body"}>
+              {`${asset.unit_name}, ${asset.asset_id}`}
+            </span>
+          </div>
+
+          {rightSide}
         </div>
-
-        <span className={"text-color--gray-light typography--secondary-body"}>
-          {`${asset.unit_name}, ${asset.asset_id}`}
-        </span>
       </div>
-
-      {rightSide}
     </SelectableListItem>
   );
 }

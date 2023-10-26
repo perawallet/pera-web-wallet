@@ -11,9 +11,11 @@ import {useModalDispatchContext} from "../modal/context/ModalContext";
 interface InfoModalProps {
   modalId: string;
   iconHeader?: ReactNode;
-  title: string;
+  title?: string;
+  subtitle?: string;
   infoItems: {id: string; icon?: ReactNode; description: ReactNode}[];
   confirmationText?: string;
+  cancelText?: string;
   onConfirm?: () => void;
   displayDontShowAgain?: {webStorageKey: string};
   footer?: ReactNode;
@@ -24,8 +26,10 @@ function InfoModal({
   modalId,
   iconHeader,
   title,
+  subtitle,
   infoItems,
   confirmationText,
+  cancelText,
   onConfirm,
   displayDontShowAgain,
   footer,
@@ -38,7 +42,21 @@ function InfoModal({
     <div className={infoModalClassname}>
       {iconHeader && <div className={"info-modal__icon-wrapper"}>{iconHeader}</div>}
 
-      <h2 className={"typography--h2 text-color--main text--centered"}>{title}</h2>
+      {title && (
+        <h2
+          className={"typography--h2 text-color--main text--centered info-modal__title"}>
+          {title}
+        </h2>
+      )}
+
+      {subtitle && (
+        <p
+          className={
+            "typography--body text-color--gray-lighter text--centered info-modal__subtitle"
+          }>
+          {subtitle}
+        </p>
+      )}
 
       <div className={"info-modal__description-box"}>
         <List items={infoItems}>
@@ -69,11 +87,11 @@ function InfoModal({
 
         {displayDontShowAgain && (
           <Button
-            buttonType={"ghost"}
+            buttonType={"light"}
             size={"large"}
             customClassName={"button--fluid"}
             onClick={handleDontShowAgainClick}>
-            {"Don't show this again"}
+            {cancelText || "Don't show again"}
           </Button>
         )}
       </div>

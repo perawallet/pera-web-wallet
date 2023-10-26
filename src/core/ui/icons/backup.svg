@@ -1,0 +1,4 @@
+<svg class="backup-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.7627 18.2862C11.4124 18.455 11.4124 21.8312 13.7627 22H19.3234C19.9935 22 20.6536 21.7517 21.1437 21.3049C22.7939 19.875 21.9137 17.0152 19.7435 16.7471C18.9634 12.0899 12.1825 13.8575 13.7827 18.2961" stroke="var(--text-main)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M22 12.5V9.8C22 8.14315 20.6569 6.8 19 6.8H14.3541C13.2178 6.8 12.179 6.15799 11.6708 5.14164L11.4292 4.65836C10.921 3.64201 9.88222 3 8.7459 3H6C4.34315 3 3 4.34315 3 6V19C3 20.6569 4.34315 22 6 22H8.7" stroke="var(--text-main)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

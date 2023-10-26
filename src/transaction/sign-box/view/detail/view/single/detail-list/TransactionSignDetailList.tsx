@@ -118,11 +118,13 @@ function TransactionSignDetailList() {
 
                   <div
                     className={
-                      "text-color--gray-light transaction-sign-detail-single-view__asset-detail__asset-information"
+                      "text-color--gray-lighter transaction-sign-detail-single-view__asset-detail__asset-information"
                     }>
                     <p>
-                      {activeTransactionAsset?.asset_id ||
-                        activeTransactionAssetFromNode?.index}
+                      {String(
+                        activeTransactionAsset?.asset_id ||
+                          activeTransactionAssetFromNode?.index
+                      )}
                     </p>
 
                     <span className={"bullet"} />
@@ -157,7 +159,7 @@ function TransactionSignDetailList() {
         </div>
       )}
 
-      {activeTransaction.txn.amount && (
+      {!!activeTransaction.txn.amount && (
         <div
           className={
             "transaction-sign-detail-single-view__transaction-details-list__item"

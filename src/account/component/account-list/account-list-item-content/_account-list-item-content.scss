@@ -3,7 +3,7 @@
 
   display: grid;
   align-items: center;
-  grid-template-columns: 32px 240px 1fr;
+  grid-template-columns: 32px 1fr auto;
   grid-gap: 0 16px;
 
   &:not(:last-child):after {
@@ -20,13 +20,13 @@
 
   .account-list-item-content__wallet-icon {
     display: grid;
+    place-content: center;
 
     width: 32px;
     height: 32px;
 
     background: #8bf4db;
     border-radius: 100%;
-    place-content: center;
   }
 
   .account-list-item-content__account-info {
@@ -34,7 +34,56 @@
     flex-direction: column;
   }
 
+  .account-list-item-content__account-info__name {
+    display: flex;
+    gap: 6px;
+
+    .tooltip-container {
+      display: flex;
+      align-items: center;
+    }
+
+    .warning-icon {
+      margin-top: 4px;
+
+      path {
+        fill: var(--helper-red-900);
+      }
+    }
+  }
+
+  .account-list-item-content__account-name {
+    width: unset;
+    max-width: 230px;
+  }
+
   .account-balance {
-    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin: 0 auto;
+
+    .link-button {
+      padding: 0 8px 0 0;
+
+      .export-icon path {
+        fill: var(--text-gray-lighter);
+      }
+
+      &:hover {
+        .export-icon path {
+          fill: var(--text-gray-lightest);
+        }
+      }
+
+      &:focus-within {
+        --button-bg: unset;
+
+        box-shadow: none;
+      }
+    }
   }
 }

@@ -1,8 +1,6 @@
 .transaction-sign-transaction-actions {
   padding: 28px;
 
-  border-top: 1px solid var(--gray-100);
-
   &--sign-required {
     display: grid;
     grid-template-columns: 132px auto;

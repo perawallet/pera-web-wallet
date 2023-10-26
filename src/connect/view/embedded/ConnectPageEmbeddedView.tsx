@@ -1,6 +1,7 @@
 import "./_connect-page-embedded-view.scss";
 
 import {useCallback, useEffect, useState} from "react";
+import {useSearchParams} from "react-router-dom";
 
 import appTellerManager, {PeraTeller} from "../../../core/app/teller/appTellerManager";
 import {useAppContext} from "../../../core/app/AppContext";
@@ -10,21 +11,32 @@ import ConnectPageSelectAccount from "../../select-account/ConnectPageSelectAcco
 import {useConnectFlowContext} from "../../context/ConnectFlowContext";
 import {NETWORK_MISMATCH_MESSAGE} from "../../../core/util/algod/algodConstants";
 import ConnectPageEmbeddedViewAddImportAccount from "./add-import-account/ConnectPageEmbeddedViewAddImportAccount";
-import {appDBManager} from "../../../core/app/db";
+import PeraConnectErrorScreen from "../../../pera-connect-error/PeraConnectErrorScreen";
+import {PERA_CONNECT_SHOW_ERROR_SCREEN_TIMEOUT} from "../../../pera-connect-error/util/peraConnectErrorScreenConstants";
 
 export type ConnectPageEmbeddedViewPasswordCreateViews = "default" | "spinner";
 
 function ConnectPageEmbeddedView() {
   const {
-    state: {masterkey, hashedMasterkey, preferredNetwork, hasAccounts},
-    dispatch: dispatchAppState
+    state: {masterkey, hashedMasterkey, hasAccounts}
   } = useAppContext();
   const {
-    formitoState: {selectedAccounts, currentSession},
+    formitoState: {hasMessageReceived, currentSession},
     dispatchFormitoAction
   } = useConnectFlowContext();
+  const [searchParams] = useSearchParams();
+  const isCompactMode = searchParams.get("compactMode") === "true";
   const [connectFlowEmbeddedView, setConnectFlowEmbeddedView] =
     useState<ConnectPageEmbeddedViewPasswordCreateViews>("default");
+  const [shouldShowErrorScreen, setShouldShowErrorScreen] = useState(false);
+
+  useEffect(() => {
+    const messageReceivedTimeout = setTimeout(() => {
+      setShouldShowErrorScreen(true);
+    }, PERA_CONNECT_SHOW_ERROR_SCREEN_TIMEOUT);
+
+    return () => clearTimeout(messageReceivedTimeout);
+  }, []);
 
   useEffect(() => {
     if (masterkey) {
@@ -41,19 +53,33 @@ function ConnectPageEmbeddedView() {
   // Receive "CONNECT" request from dApp
   const onReceiveMessage = useCallback(
     (event: MessageEvent<TellerMessage<PeraTeller>>) => {
-      if (event.data.message.type === "CONNECT") {
-        dispatchFormitoAction({
-          type: "SET_FORM_VALUE",
-          payload: {
-            currentSession: event.data.message.data
-          }
+      if (event.data.message.type === "IFRAME_INITIALIZED") {
+        appTellerManager.sendMessage({
+          message: {
+            type: "IFRAME_INITIALIZED_RECEIVED"
+          },
+
+          targetWindow: window.parent
         });
-      } else if (event.data.message.type === "SELECT_ACCOUNT_EMBEDDED_CALLBACK") {
+      }
+
+      let payload:
+        | {currentSession: AppSession}
+        | {hasMessageReceived: boolean}
+        | undefined;
+
+      if (event.data.message.type === "CONNECT") {
+        payload = {currentSession: event.data.message.data};
+      }
+
+      if (event.data.message.type === "SELECT_ACCOUNT_EMBEDDED_CALLBACK") {
+        payload = {hasMessageReceived: true};
+      }
+
+      if (payload) {
         dispatchFormitoAction({
           type: "SET_FORM_VALUE",
-          payload: {
-            hasMessageReceived: true
-          }
+          payload
         });
       }
     },
@@ -77,50 +103,27 @@ function ConnectPageEmbeddedView() {
         />
       );
     }
+
+    if (shouldShowErrorScreen && !hasMessageReceived && !currentSession && masterkey) {
+      return <PeraConnectErrorScreen type={"embedded"} />;
+    }
+
     if (!masterkey) {
-      return <PasswordAccessPage type={"embedded"} ctaText={"Connect"} />;
+      return (
+        <PasswordAccessPage
+          type={"embedded"}
+          ctaText={"Connect"}
+          isCompactMode={isCompactMode}
+        />
+      );
     }
 
     return (
       <ConnectPageSelectAccount
-        handleConnectClick={handleConnectClick}
         sendNetworkMismacthError={sendNetworkMismatchError}
+        type={"embedded"}
       />
     );
-  }
-
-  async function handleConnectClick() {
-    dispatchFormitoAction({
-      type: "SET_FORM_VALUE",
-      payload: {
-        isConnectStarted: true
-      }
-    });
-
-    if (selectedAccounts) {
-      const selectedAddresses = selectedAccounts?.map((account) => account.address);
-      const session = {
-        ...currentSession!,
-        accountAddresses: selectedAddresses || [],
-        date: new Date(),
-        network: preferredNetwork
-      } as AppDBSession;
-
-      await appDBManager.set("sessions", masterkey!)(currentSession!.url, session);
-
-      dispatchAppState({type: "SET_SESSION", session});
-
-      appTellerManager.sendMessage({
-        message: {
-          type: "CONNECT_CALLBACK",
-          data: {
-            addresses: selectedAddresses || []
-          }
-        },
-
-        targetWindow: window.parent
-      });
-    }
   }
 
   function handleChangeView() {

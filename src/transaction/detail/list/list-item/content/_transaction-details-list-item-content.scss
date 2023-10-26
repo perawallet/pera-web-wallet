@@ -9,6 +9,10 @@
     opacity: 0;
 
     transition: opacity var(--default-animation);
+
+    path {
+      fill: var(--text-gray-lighter);
+    }
   }
 
   &:hover {
@@ -25,7 +29,7 @@
 
   .warning-icon {
     path {
-      fill: var(--helper-red-default);
+      fill: var(--helper-red-900);
     }
   }
 }

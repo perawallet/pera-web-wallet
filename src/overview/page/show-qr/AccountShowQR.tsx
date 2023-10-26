@@ -1,6 +1,6 @@
 import "./_account-show-qr.scss";
 
-import {useAppContext} from "../../../core/app/AppContext";
+import {usePortfolioContext} from "../../context/PortfolioOverviewContext";
 import ClipboardButton from "../../../component/clipboard/button/ClipboardButton";
 import PeraQRCode from "../../../component/pera-qr-code/PeraQRCode";
 import Button from "../../../component/button/Button";
@@ -13,17 +13,14 @@ interface AccountShowQRModalProps {
 export const ACCOUNT_SHOW_QR_MODAL_ID = "account-show-qr-modal";
 
 function AccountShowQRModal({address, onClose}: AccountShowQRModalProps) {
-  const {
-    state: {accounts}
-  } = useAppContext();
-
+  const {accounts} = usePortfolioContext()!;
   const {name} = accounts[address];
 
   return (
     <div className={"account-show-qr-modal"}>
       <PeraQRCode value={address} />
 
-      <p className={"typography--tagline text-color--gray-light text--uppercase"}>
+      <p className={"typography--tagline text-color--gray-lighter text--uppercase"}>
         {"ADDRESS FOR ACCOUNT "}
         <span className={"text-color--main"}>{name}</span>
       </p>
@@ -48,6 +45,7 @@ function AccountShowQRModal({address, onClose}: AccountShowQRModalProps) {
 
       <Button
         buttonType={"light"}
+        size={"large"}
         customClassName={"account-show-qr-modal__close-button"}
         onClick={onClose}>
         {"Close"}

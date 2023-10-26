@@ -28,7 +28,8 @@ const TRANSACTION_TYPE_TITLE_MAP = {
   axferReceive: {transactionTypeText: "Receive", type: "success", to: "from"},
   axfer: {transactionTypeText: "Transfer", type: "danger", to: "to"},
   pay: {transactionTypeText: "Payment", type: "danger", to: "to"},
-  acfg: {transactionTypeText: "Asset Config", type: "danger", to: "from"}
+  acfg: {transactionTypeText: "Asset Config", type: "danger", to: "from"},
+  keyreg: {transactionTypeText: "Key Registration", type: "danger", to: "from"}
 };
 
 function TransactionDetailListItemTitle({

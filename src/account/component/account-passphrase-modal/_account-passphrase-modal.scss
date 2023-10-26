@@ -1,0 +1,19 @@
+.account-passphrase-modal {
+  width: 480px;
+}
+
+.account-passphrase-modal__title {
+  margin-bottom: 12px;
+}
+
+.account-passphrase-modal__description {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.account-passphrase-modal__cta {
+  width: 100%;
+
+  margin-top: 12px;
+}

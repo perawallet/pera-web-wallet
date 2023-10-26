@@ -1,3 +1,5 @@
+@import "../../core/ui/typography/_typography-mixins.scss";
+
 .pera-connect-banner {
   display: grid;
   align-items: center;
@@ -14,7 +16,7 @@
 
   text-align: center;
 
-  animation: 0.3s slideAnimationForBanner ease-out;
+  animation: 0.3s slide-animation-for-banner ease-out;
 }
 
 .pera-connect-banner__app-meta__favicon {
@@ -28,7 +30,22 @@
   border-radius: 100%;
 }
 
-@keyframes slideAnimationForBanner {
+.pera-connect-banner__app-meta__favicon__placeholder {
+  @include typography--tagline();
+
+  display: grid;
+  place-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  padding: 2px;
+
+  background-color: var(--layer-2);
+  border-radius: 50%;
+}
+
+@keyframes slide-animation-for-banner {
   0% {
     opacity: 0;
   }

@@ -1,8 +1,10 @@
 .transaction-details-list {
   overflow: auto;
 
-  margin-top: 16px;
-  padding: 0 28px;
+  margin: 16px 24px;
+  padding: 4px 20px;
 
-  background: var(--card-default);
+  background: var(--layer-2);
+  border-radius: 12px;
+  box-shadow: var(--shadow-inline);
 }

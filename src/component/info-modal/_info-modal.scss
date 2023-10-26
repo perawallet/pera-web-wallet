@@ -7,17 +7,16 @@
 
 .info-modal__icon-wrapper {
   display: grid;
+  place-content: center;
 
-  width: 106px;
-  height: 106px;
+  width: 96px;
+  height: 96px;
 
   margin: 28px auto 0;
 
-  background-color: var(--card-default);
+  background-color: var(--layer-1);
   border-radius: 100%;
-  box-shadow: var(--shadow-large);
-
-  place-content: center;
+  box-shadow: var(--shadow-2);
 }
 
 .info-modal__description-box {
@@ -26,7 +25,7 @@
   margin-top: 8px;
   padding: 20px;
 
-  background-color: var(--gray-100);
+  background-color: var(--layer-2);
   border-radius: 12px;
 }
 
@@ -49,26 +48,25 @@
 
   &--header {
     .info-modal__description-list-item__icon-wrapper {
-      background-color: var(--gray-100);
+      background-color: var(--text-gray-lighter);
     }
   }
 }
 
 .info-modal__description-list-item__icon-wrapper {
   display: grid;
+  place-content: center;
 
   width: 32px;
   height: 32px;
   flex-shrink: 0;
 
-  background-color: rgba(var(--gray-400-rgb), 0.1);
+  background-color: var(--helper-gray-100);
   border-radius: 100%;
-
-  place-content: center;
 
   .tip-icon {
     path {
-      fill: var(--helper-purple-default);
+      fill: var(--helper-gray-900);
     }
   }
 }

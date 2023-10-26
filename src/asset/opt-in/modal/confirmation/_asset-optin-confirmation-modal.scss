@@ -26,7 +26,9 @@
 
   padding: 16px 0;
 
-  border-top: 1px solid var(--gray-100);
+  &:not(:first-of-type) {
+    border-top: 1px solid var(--border-default);
+  }
 }
 
 .asset-optin-confirmation-modal__logo--is-nft {
@@ -52,7 +54,7 @@
 
   .copy-icon {
     path {
-      fill: var(--text-gray-light);
+      fill: var(--text-gray-lighter);
     }
   }
 }

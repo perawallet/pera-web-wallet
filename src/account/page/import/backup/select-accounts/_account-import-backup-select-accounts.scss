@@ -1,0 +1,55 @@
+@import "../../../../../core/ui/typography/typography-mixins";
+
+.account-import-backup-modal-accounts__wrapper,
+.account-import-backup-modal-accounts__wrapper--empty {
+  position: relative;
+
+  width: 424px;
+  height: 624px;
+
+  .selectable-account-list__list {
+    max-height: 440px;
+
+    padding: 0;
+  }
+
+  .tooltip-container {
+    height: 20px;
+  }
+
+  .go-back-button-container {
+    margin-bottom: 40px;
+  }
+}
+
+.account-import-backup-modal-accounts__wrapper--empty {
+  display: grid;
+  place-content: center;
+
+  width: 424px;
+  height: 620px;
+}
+
+.account-import-backup-modal-accounts__subheader {
+  margin-bottom: 32px;
+}
+
+.account-import-backup-modal-accounts__select-form {
+  margin-top: 30px;
+
+  .selectable-account-list__cta {
+    position: absolute;
+    bottom: -12px;
+
+    &:before {
+      position: absolute;
+      top: -16px;
+      left: -30px;
+      right: -30px;
+
+      border: 1px solid var(--gray-100);
+
+      content: "";
+    }
+  }
+}

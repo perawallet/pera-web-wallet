@@ -1,0 +1,14 @@
+.add-funds-button {
+  gap: 8px;
+
+  .plus-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.add-funds-button__add-funds-icon {
+  path {
+    fill: var(--helper-purple-900);
+  }
+}

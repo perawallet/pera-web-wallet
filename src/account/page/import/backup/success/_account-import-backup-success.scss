@@ -1,0 +1,28 @@
+.account-import-backup-success__checkmark-animation {
+  position: relative;
+  left: -28px;
+
+  width: 120px;
+  height: 120px;
+}
+
+.account-import-backup-success__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.account-import-backup-success__header-cta {
+  padding: 14px 48px;
+}
+
+.account-import-backup-success__description {
+  margin: 16px 0 48px;
+
+  color: var(--text-gray-light);
+}
+
+.account-import-backup-success__list {
+  display: grid;
+  gap: 28px;
+}

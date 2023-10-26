@@ -7,7 +7,6 @@ import {usePortfolioContext} from "../../../../overview/context/PortfolioOvervie
 import ROUTES from "../../../../core/route/routes";
 import {ASSET_OPTIN_PAGE_SEARCH_PARAM} from "../AssetOptinPage";
 import SearchableAccountList from "../../../../account/component/list/searchable/SearchableAccountList";
-import PeraLoader from "../../../../component/loader/pera/PeraLoader";
 
 function AssetOptinSelectAccount() {
   const portfolioOverview = usePortfolioContext();
@@ -20,17 +19,11 @@ function AssetOptinSelectAccount() {
         customClassName={"asset-optin-select-account__go-back-button"}
       />
 
-      {portfolioOverview ? (
-        <SearchableAccountList
-          accounts={portfolioOverview.accounts}
-          onSelectAccount={handleSelectAccount}
-        />
-      ) : (
-        <PeraLoader
-          mode={"gray"}
-          customClassName={"asset-optin-select-account__loader"}
-        />
-      )}
+      <SearchableAccountList
+        hasBackgroundColor={true}
+        accounts={Object.values(portfolioOverview.accounts)}
+        onSelectAccount={handleSelectAccount}
+      />
     </div>
   );
 

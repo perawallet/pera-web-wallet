@@ -6,6 +6,14 @@
   height: calc(100% - 40px);
 
   padding-top: 48px;
+
+  &--compact {
+    padding-top: 18px;
+
+    .connect-page-embedded-view-add-import-account__icon-wrapper {
+      box-shadow: unset;
+    }
+  }
 }
 
 .connect-page-embedded-view-add-import-account__icon-wrapper {
@@ -57,7 +65,7 @@
   margin: 4px auto 0;
   padding: 0;
 
-  color: var(--helper-purple-default);
+  color: var(--helper-purple-900);
   background-color: transparent;
 
   text-align: center;

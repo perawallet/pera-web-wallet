@@ -1,19 +1,20 @@
 .account-overview {
-  width: 948px;
-  max-width: 100%;
+  min-width: 948px;
 
   margin: auto;
 }
 
+.account-overview__onboarding {
+  margin-top: 40px;
+}
+
 .account-overview__onboarding-option-list {
-  margin-top: 56px;
+  margin-top: 20px;
 }
 
 .account-overview__accounts-heading {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-
-  margin-bottom: 16px;
 }
 
 .account-overview-list__skeleton {

@@ -4,18 +4,20 @@
 
 .send-txn-confirm__amount {
   display: grid;
+  place-content: center;
 
   gap: 8px;
 
   width: 100%;
   height: 95px;
 
-  background: var(--helper-purple-lighter);
+  color: var(--text-gray);
+  background: var(--helper-purple-100);
+
   border-radius: 12px;
-  place-content: center;
 
   &-algo {
-    color: var(--helper-purple-default);
+    color: var(--helper-purple-900);
   }
 }
 
@@ -35,7 +37,7 @@
   padding-bottom: 16px;
 
   &:not(:last-child) {
-    border-bottom: 1px solid var(--background);
+    border-bottom: 1px solid var(--border-default);
   }
 }
 

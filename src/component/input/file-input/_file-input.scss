@@ -1,0 +1,68 @@
+.file-input__icon-wrapper {
+  display: grid;
+  place-content: center;
+
+  width: 60px;
+  height: 60px;
+
+  background: var(--white);
+  border-radius: 100%;
+  box-shadow: var(--shadow-large);
+
+  .upload-icon {
+    path {
+      fill: var(--helper-purple-default);
+    }
+  }
+
+  &--fail {
+    background: var(--helper-red-default);
+
+    .checkmark-icon {
+      path {
+        fill: var(--white);
+      }
+    }
+  }
+
+  &--success {
+    background: var(--helper-green-default);
+
+    .checkmark-icon {
+      path {
+        fill: var(--white);
+      }
+    }
+  }
+}
+
+.pera-file-input-label {
+  position: relative;
+
+  padding: 0;
+
+  background: var(--gray-100);
+
+  .form-field__label {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    height: 348px;
+  }
+
+  .pera-file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    opacity: 0;
+
+    cursor: pointer;
+  }
+}

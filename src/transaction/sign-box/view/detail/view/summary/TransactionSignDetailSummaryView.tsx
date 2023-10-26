@@ -2,6 +2,8 @@ import {ReactComponent as ArrowLeft} from "../../../../../../core/ui/icons/arrow
 
 import "./_transaction-sign-detail-summary-view.scss";
 
+import {useSearchParams} from "react-router-dom";
+
 import {useTransactionSignFlowContext} from "../../../../../context/TransactionSignFlowContext";
 import TransactionDetailsList from "../../../../../detail/list/TransactionDetailsList";
 import TransactionTypeLabelList from "../../type-labels/TransactionTypeLabelList";
@@ -9,9 +11,11 @@ import Button from "../../../../../../component/button/Button";
 
 function TransactionSignDetailSummaryView() {
   const {
-    formitoState: {txns},
+    formitoState: {txns, arbitraryData},
     dispatchFormitoAction: dispatchTransactionPageAction
   } = useTransactionSignFlowContext();
+  const [searchParams] = useSearchParams();
+  const isCompactMode = searchParams.get("compactMode");
 
   return (
     <div>
@@ -23,7 +27,10 @@ function TransactionSignDetailSummaryView() {
           <ArrowLeft />
         </Button>
 
-        <h1 className={"typography--h2"}>{`Summary of ${txns.length} Transactions`}</h1>
+        <h2
+          className={
+            isCompactMode ? "typography--bold-body" : "typography--h2"
+          }>{`Summary of ${arbitraryData?.data.length || txns.length} Transactions`}</h2>
       </div>
 
       <TransactionTypeLabelList />
@@ -35,9 +42,7 @@ function TransactionSignDetailSummaryView() {
   function handleChangeView() {
     dispatchTransactionPageAction({
       type: "SET_FORM_VALUE",
-      payload: {
-        transactionSignView: "default"
-      }
+      payload: {transactionSignView: "default"}
     });
   }
 }

@@ -5,20 +5,21 @@ import {Outlet} from "react-router-dom";
 
 import PageHeader from "./header/PageHeader";
 import useSetPageTitle from "../../core/util/hook/useSetPageTitle";
+import PageBanner from "./banner/PageBanner";
 
 interface PageProps {
   title: string;
   customClassName?: string;
-  banner?: React.ReactNode;
+  customBanner?: React.ReactNode;
 }
 
-function Page({customClassName, title, banner}: PageProps) {
+function Page({customClassName, title, customBanner}: PageProps) {
   useSetPageTitle(title);
 
   return (
     <div className={classNames("page", customClassName)}>
       <div className={"page__header-wrapper"}>
-        {banner}
+        {renderBanner()}
 
         <PageHeader />
       </div>
@@ -28,6 +29,14 @@ function Page({customClassName, title, banner}: PageProps) {
       </main>
     </div>
   );
+
+  function renderBanner() {
+    if (customBanner) {
+      return customBanner;
+    }
+
+    return <PageBanner />;
+  }
 }
 
 export default Page;

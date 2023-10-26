@@ -1,6 +1,7 @@
 import {Routes, Route, Navigate} from "react-router-dom";
 
 import Page from "../../component/page/Page";
+import {withGoBackLink} from "../../core/route/context/NavigationContext";
 import ROUTES from "../../core/route/routes";
 import CardLayout from "../../layouts/card-layout/CardLayout";
 import PasswordAccessPage from "../page/access/PasswordAccessPage";
@@ -25,4 +26,4 @@ function PasswordFlow() {
   );
 }
 
-export default PasswordFlow;
+export default withGoBackLink(PasswordFlow, ROUTES.BASE);

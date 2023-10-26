@@ -22,7 +22,9 @@ function InfoBox({title, infoText, icon, className, children}: InfoBoxProps) {
       </div>
 
       <div className={"info-box-content"}>
-        {title && <p className={"typography--medium-body"}>{title}</p>}
+        {title && (
+          <p className={"typography--medium-body info-box-content__title"}>{title}</p>
+        )}
 
         <p className={"typography--secondary-body text-color--gray info-box-text"}>
           {infoText}

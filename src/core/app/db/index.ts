@@ -5,4 +5,12 @@ import {AssetDBManager, assetDBTables} from "./assetDBManager";
 const appDBManager = new DBManager<AppDBScheme>("pera-wallet", appDBTables);
 const assetDBManager = new AssetDBManager<AssetDBScheme>(assetDBTables);
 
-export {appDBManager, assetDBManager};
+const DATABASES_CONTAINING_SENSITIVE_INFO = [
+  "pera-wallet-assets"
+];
+
+export {
+  appDBManager,
+  assetDBManager,
+  DATABASES_CONTAINING_SENSITIVE_INFO
+};

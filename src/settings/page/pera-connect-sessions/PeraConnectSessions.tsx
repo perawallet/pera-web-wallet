@@ -78,7 +78,7 @@ function PeraConnectSessions() {
         <div className={"pera-connect-sessions--empty"}>
           <ActivityIcon width={30} height={30} />
 
-          <p className={"typography--body text-color--gray"}>{"No sessions yet"}</p>
+          <p className={"typography--subhead text-color--gray"}>{"No sessions yet"}</p>
         </div>
       )}
     </div>

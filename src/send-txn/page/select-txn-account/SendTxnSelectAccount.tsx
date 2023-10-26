@@ -24,8 +24,10 @@ function SendTxnSelectAccount() {
       />
 
       <SearchableAccountList
-        accounts={portfolioOverview!.accounts}
+        hasBackgroundColor={true}
+        accounts={Object.values(portfolioOverview!.accounts)}
         onSelectAccount={handleSelectAccount}
+        shouldDisplayMinBalanceWarning={true}
       />
     </div>
   );
@@ -40,8 +42,7 @@ function SendTxnSelectAccount() {
           senderAddress: address,
           recipientAddress: undefined,
           selectedAsset: undefined,
-          txnAmount: undefined,
-          minBalance: undefined
+          txnAmount: undefined
         }
       });
     }

@@ -7,15 +7,19 @@
 .asset-optin-list-item__optin-button {
   width: 48px;
 
-  .check-mark-icon {
+  .checkmark-icon {
     flex-shrink: 0;
+
+    path {
+      fill: var(--text-gray-lighter);
+    }
   }
 
   .plus-icon {
     flex-shrink: 0;
 
     path {
-      fill: var(--purple-500);
+      fill: var(--text-gray);
     }
   }
 }

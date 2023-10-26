@@ -1,6 +1,7 @@
 import "./_route-loading.scss";
 
 import {useEffect, useState} from "react";
+import {Spinner} from "@hipo/react-ui-toolkit";
 
 const SECOND_IN_MS = 1000;
 
@@ -28,10 +29,7 @@ function RouteLoading({delayInSeconds = DEFAULT_DELAY_IN_SECONDS}: RouteLoadingP
 
   return shouldShowContent ? (
     <div className={"route-loading"}>
-      {
-        // Spinner can be placed here
-        "Loading ..."
-      }
+      <Spinner />
     </div>
   ) : null;
 }

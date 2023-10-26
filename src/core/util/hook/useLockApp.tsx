@@ -3,6 +3,7 @@ import {useEffect} from "react";
 import {useAppContext} from "../../app/AppContext";
 import webStorage, {STORED_KEYS} from "../storage/web/webStorage";
 import {useModalDispatchContext} from "../../../component/modal/context/ModalContext";
+import {DATABASES_CONTAINING_SENSITIVE_INFO} from "../../app/db";
 
 function useLockApp() {
   const {dispatch: dispatchAppState} = useAppContext();
@@ -16,20 +17,33 @@ function useLockApp() {
     };
 
     function triggerStorageEvent(event: StorageEvent) {
-      if (event.key === STORED_KEYS.LOCK_TABS) {
-        dispatchAppState({
-          type: "SET_MASTERKEY",
-          masterkey: undefined
-        });
+      switch (event.key) {
+        case STORED_KEYS.LOCK_TABS:
+          dispatchAppState({
+            type: "SET_MASTERKEY",
+            masterkey: undefined
+          });
+          break;
+
+        case STORED_KEYS.PREFERRED_NETWORK:
+          dispatchAppState({
+            type: "SET_PREFERRED_NETWORK",
+            preferredNetwork: event.newValue?.includes("mainnet") ? "mainnet" : "testnet"
+          });
+          break;
+
+        default:
+          break;
       }
     }
   }, [dispatchAppState]);
 
   function lock() {
-    indexedDB.deleteDatabase("pera-wallet-assets");
+    DATABASES_CONTAINING_SENSITIVE_INFO.forEach((database) => {
+      indexedDB.deleteDatabase(database);
+    });
 
     webStorage.local.setItem(STORED_KEYS.LOCK_TABS, JSON.stringify(new Date()));
-    webStorage.local.removeItem(STORED_KEYS.STALE_PORTFOLIO_OVERVIEW);
 
     dispatchAppState({
       type: "SET_MASTERKEY",

@@ -1,16 +1,16 @@
-import "./_send-txn.scss";
-
 import {ReactComponent as InfoIcon} from "../../../core/ui/icons/info.svg";
+
+import "./_send-txn.scss";
 
 import {useEffect, useCallback} from "react";
 
-import Button from "../../../component/button/Button";
 import SendTxnForm from "../../components/form/SendTxnForm";
 import {SEND_TXN_INFO_MODAL_ID} from "./sendTxnConstants";
 import {useSendTxnFlowContext} from "../../context/SendTxnFlowContext";
 import {useModalDispatchContext} from "../../../component/modal/context/ModalContext";
 import SendTxnInfoModal from "../../modal/SendTxnInfoModal";
 import useSetPageTitle from "../../../core/util/hook/useSetPageTitle";
+import Button from "../../../component/button/Button";
 
 function SendTxn() {
   const {
@@ -20,14 +20,16 @@ function SendTxn() {
   const dispatchModalStateAction = useModalDispatchContext();
 
   const handleOpenInfoModal = useCallback(
-    ({displayDontShowAgain = false}) => {
+    (options?: {displayDontShowAgain: boolean}) => () => {
       dispatchModalStateAction({
         type: "OPEN_MODAL",
         payload: {
           item: {
             id: SEND_TXN_INFO_MODAL_ID,
             modalContentLabel: "Send Transaction Information Modal",
-            children: <SendTxnInfoModal displayDontShowAgain={displayDontShowAgain} />
+            children: (
+              <SendTxnInfoModal displayDontShowAgain={!!options?.displayDontShowAgain} />
+            )
           }
         }
       });
@@ -44,7 +46,7 @@ function SendTxn() {
       payload: {hideSendTxnInfoModal: true}
     });
 
-    handleOpenInfoModal({displayDontShowAgain: true});
+    handleOpenInfoModal({displayDontShowAgain: true})();
   }, [dispatchFormitoAction, handleOpenInfoModal, hideSendTxnInfoModal]);
 
   useSetPageTitle("Send");
@@ -54,7 +56,7 @@ function SendTxn() {
       <div className={"send-txn__heading align-center--vertically"}>
         <h2 className={"typography--h2 text-color--main"}>{"Send"}</h2>
 
-        <Button buttonType={"ghost"} size={"small"} onClick={handleOpenInfoModal}>
+        <Button buttonType={"ghost"} size={"small"} onClick={handleOpenInfoModal()}>
           <InfoIcon width={20} height={20} />
         </Button>
       </div>

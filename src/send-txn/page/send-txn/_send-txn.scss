@@ -14,8 +14,15 @@
   .button:focus {
     box-shadow: none;
   }
+
+  .info-icon {
+    path,
+    circle {
+      fill: var(--ghost-button-text);
+    }
+  }
 }
 
 .send-txn__header-icon path {
-  fill: var(--helper-purple-default);
+  fill: var(--helper-purple-900);
 }

@@ -6,7 +6,6 @@ import "./_account-show-passphrase.scss";
 import algosdk from "algosdk";
 import {Navigate} from "react-router-dom";
 import {useEffect} from "react";
-import {List, ListItem} from "@hipo/react-ui-toolkit";
 
 import ClipboardButton from "../../../component/clipboard/button/ClipboardButton";
 import InfoBox from "../../../component/info-box/InfoBox";
@@ -16,6 +15,8 @@ import useAsyncProcess from "../../../core/network/async-process/useAsyncProcess
 import ROUTES from "../../../core/route/routes";
 import Button from "../../../component/button/Button";
 import PeraLoader from "../../../component/loader/pera/PeraLoader";
+import PassphraseList from "../../../component/passphrase-list/PassphraseList";
+import usePortfolioOverview from "../../util/hook/usePortfolioOverview";
 
 interface AccountShowPassphraseModalProps {
   address: string;
@@ -26,8 +27,9 @@ export const ACCOUNT_SHOW_PASSPHRASE_MODAL_ID = "account-show-passphrase-modal";
 
 function AccountShowPassphraseModal({address, onClose}: AccountShowPassphraseModalProps) {
   const {
-    state: {accounts, masterkey}
+    state: {masterkey}
   } = useAppContext();
+  const portfolioOverview = usePortfolioOverview();
   const {
     runAsyncProcess,
     state: {data: passphrase, error, isRequestFetched}
@@ -71,17 +73,7 @@ function AccountShowPassphraseModal({address, onClose}: AccountShowPassphraseMod
         </a>
       </InfoBox>
 
-      <List
-        items={passphrase!.split(" ")}
-        customClassName={"account-show-passphrase-modal__passphrase-list"}
-        type={"ordered"}>
-        {(word) => (
-          <ListItem
-            customClassName={"account-show-passphrase-modal__passphrase-list-item"}>
-            {word}
-          </ListItem>
-        )}
-      </List>
+      <PassphraseList passphrase={passphrase!} />
 
       <ClipboardButton
         textToCopy={passphrase!}
@@ -101,7 +93,10 @@ function AccountShowPassphraseModal({address, onClose}: AccountShowPassphraseMod
   );
 
   async function deriveAccountMnemonic() {
-    const secretKey = await decryptSK(accounts[address!].pk, masterkey!);
+    const account = Object.values(portfolioOverview!.accounts).find(
+      (portfolioAccount) => portfolioAccount.address === address!
+    )!;
+    const secretKey = await decryptSK(account.pk!, masterkey!);
     const mnemonic = algosdk.secretKeyToMnemonic(secretKey!);
 
     return mnemonic;

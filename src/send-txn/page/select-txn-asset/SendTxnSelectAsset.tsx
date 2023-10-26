@@ -1,7 +1,5 @@
 import "./_send-txn-select-asset.scss";
 
-import {ReactComponent as PlusIcon} from "../../../core/ui/icons/plus.svg";
-
 import {Navigate, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 
@@ -13,12 +11,8 @@ import {AccountASA} from "../../../core/util/pera/api/peraApiModels";
 import SearchableList from "../../../component/list/searchable-list/SearchableList";
 import SendTxnSelectAssetListItem from "./list-item/SendTxnSelectAssetListItem";
 import InfoBox from "../../../component/info-box/InfoBox";
-import Button from "../../../component/button/Button";
-import MoonPayModal, {
-  MOON_PAY_MODAL_ID
-} from "../../../core/integrations/moon-pay/modal/MoonPayModal";
-import {useModalDispatchContext} from "../../../component/modal/context/ModalContext";
 import {assetDBManager} from "../../../core/app/db";
+import AddFundsButton from "../../../add-funds/button/AddFundsButton";
 
 function SendTxnSelectAsset() {
   const navigate = useNavigate();
@@ -27,12 +21,13 @@ function SendTxnSelectAsset() {
     dispatchFormitoAction
   } = useSendTxnFlowContext();
   const {
-    state: {data: accountAssets, isRequestPending, isRequestFetched, error},
+    state: {data: accountAssets, isRequestPending, error},
     runAsyncProcess
   } = useAsyncProcess<AccountASA[]>();
   const [queriedAssets, setQueriedAssets] = useState<AccountASA[] | undefined>();
-  const assetsListItems = queriedAssets || accountAssets || [];
-  const dispatchModalStateAction = useModalDispatchContext();
+  const assetsListItems = filterZeroValuedAssetListItems(
+    queriedAssets || accountAssets || []
+  );
 
   useEffect(() => {
     if (!senderAddress) return;
@@ -58,11 +53,11 @@ function SendTxnSelectAsset() {
         />
       )}
 
-      {filterZeroValuedAssetListItems(assetsListItems).length > 0 && (
+      {assetsListItems && assetsListItems.length > 0 ? (
         <SearchableList
           customClassName={"send-txn-asset__list"}
           shouldDisplaySpinner={isRequestPending}
-          items={filterZeroValuedAssetListItems(assetsListItems)}
+          items={assetsListItems}
           typeaheadSearchProps={{
             customClassName: "send-txn-asset__filter-input",
             name: "filterAccountQuery",
@@ -77,22 +72,17 @@ function SendTxnSelectAsset() {
             />
           )}
         </SearchableList>
-      )}
-
-      {isRequestFetched && assetsListItems.length === 0 && (
+      ) : (
         <div className={"send-txn-asset__fund"}>
           <p className={"typography--subhead  text-color--gray"}>
             {"You have no funds in this account"}
           </p>
 
-          <Button
+          <AddFundsButton
+            customClassName={"send-txn-asset__fund-cta"}
             size={"large"}
-            onClick={handleAddFundsClick}
-            customClassName={"send-txn-asset__fund-cta"}>
-            <PlusIcon width={20} height={20} />
-
-            <span>{"Add Funds"}</span>
-          </Button>
+            accountAddress={senderAddress}
+          />
         </div>
       )}
     </div>
@@ -127,35 +117,6 @@ function SendTxnSelectAsset() {
 
       navigate(ROUTES.SEND_TXN.ROUTE);
     };
-  }
-
-  function handleAddFundsClick() {
-    dispatchModalStateAction({
-      type: "OPEN_MODAL",
-      payload: {
-        item: {
-          id: MOON_PAY_MODAL_ID,
-          modalContentLabel: "Add funds via MoonPay",
-          customClassName: "moon-pay-modal-container",
-          children: (
-            <MoonPayModal address={senderAddress!} onClose={handleCloseMoonPayModal} />
-          )
-        }
-      }
-    });
-  }
-
-  function handleCloseMoonPayModal() {
-    dispatchModalStateAction({
-      type: "CLOSE_MODAL",
-      payload: {
-        id: MOON_PAY_MODAL_ID
-      }
-    });
-
-    navigate(ROUTES.SEND_TXN.ROUTE, {
-      state: {address: senderAddress}
-    });
   }
 }
 

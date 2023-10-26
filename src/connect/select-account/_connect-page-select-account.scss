@@ -5,6 +5,37 @@
 
   width: 100%;
   height: 578px;
+
+  &--compact {
+    .connect-page-select-account__app-information {
+      padding: 20px;
+    }
+
+    .connect-page-select-account__app-meta__favicon {
+      width: 56px;
+      height: 56px;
+    }
+
+    .connect-page-select-account__connect-button-wrapper {
+      position: fixed;
+      bottom: 0;
+
+      width: 100%;
+      height: 80px;
+
+      padding: 20px;
+
+      background-color: var(--background);
+    }
+
+    .connect-page-select-account__connect-button {
+      height: 40px;
+    }
+
+    .connect-page-select-account__select-account-list {
+      margin-bottom: 160px;
+    }
+  }
 }
 
 .connect-page-select-account__app-information {
@@ -44,6 +75,13 @@
   margin: 16px 0 4px;
 }
 
+.connect-page-select-account__select-account-list {
+  padding: 20px 20px 0;
+
+  background-color: var(--layer-2);
+  border-radius: 12px;
+}
+
 .connect-page-select-account__select-account-text-wrapper {
   margin-bottom: 12px;
 }
@@ -51,7 +89,7 @@
 .connect-page-select-account__select-all-button.button {
   height: unset;
 
-  padding: 0;
+  padding: 0 5px;
 }
 
 .connect-page-select-account__spinner-wrapper {
@@ -75,7 +113,7 @@
   padding: 28px;
 
   &--border {
-    border-top: 1px solid var(--gray-200);
+    border-top: 1px solid var(--border-default);
   }
 }
 

@@ -7,17 +7,15 @@
   display: grid;
   grid-template-columns: 302px 1fr;
 
-  width: 100%;
-
-  background: var(--card-default);
+  background: var(--layer-1);
   border-radius: 12px;
-  box-shadow: var(--shadow-small);
+  box-shadow: var(--shadow-1);
 }
 
 .account-success-card__summary-value {
   padding: 40px;
 
-  border-right: 1px solid var(--gray-100);
+  border-right: 1px solid var(--border-default);
 }
 
 .account-success-card__summary-address {
@@ -63,15 +61,31 @@
   gap: 8px;
 }
 
+.account-success-card__qr-button__icon {
+  path {
+    fill: var(--light-button-text);
+  }
+}
+
 .account-success-card__pera-explorer {
+  width: 100%;
+
   padding: 40px;
 
-  background-color: var(--gray-200);
+  background-color: var(--layer-2);
   border-radius: 12px;
+
+  box-shadow: var(--shadow-inline);
 }
 
 .account-success-card__pera-explorer-link {
   gap: 8px;
+
+  .export-icon {
+    path {
+      fill: var(--light-button-text);
+    }
+  }
 }
 
 .account-success-card__pera-explorer-text {

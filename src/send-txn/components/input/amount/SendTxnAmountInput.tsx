@@ -9,16 +9,15 @@ import Button from "../../../../component/button/Button";
 import {isALGO} from "../../../../core/util/asset/assetUtils";
 import FormatUSDBalance from "../../../../component/format-balance/usd/FormatUSDBalance";
 import {formatNumber} from "../../../../core/util/number/numberUtils";
-import algod from "../../../../core/util/algod/algod";
 import {useSimpleToaster} from "../../../../component/simple-toast/util/simpleToastHooks";
 import useFormito from "../../../../core/util/hook/formito/useFormito";
 import {useAppContext} from "../../../../core/app/AppContext";
+import {usePortfolioContext} from "../../../../overview/context/PortfolioOverviewContext";
 
 const AMOUNT_INPUT_DEFAULT_FRACTION_DIGITS = 2;
 
 interface AmountInputState {
   dollarAmount?: number;
-  displayMaxButtonSpinner: boolean;
 }
 
 function SendTxnAmountInput() {
@@ -27,22 +26,15 @@ function SendTxnAmountInput() {
     state: {preferredNetwork}
   } = useAppContext();
   const {
-    formitoState: {
-      exchangePrice,
-      senderAddress,
-      selectedAsset,
-      txnAmount,
-      txnFee,
-      minBalance: prefethcedMinBalance
-    },
+    formitoState: {exchangePrice, senderAddress, selectedAsset, txnAmount, txnFee},
     dispatchFormitoAction
   } = useSendTxnFlowContext();
+  const portfolioOverview = usePortfolioContext();
   const {
-    formitoState: {dollarAmount, displayMaxButtonSpinner},
+    formitoState: {dollarAmount},
     dispatchFormitoAction: dispatchAmountInputAction
   } = useFormito<AmountInputState>({
-    dollarAmount: undefined,
-    displayMaxButtonSpinner: false
+    dollarAmount: undefined
   });
   const simpleToaster = useSimpleToaster();
 
@@ -121,16 +113,15 @@ function SendTxnAmountInput() {
         buttonType={"secondary"}
         size={"small"}
         customClassName={"send-txn-amount__max-button"}
-        shouldDisplaySpinner={displayMaxButtonSpinner}
         isDisabled={!senderAddress || !selectedAsset}>
         {"MAX"}
       </Button>
     </FormField>
   );
 
-  async function handleMaxButtonClick() {
+  function handleMaxButtonClick() {
     let amount: string | number | undefined;
-    const minBalance = await getAccountMinBalance();
+    const minBalance = portfolioOverview!.accounts[senderAddress!].minimum_balance;
 
     if (!minBalance || !selectedAsset) return;
 
@@ -154,7 +145,7 @@ function SendTxnAmountInput() {
       );
     }
 
-    if (amount && amount > 0) {
+    if (amount && typeof amount === "number" && amount > 0) {
       dispatchFormitoAction({
         type: "SET_FORM_VALUE",
         payload: {txnAmount: String(amount)}
@@ -162,49 +153,10 @@ function SendTxnAmountInput() {
     }
   }
 
-  // minBalance of selectedAccount is fetched after selecting account
-  // in case of error, minBalance is refetched here
-  async function getAccountMinBalance() {
-    if (prefethcedMinBalance) return prefethcedMinBalance;
-
-    let minBalance;
-
-    try {
-      toggleMaxButtonSpinner();
-
-      const accountInfo = (await algod.client
-        .accountInformation(senderAddress!)
-        .do()) as {["min-balance"]: number};
-
-      minBalance = accountInfo["min-balance"];
-    } catch (error) {
-      simpleToaster.display({
-        type: "error",
-        message: "There is an error calculating txn fee, please try again later"
-      });
-    } finally {
-      dispatchFormitoAction({
-        type: "SET_FORM_VALUE",
-        payload: {minBalance}
-      });
-
-      toggleMaxButtonSpinner();
-    }
-
-    return minBalance;
-  }
-
   function handleInputChange(event: SyntheticEvent<HTMLInputElement>) {
     dispatchFormitoAction({
       type: "SET_FORM_VALUE",
       payload: {txnAmount: event.currentTarget.value}
-    });
-  }
-
-  function toggleMaxButtonSpinner() {
-    dispatchAmountInputAction({
-      type: "SET_FORM_VALUE",
-      payload: {displayMaxButtonSpinner: !displayMaxButtonSpinner}
     });
   }
 }

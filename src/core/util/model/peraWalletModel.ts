@@ -1,5 +1,14 @@
 import {Transaction} from "algosdk";
 
+export interface ArbitraryData {
+  data: Uint8Array;
+
+  /**
+   * Required message explaining the reason for the action
+   */
+  message: string;
+}
+
 export interface SignerTransaction {
   txn: Transaction;
 

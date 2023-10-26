@@ -20,13 +20,13 @@
 
     place-content: center;
 
-    height: 60vh;
+    height: 300px;
 
     .activity-icon {
       margin-bottom: 16px;
 
       path {
-        stroke: var(--text-gray-light);
+        stroke: var(--text-gray);
       }
     }
   }
@@ -37,17 +37,12 @@
   align-items: center;
   justify-content: space-between;
 
-  border-bottom: 1px solid var(--card-default);
-
   transition: border-color var(--default-animation);
-
-  &--has-border {
-    border-color: var(--gray-200);
-  }
 }
 
-.pera-connect-sessions__go-back-button {
-  margin-bottom: unset;
+.pera-connect-sessions__go-back-button.go-back-button-container {
+  margin-bottom: 0;
+
   padding: 28px;
 }
 
@@ -70,7 +65,7 @@
 .pera-connect-sessions__list-item {
   padding: 28px 0;
 
-  border-top: 1px solid var(--gray-100);
+  border-top: 1px solid var(--border-default);
 
   &:first-child {
     padding-top: 0;

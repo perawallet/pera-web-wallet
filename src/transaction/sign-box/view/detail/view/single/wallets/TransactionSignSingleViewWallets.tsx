@@ -1,9 +1,9 @@
-import {ReactComponent as AccountDefaultIcon} from "../../../../../../../core/ui/icons/account-default.svg";
 import {ReactComponent as ApplicationCallIcon} from "../../../../../../../core/ui/icons/application-call.svg";
 import {ReactComponent as CreateIcon} from "../../../../../../../core/ui/icons/create.svg";
 import {ReactComponent as DeleteIcon} from "../../../../../../../core/ui/icons/delete.svg";
 import {ReactComponent as ModifyIcon} from "../../../../../../../core/ui/icons/modify.svg";
 import {ReactComponent as ExportIcon} from "../../../../../../../core/ui/icons/export.svg";
+import {ReactComponent as AccountStandardIcon} from "../../../../../../../core/ui/icons/account-standard.svg";
 
 import "./_transaction-sign-single-view-wallets.scss";
 
@@ -26,13 +26,14 @@ import {
 import {useTransactionSignFlowContext} from "../../../../../../context/TransactionSignFlowContext";
 import LinkButton from "../../../../../../../component/button/LinkButton";
 import {getPeraExplorerLink} from "../../../../../../../core/util/pera/explorer/getPeraExplorerLink";
+import useAccountIcon from "../../../../../../../core/util/hook/useAccountIcon";
 
 function TransactionSignSingleViewWallets() {
   const {
-    state: {accounts, preferredNetwork}
+    state: {preferredNetwork}
   } = useAppContext();
   const {
-    formitoState: {activeTransactionIndex, txns}
+    formitoState: {activeTransactionIndex, txns, accounts}
   } = useTransactionSignFlowContext();
   const activeTransaction = txns[activeTransactionIndex];
   const accountsArray = Object.values(accounts);
@@ -46,6 +47,7 @@ function TransactionSignSingleViewWallets() {
     : "";
   const fromAccount = accountsArray.find((account) => account.address === fromAddress);
   const toAccount = accountsArray.find((account) => account.address === toAddress);
+  const {renderAccountIcon} = useAccountIcon();
 
   return (
     <div className={"transaction-sign-single-view-wallets"}>
@@ -55,7 +57,7 @@ function TransactionSignSingleViewWallets() {
             !fromAccount
         })}>
         <div className={"transaction-sign-single-view-wallets__wallet__description"}>
-          <AccountDefaultIcon width={32} height={32} />
+          {renderIcon("from")}
 
           <div>
             <p className={"typography--body"}>
@@ -67,7 +69,7 @@ function TransactionSignSingleViewWallets() {
             </p>
 
             {fromAccount?.name && (
-              <p className={"typography--secondary-body text-color--gray-light"}>
+              <p className={"typography--secondary-body text-color--gray-lighter"}>
                 {trimAccountAddress(fromAddress)}
               </p>
             )}
@@ -119,7 +121,7 @@ function TransactionSignSingleViewWallets() {
       if (isCreateApplicationTransaction(activeTransaction.txn)) {
         return (
           <div>
-            {renderFromIcon()}
+            {renderIcon("to")}
 
             {"Create Application"}
           </div>
@@ -128,7 +130,7 @@ function TransactionSignSingleViewWallets() {
 
       return (
         <div className={"transaction-sign-single-view-wallets__wallet__description"}>
-          {renderFromIcon()}
+          {renderIcon("to")}
 
           {`Application #${activeTransaction.txn.appIndex}`}
         </div>
@@ -139,7 +141,7 @@ function TransactionSignSingleViewWallets() {
       if (isTransactionCreateAssetConfig(activeTransaction.txn)) {
         return (
           <div className={"transaction-sign-single-view-wallets__wallet__description"}>
-            {renderFromIcon()}
+            {renderIcon("to")}
 
             {activeTransaction.txn.assetName
               ? `Create "${activeTransaction.txn.assetName}" Asset`
@@ -150,7 +152,7 @@ function TransactionSignSingleViewWallets() {
 
       return (
         <div className={"transaction-sign-single-view-wallets__wallet__description"}>
-          {renderFromIcon()}
+          {renderIcon("to")}
 
           {`Asset Configuration - ${activeTransaction.txn.assetIndex}`}
         </div>
@@ -160,7 +162,7 @@ function TransactionSignSingleViewWallets() {
     return (
       <>
         <div className={"transaction-sign-single-view-wallets__wallet__description"}>
-          {renderFromIcon()}
+          {renderIcon("to")}
 
           <div>
             <p className={"typography--body"}>
@@ -172,7 +174,7 @@ function TransactionSignSingleViewWallets() {
             </p>
 
             {toAccount?.name && (
-              <p className={"typography--secondary-body text-color--gray-light"}>
+              <p className={"typography--secondary-body text-color--gray-lighter"}>
                 {trimAccountAddress(toAddress)}
               </p>
             )}
@@ -201,37 +203,43 @@ function TransactionSignSingleViewWallets() {
     );
   }
 
-  function renderFromIcon() {
-    if (isApplicationCall) {
-      if (isCreateApplicationTransaction(activeTransaction.txn)) {
-        return <CreateIcon width={32} height={32} />;
+  function renderIcon(type: "from" | "to") {
+    if (type === "to") {
+      if (isApplicationCall) {
+        if (isCreateApplicationTransaction(activeTransaction.txn)) {
+          return <CreateIcon width={32} height={32} />;
+        }
+
+        switch (activeTransaction.txn.appOnComplete) {
+          case OnApplicationComplete.UpdateApplicationOC:
+            return <ModifyIcon width={32} height={32} />;
+          case OnApplicationComplete.DeleteApplicationOC:
+            return <DeleteIcon width={32} height={32} />;
+          default:
+            return <ApplicationCallIcon width={32} height={32} />;
+        }
       }
 
-      switch (activeTransaction.txn.appOnComplete) {
-        case OnApplicationComplete.UpdateApplicationOC:
+      if (isAssetConfig) {
+        if (isTransactionCreateAssetConfig(activeTransaction.txn)) {
+          return <CreateIcon width={32} height={32} />;
+        }
+
+        if (isTransactionUpdateAssetConfig(activeTransaction.txn)) {
           return <ModifyIcon width={32} height={32} />;
-        case OnApplicationComplete.DeleteApplicationOC:
+        }
+
+        if (isTransactionDeleteAssetConfig(activeTransaction.txn)) {
           return <DeleteIcon width={32} height={32} />;
-        default:
-          return <ApplicationCallIcon width={32} height={32} />;
+        }
       }
     }
 
-    if (isAssetConfig) {
-      if (isTransactionCreateAssetConfig(activeTransaction.txn)) {
-        return <CreateIcon width={32} height={32} />;
-      }
-
-      if (isTransactionUpdateAssetConfig(activeTransaction.txn)) {
-        return <ModifyIcon width={32} height={32} />;
-      }
-
-      if (isTransactionDeleteAssetConfig(activeTransaction.txn)) {
-        return <DeleteIcon width={32} height={32} />;
-      }
+    if ((type === "from" && !fromAccount) || (type === "to" && !toAccount)) {
+      return <AccountStandardIcon width={32} height={32} />;
     }
 
-    return <AccountDefaultIcon width={32} height={32} />;
+    return renderAccountIcon({account: (type === "from" ? fromAccount : toAccount)!});
   }
 }
 

@@ -1,14 +1,18 @@
+import {getDefaultTheme} from "../../../app/util/appStateUtils";
 import {stringToUint8Array, uint8ArrayToString} from "../../blob/blobUtils";
 import {decryptSK, encryptSK} from "../../nacl/naclUtils";
 import webStorage, {STORED_KEYS} from "./webStorage";
 
+type EncryptedWebStorageKey = ValueOf<
+  Pick<
+    typeof STORED_KEYS,
+    "DEVICE_INFO" | "STALE_PORTFOLIO_OVERVIEW" | "BACKUP_PASSPHRASE"
+  >
+>;
+
 function encryptedWebStorageUtils(encryptionKey: string) {
   return {
-    async get(
-      storedKey: ValueOf<
-        Pick<typeof STORED_KEYS, "DEVICE_INFO" | "STALE_PORTFOLIO_OVERVIEW">
-      >
-    ) {
+    async get(storedKey: EncryptedWebStorageKey) {
       const encryptedContent = webStorage.local.getItem(storedKey);
 
       if (!encryptedContent) return null;
@@ -17,12 +21,7 @@ function encryptedWebStorageUtils(encryptionKey: string) {
 
       return JSON.parse(uint8ArrayToString(decryptedContent));
     },
-    async set(
-      storedKey: ValueOf<
-        Pick<typeof STORED_KEYS, "DEVICE_INFO" | "STALE_PORTFOLIO_OVERVIEW">
-      >,
-      value: unknown
-    ): Promise<void> {
+    async set(storedKey: EncryptedWebStorageKey, value: unknown): Promise<void> {
       const encryptedContent = await encryptSK(
         stringToUint8Array(JSON.stringify(value)),
         encryptionKey
@@ -34,16 +33,14 @@ function encryptedWebStorageUtils(encryptionKey: string) {
 }
 
 function getCommonAppState() {
-  const {THEME, PREFERRED_NETWORK, HASHED_MASTERKEY} = STORED_KEYS;
+  const {PREFERRED_NETWORK, HASHED_MASTERKEY} = STORED_KEYS;
 
-  const [theme, preferredNetwork, hashedMasterkey] = [
-    THEME,
-    PREFERRED_NETWORK,
-    HASHED_MASTERKEY
-  ].map((storedKey) => webStorage.local.getItem(storedKey));
+  const [preferredNetwork, hashedMasterkey] = [PREFERRED_NETWORK, HASHED_MASTERKEY].map(
+    (storedKey) => webStorage.local.getItem(storedKey)
+  );
 
   return {
-    theme,
+    theme: getDefaultTheme(),
     preferredNetwork,
     hashedMasterkey
   } as CommonAppState;

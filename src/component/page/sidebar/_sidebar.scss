@@ -14,7 +14,7 @@
   width: 240px;
   height: 100vh;
 
-  padding: 112px 16px 32px;
+  padding: 180px 16px 32px;
 }
 
 .sidebar__nav {
@@ -67,16 +67,20 @@
     color: currentColor;
   }
 
+  svg path {
+    fill: var(--text-main);
+  }
+
   &--active {
-    color: var(--helper-purple-default);
-    background: var(--helper-purple-lighter);
+    color: var(--secondary-button-text);
+    background: var(--secondary-button-bg);
 
     svg path {
-      fill: var(--helper-purple-default);
+      fill: var(--secondary-button-text);
     }
 
     &:visited {
-      color: var(--helper-purple-default);
+      color: var(--secondary-button-text);
     }
   }
 }

@@ -1,5 +1,7 @@
 .transaction-sign-assets-list {
-  margin-bottom: 18px;
+  &:not(:last-child) {
+    margin-bottom: 18px;
+  }
 }
 
 .transaction-sign-assets-list__tooltip {
@@ -20,7 +22,7 @@
 
     .info-icon {
       path {
-        fill: var(--text-gray-light);
+        fill: var(--text-gray-lighter);
       }
     }
   }
@@ -42,7 +44,7 @@
 
   .warning-icon {
     path {
-      fill: var(--helper-red-default);
+      fill: var(--helper-red-900);
     }
   }
 }

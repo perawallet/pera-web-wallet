@@ -1,5 +1,7 @@
 type WebStorageStoredValue = null | string | boolean | {[x: string]: any};
 
+type AppTheme = "system" | "light" | "dark";
+
 type DeviceInfo = Record<
   NetworkToggle,
   {
@@ -15,28 +17,43 @@ type AppBanner = {
 
 interface AccountDomain {
   name: string;
-  source: "nfdomain" | "peranameservice";
+  source: string;
   image: string;
 }
 
-interface AccountOverview {
+type AlgodAccountInformation = {
   address: string;
-  name: AccountDomain | null;
+  amount: number;
+  "min-balance": number;
+  "auth-addr": string; // rekeyed_to
+};
+
+type AccountDetail = {
+  rekeyed_to: null | string;
+  name: null | AccountDomain;
+  minimum_balance: number;
+};
+
+type AccountType = "standard" | "ledger" | "watch";
+
+interface AccountOverview extends AppDBAccount, Omit<AccountDetail, "name"> {
   total_usd_value: string;
   total_algo_value: string;
   standard_asset_count: number;
   collectible_count: number;
+  rekeyed_to: string | null;
+
+  // renamed bcs of the "name" conflict between account name
+  domainName: AccountDomain | null;
 }
 
-interface AppDBOverview {
-  current_round: string;
-  portfolio_value_usd: string;
-  portfolio_value_algo: string;
-  accounts: AccountOverview[];
+interface PortfolioOverview {
+  current_round: null | number;
+  accounts: Record<string, AccountOverview>;
 }
 
 type CommonAppState = {
-  theme: "system" | "dark" | "light";
+  theme: AppTheme;
   hashedMasterkey: string;
   preferredNetwork: NetworkToggle;
 };

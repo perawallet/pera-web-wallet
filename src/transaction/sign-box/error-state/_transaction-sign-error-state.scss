@@ -1,5 +1,34 @@
 .transaction-sign-error-state {
   height: 100%;
+
+  &--compact {
+    .transaction-sign-error-state__content {
+      height: unset;
+
+      padding: 20px 0 0;
+    }
+
+    .transaction-sign-error-state__content__message {
+      height: 220px;
+
+      padding: 0 20px;
+    }
+
+    .transaction-sign-error-state__actions {
+      padding: 20px 20px 0;
+    }
+
+    .transaction-sign-error-state__actions__button {
+      height: 40px;
+    }
+
+    .transaction-sign-error-state__actions--with-settings-link {
+      display: flex;
+      flex-direction: column-reverse;
+
+      padding-bottom: 20px;
+    }
+  }
 }
 
 .transaction-sign-error-state__content {
@@ -28,7 +57,7 @@
 
   margin: 0 auto 28px;
 
-  background-color: var(--helper-red-default);
+  background-color: var(--helper-red-900);
   border-radius: 50%;
 
   .close-icon {
@@ -47,8 +76,6 @@
 
 .transaction-sign-error-state__actions {
   padding: 28px 28px 0;
-
-  border-top: 1px solid var(--gray-100);
 
   &--with-settings-link {
     display: grid;

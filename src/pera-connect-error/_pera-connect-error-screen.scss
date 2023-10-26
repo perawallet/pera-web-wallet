@@ -1,0 +1,117 @@
+.pera-connect-error-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 577px;
+
+  padding: 80px 28px 28px;
+
+  text-align: center;
+
+  &--default {
+    height: 513px;
+
+    padding-top: 32px;
+  }
+
+  &--compact {
+    width: var(--pera-wallet-modal-compact-width);
+    height: var(--pera-wallet-modal-compact-height);
+
+    padding: 0;
+
+    .pera-connect-error-screen__error-icon-wrapper {
+      width: 40px;
+      height: 40px;
+
+      margin: 24px auto;
+
+      .close-icon {
+        width: 28px;
+        height: 28px;
+      }
+    }
+
+    .pera-connect-error-screen-content {
+      padding: 0 12px;
+    }
+
+    .pera-connect-error-screen__actions__support-text {
+      margin-bottom: 46px;
+    }
+
+    .pera-connect-error-screen__actions__contact-support-button {
+      position: fixed;
+      bottom: 0;
+    }
+  }
+}
+
+.pera-connect-error-screen__error-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 56px;
+  height: 56px;
+
+  margin: 0 auto 24px;
+
+  background: var(--helper-red-900);
+
+  border-radius: 50%;
+
+  .close-icon {
+    path {
+      fill: var(--white);
+    }
+  }
+}
+
+.pera-connect-error-screen__title {
+  margin-bottom: 12px;
+}
+
+.pera-connect-error-screen__resolved-by-list {
+  margin-top: 12px;
+  padding: 0 16px;
+
+  background-color: var(--layer-1);
+  border-radius: 12px;
+  box-shadow: var(--shadow-1);
+}
+
+.pera-connect-error-screen__resolved-by-list__item {
+  display: grid;
+  grid-template-columns: 24px auto;
+  gap: 8px;
+
+  padding: 12px 0;
+
+  color: var(--text-main);
+
+  text-align: left;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--border-default);
+  }
+}
+
+.pera-connect-error-screen__resolved-by-list__item__title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  margin-bottom: 4px;
+}
+
+.pera-connect-error-screen__actions__support-text {
+  margin-bottom: 12px;
+}
+
+.pera-connect-error-screen__actions__support-link {
+  color: var(--helper-purple-900);
+}

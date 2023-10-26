@@ -2,6 +2,8 @@ import {ReactComponent as UnlinkIcon} from "../../../core/ui/icons/unlink.svg";
 
 import "./_account-remove-modal.scss";
 
+import {useEffect} from "react";
+
 import Button from "../../../component/button/Button";
 import {useModalDispatchContext} from "../../../component/modal/context/ModalContext";
 import {useAppContext} from "../../../core/app/AppContext";
@@ -9,7 +11,12 @@ import PasswordAccessPage, {
   PASSWORD_ACCESS_MODAL_ID
 } from "../../../password/page/access/PasswordAccessPage";
 import {useSimpleToaster} from "../../../component/simple-toast/util/simpleToastHooks";
-import {appDBManager} from "../../../core/app/db";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
+import algod from "../../../core/util/algod/algod";
+import {DEFAULT_ALGORAND_NODE_PROVIDER_TYPE} from "../../../core/util/algod/algodConstants";
+import {MINUTE_IN_MS} from "../../../core/util/time/timeConstants";
+import useAsyncProcess from "../../../core/network/async-process/useAsyncProcess";
+import PeraLoader from "../../../component/loader/pera/PeraLoader";
 
 interface AccountRemoveModalProps {
   account: AppDBAccount;
@@ -19,14 +26,55 @@ export const ACCOUNT_REMOVE_MODAL_ID = "remove-account-modal";
 
 function AccountRemoveModal({account}: AccountRemoveModalProps) {
   const {
-    state: {masterkey},
-    dispatch
+    state: {preferredNetwork, masterkey}
   } = useAppContext();
   const dispatchModalStateAction = useModalDispatchContext();
+  const {accounts, deleteAccount} = usePortfolioContext()!;
   const simpleToaster = useSimpleToaster();
+  const {
+    runAsyncProcess,
+    state: {data: isMainnetAuthAccount, isRequestPending}
+  } = useAsyncProcess<boolean>();
+  const rekeyedAccount = Object.values(accounts).find(
+    (userAccount) => userAccount.rekeyed_to === account.address
+  );
+
+  useEffect(() => {
+    if (rekeyedAccount) return;
+
+    // check if any of wallet accounts if rekeyed to the account in mainnet
+    algod.updateClient("mainnet", DEFAULT_ALGORAND_NODE_PROVIDER_TYPE);
+
+    runAsyncProcess(
+      algod.indexer
+        .searchAccounts()
+        .authAddr(account.address)
+        .do()
+        .then((indexerResponse) => {
+          const {accounts: rekeyedAccounts} = indexerResponse as {
+            accounts: {address: string}[];
+          };
+
+          return !!rekeyedAccounts.find(
+            // eslint-disable-next-line max-nested-callbacks
+            (rekeyedMainnetAccount) => !!accounts[rekeyedMainnetAccount.address]
+          );
+        })
+        .finally(() => {
+          algod.updateClient(preferredNetwork, DEFAULT_ALGORAND_NODE_PROVIDER_TYPE);
+        })
+    );
+  }, [account.address, accounts, preferredNetwork, rekeyedAccount, runAsyncProcess]);
+
+  if (isRequestPending)
+    return (
+      <div className={"align-center--horizontally account-remove-modal"}>
+        <PeraLoader mode={"colorful"} />
+      </div>
+    );
 
   return (
-    <div>
+    <div className={"account-remove-modal"}>
       <div className={"account-remove-modal__hero"}>
         <div className={"account-remove-modal__hero-unlink-icon-wrapper"}>
           <UnlinkIcon width={48} height={48} />
@@ -58,7 +106,7 @@ function AccountRemoveModal({account}: AccountRemoveModalProps) {
       </Button>
 
       <Button
-        buttonType={"ghost"}
+        buttonType={"light"}
         size={"large"}
         customClassName={"account-remove-modal__cancel-cta"}
         onClick={handleCancelClick}>
@@ -93,21 +141,35 @@ function AccountRemoveModal({account}: AccountRemoveModalProps) {
   async function handlePasswordAccessRemoveAccount() {
     if (!masterkey) return;
 
-    try {
-      await appDBManager.delete("accounts")({
-        key: account.address,
-        encryptionKey: masterkey
-      });
-
-      dispatch({
-        type: "REMOVE_ACCOUNT",
-        address: account.address
+    if (rekeyedAccount) {
+      simpleToaster.display({
+        timeout: MINUTE_IN_MS,
+        type: "error",
+        message: `You can't remove this account before removing rekeyed ${rekeyedAccount.name}`
       });
 
       closeModal();
 
+      return;
+    } else if (preferredNetwork === "testnet" && isMainnetAuthAccount) {
       simpleToaster.display({
-        type: "info",
+        timeout: MINUTE_IN_MS,
+        type: "error",
+        message: `This account has accounts rekeyed to it on Mainnet.`
+      });
+
+      closeModal();
+
+      return;
+    }
+
+    try {
+      await deleteAccount(account.address);
+
+      closeModal();
+
+      simpleToaster.display({
+        type: "success",
         message: `Account "${account.name}" removed!`
       });
     } catch (error) {

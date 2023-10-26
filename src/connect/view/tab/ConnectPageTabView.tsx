@@ -1,6 +1,6 @@
 import "./_connect-page-tab-view.scss";
 
-import {useCallback} from "react";
+import {useCallback, useEffect, useState} from "react";
 import classNames from "classnames";
 
 import {useAppContext} from "../../../core/app/AppContext";
@@ -11,17 +11,26 @@ import {useConnectFlowContext} from "../../context/ConnectFlowContext";
 import {NETWORK_MISMATCH_MESSAGE} from "../../../core/util/algod/algodConstants";
 import ConnectPageTabViewAddImportAccount from "./add-import-account/ConnectPageTabViewAddImportAccount";
 import PasswordAccessPage from "../../../password/page/access/PasswordAccessPage";
-import {appDBManager} from "../../../core/app/db";
+import PeraConnectErrorScreen from "../../../pera-connect-error/PeraConnectErrorScreen";
+import {PERA_CONNECT_SHOW_ERROR_SCREEN_TIMEOUT} from "../../../pera-connect-error/util/peraConnectErrorScreenConstants";
 
 function ConnectPageTabView() {
   const {
-    state: {preferredNetwork, hashedMasterkey, hasAccounts, masterkey},
-    dispatch: dispatchAppState
+    state: {hashedMasterkey, hasAccounts}
   } = useAppContext();
   const {
-    formitoState: {connectFlowView, selectedAccounts, currentSession},
+    formitoState: {connectFlowView, hasMessageReceived, currentSession},
     dispatchFormitoAction
   } = useConnectFlowContext();
+  const [shouldShowErrorScreen, setShouldShowErrorScreen] = useState(false);
+
+  useEffect(() => {
+    const messageReceivedTimeout = setTimeout(() => {
+      setShouldShowErrorScreen(true);
+    }, PERA_CONNECT_SHOW_ERROR_SCREEN_TIMEOUT);
+
+    return () => clearTimeout(messageReceivedTimeout);
+  }, []);
 
   // Receive "CONNECT" request from dApp
   const onReceiveMessage = useCallback(
@@ -62,67 +71,21 @@ function ConnectPageTabView() {
   );
 
   function renderContent() {
+    if (shouldShowErrorScreen && !hasMessageReceived && !currentSession) {
+      return <PeraConnectErrorScreen />;
+    }
+
     if (connectFlowView === "add-account") {
       return <ConnectPageTabViewAddImportAccount />;
     }
 
     if (connectFlowView === "select-account") {
       return (
-        <ConnectPageSelectAccount
-          handleConnectClick={handleConnectClick}
-          sendNetworkMismacthError={sendNetworkMismatchError}
-        />
+        <ConnectPageSelectAccount sendNetworkMismacthError={sendNetworkMismatchError} />
       );
     }
 
     return <PasswordAccessPage type={"connect-new-tab"} onSubmit={handleChangeView} />;
-  }
-
-  async function handleConnectClick() {
-    dispatchFormitoAction({
-      type: "SET_FORM_VALUE",
-      payload: {
-        isConnectStarted: true
-      }
-    });
-
-    // Delete the existing session if it exists
-    if (currentSession) {
-      appDBManager.delete("sessions")({
-        key: currentSession.url,
-        encryptionKey: masterkey!
-      });
-    }
-
-    if (selectedAccounts) {
-      const selectedAddresses = selectedAccounts.map((account) => {
-        const accountAddress = account.address;
-
-        return accountAddress;
-      });
-
-      const session = {
-        ...currentSession!,
-        accountAddresses: selectedAddresses || [],
-        date: new Date(),
-        network: preferredNetwork
-      } as AppDBSession;
-
-      await appDBManager.set("sessions", masterkey!)(currentSession!.url, session);
-
-      dispatchAppState({type: "SET_SESSION", session});
-
-      appTellerManager.sendMessage({
-        message: {
-          type: "CONNECT_CALLBACK",
-          data: {
-            addresses: selectedAddresses || []
-          }
-        },
-
-        targetWindow: window.opener
-      });
-    }
   }
 
   function handleChangeView() {

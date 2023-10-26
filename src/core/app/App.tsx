@@ -25,10 +25,14 @@ import useKeyboardShortcut, {
   COMBINATOR_KEYS
 } from "../util/hook/useKeyboardShortcut";
 import useCheckForInactivity from "../util/hook/useCheckForInactivity";
+import {DATABASES_CONTAINING_SENSITIVE_INFO} from "./db";
+import TransferMobileFlow from "../../settings/transfer-mobile/flow/TransferMobileFlow";
+import useAlgoPricePolling from "../util/hook/useAlgoPricePolling";
 
 function App() {
   const lockApp = useLockApp();
 
+  useAlgoPricePolling();
   useCheckForInactivity();
   useRegisterDevice();
   useKeyboardShortcut([
@@ -47,7 +51,9 @@ function App() {
     };
 
     function onUnload() {
-      indexedDB.deleteDatabase("pera-wallet-assets");
+      DATABASES_CONTAINING_SENSITIVE_INFO.forEach((database) => {
+        indexedDB.deleteDatabase(database);
+      });
 
       lockApp();
     }
@@ -119,6 +125,15 @@ function App() {
           element={
             <RequirePassword>
               <AccountFlow />
+            </RequirePassword>
+          }
+        />
+
+        <Route
+          path={`${ROUTES.TRANSFER.ROUTE}/*`}
+          element={
+            <RequirePassword>
+              <TransferMobileFlow />
             </RequirePassword>
           }
         />

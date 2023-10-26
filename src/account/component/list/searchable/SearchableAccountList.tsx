@@ -6,35 +6,42 @@ import classNames from "classnames";
 import SearchableList from "../../../../component/list/searchable-list/SearchableList";
 import SelectableListItem from "../../../../component/list/selectable-list-item/SelectableListItem";
 import {useAppContext} from "../../../../core/app/AppContext";
-import {PortfolioOverview} from "../../../../overview/util/hook/usePortfolioOverview";
 import AccountListItemContent from "../../account-list/account-list-item-content/AccountListItemContent";
 import EmptyAccountList from "../empty/EmptyAccountList";
 
 interface SearchableAccountListProps {
-  accounts: PortfolioOverview["accounts"];
+  accounts: AccountOverview[];
   onSelectAccount: (address: string) => void;
+  hasBackgroundColor: boolean;
   customClassName?: string;
+  shouldDisplayMinBalanceWarning?: boolean;
 }
 
 function SearchableAccountList({
   accounts: searchableAccounts,
   onSelectAccount,
-  customClassName
+  customClassName,
+  hasBackgroundColor: hasBackgroundColor,
+  shouldDisplayMinBalanceWarning = false
 }: SearchableAccountListProps) {
   const [filteredAccounts, setFilteredAccounts] =
-    useState<PortfolioOverview["accounts"]>(searchableAccounts);
-  const {
-    state: {accounts}
-  } = useAppContext();
+    useState<AccountOverview[]>(searchableAccounts);
   const {
     state: {hasAccounts}
   } = useAppContext();
+  const searchableAccountListClassName = classNames(
+    `searchable-account-list`,
+    customClassName,
+    {
+      "searchable-account-list--colored-background": hasBackgroundColor
+    }
+  );
 
   if (!hasAccounts) return <EmptyAccountList />;
 
   return (
     <SearchableList
-      customClassName={classNames("searchable-account-list", customClassName)}
+      customClassName={searchableAccountListClassName}
       items={filteredAccounts}
       typeaheadSearchProps={{
         name: "filterAccountQuery",
@@ -49,10 +56,8 @@ function SearchableAccountList({
           onSelect={onSelectAccount}
           customClassName={"searchable-account-list-item"}>
           <AccountListItemContent
-            name={accounts[account.address]?.name || ""}
-            address={account.address}
-            balance={account.total_algo_value}
-            accountType={accounts[account.address].type}
+            account={account}
+            shouldDisplayMinBalanceWarning={shouldDisplayMinBalanceWarning}
           />
         </SelectableListItem>
       )}
@@ -62,12 +67,15 @@ function SearchableAccountList({
   function handleFilterAccount(value: string) {
     const query = value.toLowerCase();
     const queriedAccounts = searchableAccounts.filter(
-      (account) =>
-        account.address.toLowerCase().includes(query) ||
-        (account?.accountName && account.accountName.toLowerCase().includes(query))
+      ({address, name: accountName, domainName}) =>
+        [accountName, domainName?.name, address].some(
+          (text) => text && text.toLowerCase().includes(query)
+        )
     );
 
-    setFilteredAccounts(queriedAccounts);
+    setFilteredAccounts(
+      queriedAccounts.length > 0 ? queriedAccounts : searchableAccounts
+    );
   }
 }
 

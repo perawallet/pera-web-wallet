@@ -1,4 +1,5 @@
 import {ReactComponent as PeraLogo} from "../../../core/ui/icons/pera-logo.svg";
+import {ReactComponent as PeraLogoDark} from "../../../core/ui/icons/pera-logo.dark.svg";
 import {ReactComponent as ArrowLeftIcon} from "../../../core/ui/icons/arrow-left.svg";
 
 import "./_page-header.scss";
@@ -7,15 +8,15 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 import classNames from "classnames";
 
-import AlgoCurrency from "../../algo-currency/AlgoCurrency";
 import LockButton from "../../lock-button/LockButton";
 import NetworkBadge from "../../network-badge/NetworkBadge";
 import ROUTES from "../../../core/route/routes";
-import useScroll from "../../../core/util/hook/useScroll";
 import {getPageHeaderBackButtonText} from "./util/pageHeaderUtils";
 import useShouldShowPageHeaderGoBackButton from "./util/useShouldShowPageHeaderGoBackButton";
 import {useNavigationContext} from "../../../core/route/context/NavigationContext";
 import {useAppContext} from "../../../core/app/AppContext";
+import {getColorSchema} from "../../../core/app/util/appStateUtils";
+import useScroll from "../../../core/util/hook/useScroll";
 
 interface PageHeaderProps {
   customClassName?: string;
@@ -23,7 +24,7 @@ interface PageHeaderProps {
 
 function PageHeader({customClassName}: PageHeaderProps) {
   const {
-    state: {hasAccounts}
+    state: {hasAccounts, theme}
   } = useAppContext();
   const [scrollPosition, setScrollPosition] = useState(0);
   const shouldShowGoBackButton = useShouldShowPageHeaderGoBackButton();
@@ -42,7 +43,7 @@ function PageHeader({customClassName}: PageHeaderProps) {
         <Link
           to={hasAccounts ? ROUTES.OVERVIEW.ROUTE : ROUTES.BASE}
           className={"align-center--vertically"}>
-          <PeraLogo />
+          {getColorSchema(theme) === "dark" ? <PeraLogoDark /> : <PeraLogo />}
 
           <NetworkBadge />
         </Link>
@@ -63,8 +64,6 @@ function PageHeader({customClassName}: PageHeaderProps) {
       </div>
 
       <div className={"page-header__indicator-group"}>
-        <AlgoCurrency />
-
         <LockButton />
       </div>
     </header>

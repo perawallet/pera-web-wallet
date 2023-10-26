@@ -1,25 +1,20 @@
 .algo-currency {
   display: flex;
-  gap: 6px;
+  align-items: center;
+  gap: 8px;
 
-  min-width: 136px;
-  height: 40px;
-
-  padding: 10px 16px;
-
-  border: 1px solid var(--gray-200);
-  border-radius: 12px;
+  color: var(--gray-900);
 }
 
 .algo-currency__icon-wrapper {
   display: grid;
-
-  width: 20px;
-  height: 20px;
-
-  background-color: var(--gray-400);
-  border-radius: 100%;
   place-content: center;
+
+  width: 24px;
+  height: 24px;
+
+  background-color: var(--black);
+  border-radius: 100%;
 
   .algo-icon {
     path {

@@ -67,6 +67,10 @@ function modalStateReducer(state = initialModalState, action: ModalStateAction) 
           (item) => item.id !== action.payload.id
         );
 
+        if (document.body.classList.contains("ReactModal__Body--open")) {
+          document.body.classList.remove("ReactModal__Body--open");
+        }
+
         newState = {
           ...state,
           modalStack: [
@@ -77,12 +81,6 @@ function modalStateReducer(state = initialModalState, action: ModalStateAction) 
             ...filteredModalStack
           ]
         };
-      } else {
-        throw new Error(
-          `Modal cannot be found: ${
-            action.payload.id
-          }. \nAvailable modal ids: ${state.modalStack.map((item) => item.id)}`
-        );
       }
 
       break;

@@ -1,11 +1,35 @@
+@import "../../../../../core/ui/typography/_typography-mixins.scss";
+
 .transaction-sign-review-transactions {
   position: relative;
 
-  height: 398px;
+  max-height: var(--pera-wallet-modal-transaction-sign-review-box-height);
 
   overflow: auto;
 
-  padding: 20px 28px;
+  padding: 28px 29px 0;
+
+  &--compact {
+    padding: 20px;
+
+    .transaction-sign-review-transactions__button {
+      @include typography--bold-body();
+    }
+
+    .transaction-sign-review-transactions__data-sign-message {
+      position: fixed;
+      bottom: 84px;
+
+      padding: 8px;
+    }
+
+    .transaction-sign-detail-message {
+      padding: 0;
+
+      background-color: unset;
+      box-shadow: unset;
+    }
+  }
 }
 
 .transaction-sign-review-transactions__title-wrapper {
@@ -14,6 +38,18 @@
   justify-content: space-between;
 
   margin-bottom: 24px;
+}
+
+.transaction-sign-review-transactions__txns {
+  padding: 20px;
+
+  background: var(--layer-2);
+  border-radius: 12px;
+  box-shadow: var(--shadow-inline);
+
+  .transaction-sign-assets-list:not(:last-of-type) {
+    margin-bottom: 18px;
+  }
 }
 
 .transaction-sign-review-transactions__button.button {

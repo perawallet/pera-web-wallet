@@ -1,15 +1,15 @@
 import "./_account-qr-code-sync.scss";
 
-import nacl from "tweetnacl";
 import {List, ListItem} from "@hipo/react-ui-toolkit";
 import {useMemo} from "react";
-import {Navigate, useLocation} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 
 import PeraQRCode from "../../../component/pera-qr-code/PeraQRCode";
 import ROUTES from "../../../core/route/routes";
 import useInterval from "../../../core/util/hook/useInterval";
 import {peraApi} from "../../../core/util/pera/api/peraApi";
 import {
+  base64ToUint8Array,
   stringBytesToUint8Array,
   uint8ArrayToString
 } from "../../../core/util/blob/blobUtils";
@@ -20,15 +20,24 @@ import {
   SYNC_MOBILE_TO_WEB_CONSTANTS,
   SYNC_WEB_TO_MOBILE_CONSTANTS
 } from "./accountQRCodeSyncConstants";
-import {decryptAccountBackup, encryptSK} from "../../../core/util/nacl/naclUtils";
+import {
+  decryptAccountBackup,
+  encryptSK,
+  generateKey
+} from "../../../core/util/nacl/naclUtils";
+import {appDBManager} from "../../../core/app/db";
+import useLocationWithState from "../../../core/util/hook/useLocationWithState";
 import {MobileSyncAccount} from "../../accountModels";
 import {useSimpleToaster} from "../../../component/simple-toast/util/simpleToastHooks";
-import {deriveAccountFromPrivateKey} from "../../util/accountUtils";
+import {
+  deriveAccountFromPrivateKey,
+  isARCStandardMobileSyncAccount
+} from "../../util/accountUtils";
 import useNavigateFlow from "../../../core/route/navigate/useNavigateFlow";
 import {AccountComponentFlows} from "../../util/accountTypes";
 import {useConnectFlowContext} from "../../../connect/context/ConnectFlowContext";
-import {PortfolioOverview} from "../../../overview/util/hook/usePortfolioOverview";
-import {appDBManager} from "../../../core/app/db";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
+import Button from "../../../component/button/Button";
 
 interface AccountQRCodeSyncProps {
   sync: "web-to-mobile" | "mobile-to-web";
@@ -36,31 +45,40 @@ interface AccountQRCodeSyncProps {
 }
 
 type LocationState = {
-  state: {modificationKey?: string; backupId?: string};
+  modificationKey?: string;
+  backupId?: string;
+  encryptionKey?: Uint8Array;
 };
 
 // This component handles both mobile-to-web / web-to-mobile qr-code processes
 function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
-  // TODO: get searchParams to decide if export or import qr
   const navigate = useNavigateFlow();
-  const location = useLocation() as LocationState;
+  const {backupId, modificationKey, encryptionKey} =
+    useLocationWithState<LocationState>();
   const {
-    state: {accounts: webAccounts, masterkey},
+    state: {masterkey, hasAccounts},
     dispatch: dispatchAppState
   } = useAppContext();
+  const {accounts: webAccounts} = usePortfolioContext()!;
   const simpleToaster = useSimpleToaster();
-  const encryptionKey = useMemo(() => nacl.randomBytes(nacl.secretbox.keyLength), []);
   const {formitoState, dispatchFormitoAction} = useConnectFlowContext();
-
   const isInConnectFlow = flow === "connect";
-  const backupId =
-    isInConnectFlow && formitoState
-      ? formitoState.accountBackup?.backupId
-      : location?.state?.backupId;
-  const modificationKey = isInConnectFlow
-    ? formitoState.accountBackup?.modificationKey
-    : location.state.modificationKey;
-  const accountBackupState = {modificationKey, backupId};
+  const isWebToMobile = sync === "web-to-mobile";
+  const backupState = useMemo(() => {
+    const backup = {
+      version: "1",
+      action: isWebToMobile ? "import" : "export",
+      platform: "web",
+      backupId: (formitoState || {}).accountBackup?.backupId || backupId,
+      modificationKey:
+        (formitoState || {}).accountBackup?.modificationKey || modificationKey,
+      encryptionKey: (encryptionKey || generateKey()).toString()
+    };
+
+    if (isWebToMobile) delete backup.modificationKey;
+
+    return backup;
+  }, [backupId, encryptionKey, formitoState, isWebToMobile, modificationKey]);
 
   const QR_CODE_SYNC_CONTANTS =
     sync === "web-to-mobile"
@@ -69,25 +87,25 @@ function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
 
   // Polling;
   useInterval(handleAccountBackupPolling, PERA_SYNC_POLLING_INTERVAL, {
+    shouldStartInterval: !isWebToMobile,
     shouldRunCallbackAtStart: true,
     refreshLimit: PERA_SYNC_POLLING_LIMIT
   });
 
-  if (!isInConnectFlow && (!backupId || !modificationKey)) {
-    return <Navigate to={ROUTES.ACCOUNT.IMPORT.PERA_SYNC.FULL_PATH} />;
+  if (!isInConnectFlow && !backupId) {
+    const to = isWebToMobile
+      ? ROUTES.SETTINGS.ROUTE
+      : ROUTES.ACCOUNT.IMPORT.PERA_SYNC.FULL_PATH;
+
+    return <Navigate to={to} />;
   }
 
   return (
     <div className={"account-import-pera-qr"}>
-      <h1 className={"typography--h2 text-color--main"}>{"Import from Pera Mobile"}</h1>
+      <h1 className={"typography--h2 text-color--main"}>{QR_CODE_SYNC_CONTANTS.TITLE}</h1>
 
       <div className={"account-import-pera__qr-code-wrapper"}>
-        <PeraQRCode
-          value={JSON.stringify({
-            ...accountBackupState,
-            encryptionKey: encryptionKey.toString()
-          })}
-        />
+        <PeraQRCode value={JSON.stringify(backupState)} />
       </div>
 
       <List
@@ -108,14 +126,21 @@ function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
           </ListItem>
         )}
       </List>
+
+      {isWebToMobile && (
+        <Button
+          size={"large"}
+          customClassName={"account-import-pera-qr__cta button--fluid"}
+          onClick={handleCompleteExportAccounts}>
+          {"Done"}
+        </Button>
+      )}
     </div>
   );
 
   async function handleAccountBackupPolling() {
     let cipher: string | null = null;
 
-    // encrypted_content: stringified Uint8Array[nonce] + Uint8Array[cipher]
-    // nonce: first 24 bytes of the encrypted content
     try {
       const {encrypted_content} = (await peraApi.getAccountBackup(backupId!)) || {};
 
@@ -127,7 +152,10 @@ function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
 
     if (cipher) {
       // nacl returns null in case of decryption error
-      const decryptedContent = decryptAccountBackup(cipher, encryptionKey);
+      const decryptedContent = decryptAccountBackup(
+        cipher,
+        stringBytesToUint8Array(backupState.encryptionKey)
+      );
 
       if (!decryptedContent) {
         console.error("Encryption Error");
@@ -156,7 +184,7 @@ function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
           type: "info"
         });
 
-        if (flow === "connect") {
+        if (isInConnectFlow) {
           dispatchFormitoAction({
             type: "SET_FORM_VALUE",
             payload: {
@@ -170,13 +198,12 @@ function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
         return;
       }
 
-      if (flow === "connect") {
+      if (isInConnectFlow) {
         dispatchFormitoAction({
           type: "SET_FORM_VALUE",
           payload: {
             importAccountFromMobileViews: "success",
-            importedAccountsFromMobile:
-              importedAccounts as unknown as PortfolioOverview["accounts"]
+            importedAccountsFromMobile: importedAccounts as AppDBAccount[]
           }
         });
       } else {
@@ -197,20 +224,22 @@ function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
     const importedAccounts = [] as AppDBAccount[];
 
     for (const account of mobileAccounts) {
-      const privateKey = stringBytesToUint8Array(account.private_key);
+      const privateKey = isARCStandardMobileSyncAccount(account)
+        ? base64ToUint8Array(account.private_key)
+        : stringBytesToUint8Array(account.private_key);
       const {addr: address, sk} = deriveAccountFromPrivateKey(privateKey);
       let dbAccount: AppDBAccount | null = null;
 
       try {
         const pk = await encryptSK(sk, masterkey!);
 
+        // TODO: be careful about rekeyed accounts here
         dbAccount = {
-          type: "standard",
           name: account.name,
           pk,
           address,
           date: new Date()
-        };
+        } as AppDBAccount;
       } catch (error) {
         console.error("Key Derivation Error");
       }
@@ -219,7 +248,9 @@ function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
         try {
           await appDBManager.set("accounts", masterkey!)(address, dbAccount);
 
-          dispatchAppState({type: "SET_ACCOUNT", account: dbAccount});
+          if (!hasAccounts) {
+            dispatchAppState({type: "SET_HAS_ACCOUNTS", hasAccounts: true});
+          }
 
           importedAccounts.push(dbAccount);
         } catch (error) {
@@ -229,6 +260,10 @@ function AccountQRCodeSync({sync, flow = "default"}: AccountQRCodeSyncProps) {
     }
 
     return importedAccounts;
+  }
+
+  function handleCompleteExportAccounts() {
+    navigate(ROUTES.OVERVIEW.ROUTE);
   }
 }
 

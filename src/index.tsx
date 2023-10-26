@@ -10,6 +10,8 @@ import "./core/ui/style/_common.scss";
 import "./core/ui/style/color/_global-colors.scss";
 import "./core/ui/style/color/_shadow.scss";
 import "./core/ui/style/color/_theme.scss";
+import "./core/ui/style/color/_theme.dark.scss";
+import "./core/ui/style/color/_button-colors.scss";
 
 // animation
 import "./core/ui/style/util/animate/_slide-in.scss";
@@ -25,7 +27,7 @@ import "./core/ui/style/override/hipo-ui-toolkit/_tab.scss";
 import "./core/ui/style/override/hipo-ui-toolkit/_select.scss";
 
 import React from "react";
-import ReactDOM from "react-dom";
+import {createRoot} from "react-dom/client";
 import {BrowserRouter} from "react-router-dom";
 import {ToastContextProvider} from "@hipo/react-ui-toolkit";
 import WebFont from "webfontloader";
@@ -45,23 +47,24 @@ import {PortfolioContextProvider} from "./overview/context/PortfolioOverviewCont
 import NavigationContextProvider from "./core/route/context/NavigationContext";
 import {getCommonAppState} from "./core/util/storage/web/webStorageUtils";
 import {appDBManager} from "./core/app/db";
+import ScrollToTop from "./component/scroll-to-top/ScrollToTop";
+
+const root = createRoot(document.getElementById("root")!);
 
 if (isSmallMobileDevice()) {
-  ReactDOM.render(
+  root.render(
     <React.StrictMode>
       <MobileLandingPage />
-    </React.StrictMode>,
-    document.getElementById("root")
+    </React.StrictMode>
   );
 } else {
   (async () => {
     try {
       if (await isFirefoxPrivate()) {
-        ReactDOM.render(
+        root.render(
           <React.StrictMode>
             <FirefoxIncognitoLandingPage />
-          </React.StrictMode>,
-          document.getElementById("root")
+          </React.StrictMode>
         );
       }
 
@@ -79,12 +82,10 @@ if (isSmallMobileDevice()) {
       updateAPIsPreferredNetwork(preferredNetwork);
 
       bootstrapApp({
-        theme: theme || "light",
+        theme,
         preferredNetwork,
         hashedMasterkey,
-        accounts: {},
         sessions: {},
-        hasConnection: false,
         hasAccounts: accountKeys.length > 0
       });
 
@@ -102,25 +103,26 @@ if (isSmallMobileDevice()) {
 }
 
 function bootstrapApp(initialAppStateFromDB: AppState) {
-  ReactDOM.render(
+  root.render(
     <React.StrictMode>
       <BrowserRouter>
-        <AppContextProvider initialAppStateFromDB={initialAppStateFromDB}>
-          <ToastContextProvider>
-            <SimpleToastContextProvider>
-              <ModalContextProvider>
-                <NavigationContextProvider>
-                  <PortfolioContextProvider>
-                    <App />
-                  </PortfolioContextProvider>
-                </NavigationContextProvider>
-              </ModalContextProvider>
-            </SimpleToastContextProvider>
-          </ToastContextProvider>
-        </AppContextProvider>
+        <ScrollToTop>
+          <AppContextProvider initialAppStateFromDB={initialAppStateFromDB}>
+            <PortfolioContextProvider>
+              <ToastContextProvider>
+                <SimpleToastContextProvider>
+                  <ModalContextProvider>
+                    <NavigationContextProvider>
+                      <App />
+                    </NavigationContextProvider>
+                  </ModalContextProvider>
+                </SimpleToastContextProvider>
+              </ToastContextProvider>
+            </PortfolioContextProvider>
+          </AppContextProvider>
+        </ScrollToTop>
       </BrowserRouter>
-    </React.StrictMode>,
-    document.getElementById("root")
+    </React.StrictMode>
   );
 }
 

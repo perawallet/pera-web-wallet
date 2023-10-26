@@ -1,19 +1,15 @@
 import {createContext, ReactNode, useContext} from "react";
 
-import usePortfolioOverview, {PortfolioOverview} from "../util/hook/usePortfolioOverview";
-import {SECOND_IN_MS} from "../../core/util/time/timeConstants";
+import usePortfolioOverview from "../util/hook/usePortfolioOverview";
 
-const PortfolioContext = createContext(undefined as PortfolioOverview | undefined);
+const PortfolioContext = createContext(
+  undefined as unknown as ReturnType<typeof usePortfolioOverview>
+);
 
 PortfolioContext.displayName = "PortfolioContext";
 
-// eslint-disable-next-line no-magic-numbers
-const PORTFOLIO_OVERVIEW_POLLING_INTERVAL = SECOND_IN_MS * 3.5;
-
 export function PortfolioContextProvider({children}: {children: ReactNode}) {
-  const portfolioOverview = usePortfolioOverview({
-    interval: PORTFOLIO_OVERVIEW_POLLING_INTERVAL
-  });
+  const portfolioOverview = usePortfolioOverview();
 
   return (
     <PortfolioContext.Provider value={portfolioOverview}>
@@ -25,5 +21,7 @@ export function PortfolioContextProvider({children}: {children: ReactNode}) {
 export function usePortfolioContext() {
   const context = useContext(PortfolioContext);
 
-  return context;
+  // password required routes except settings
+  // display spinner until context is fetched
+  return context!;
 }

@@ -5,32 +5,30 @@ import "./_connect-page-account-list.scss";
 import {List, ListItem} from "@hipo/react-ui-toolkit";
 import classNames from "classnames";
 
-import {
-  getAccountIcon,
-  trimAccountAddress,
-  trimAccountName
-} from "../../../account/util/accountUtils";
+import {trimAccountAddress, trimAccountName} from "../../../account/util/accountUtils";
 import {useConnectFlowContext} from "../../context/ConnectFlowContext";
-import {useAppContext} from "../../../core/app/AppContext";
-import {filterOutItemsByKey} from "../../../core/util/array/arrayUtils";
-import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
+import {
+  filterOutItemsByKey,
+  sortAlphabetically
+} from "../../../core/util/array/arrayUtils";
 import {ALGO_UNIT} from "../../../core/ui/typography/typographyConstants";
 import {defaultPriceFormatter} from "../../../core/util/number/numberUtils";
+import useAccountIcon from "../../../core/util/hook/useAccountIcon";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
+import Skeleton from "../../../component/skeleton/Skeleton";
 
 function ConnectPageAccountList() {
   const {
-    state: {accounts}
-  } = useAppContext();
-  const accountsArray = Object.values(accounts);
-  const {
-    formitoState: {selectedAccounts},
+    formitoState: {dbAccounts: accounts, selectedAccounts},
     dispatchFormitoAction
   } = useConnectFlowContext();
+  const portfolioOverview = usePortfolioContext();
+  const accountsArray = sortAlphabetically(Object.values(accounts!), "name");
+  const {algoFormatter} = defaultPriceFormatter();
+  const {renderAccountIcon} = useAccountIcon();
   const listClassName = classNames("connect-page-account-list", {
     "connect-page-account-list--is-selectable": !!onSelectAccount
   });
-  const portfolioOverview = usePortfolioContext();
-  const {algoFormatter} = defaultPriceFormatter();
 
   return (
     <List items={accountsArray} customClassName={listClassName}>
@@ -45,7 +43,13 @@ function ConnectPageAccountList() {
             )
           })}>
           <div className={"connect-page-account-list__item__icon"}>
-            {getAccountIcon({type: account.type, width: 32, height: 32})}
+            {portfolioOverview ? (
+              renderAccountIcon({
+                account: portfolioOverview.accounts[account.address] || account
+              })
+            ) : (
+              <Skeleton borderRadius={32} height={32} width={32} />
+            )}
           </div>
 
           <div
@@ -61,25 +65,27 @@ function ConnectPageAccountList() {
 
               <div
                 className={classNames("connect-page-account-list__item__address", {
-                  "text-color--gray-light typography--secondary-body": account.name
+                  "text-color--gray-lighter typography--secondary-body": account.name
                 })}>
                 {trimAccountAddress(account.address)}
               </div>
             </div>
 
             <div className={"connect-page-account-list__item__algo-amount-wrapper"}>
-              <span className={"typography--tiny text-color--gray-light"}>
-                {`${ALGO_UNIT}${algoFormatter(
-                  Number(
-                    portfolioOverview?.accounts.find(
-                      (portfolioAccount) => portfolioAccount.address === account.address
-                    )?.total_algo_value || 0
-                  ),
-                  {
-                    maximumFractionDigits: 2
-                  }
-                )}`}
-              </span>
+              {portfolioOverview ? (
+                <span className={"typography--medium-body"}>
+                  {`${ALGO_UNIT}${algoFormatter(
+                    Number(
+                      portfolioOverview.accounts[account.address].total_algo_value || 0
+                    ),
+                    {
+                      maximumFractionDigits: 2
+                    }
+                  )}`}
+                </span>
+              ) : (
+                <Skeleton width={64} height={20} borderRadius={12} />
+              )}
 
               <div
                 className={

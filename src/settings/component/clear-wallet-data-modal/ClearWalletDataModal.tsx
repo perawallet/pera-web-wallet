@@ -27,7 +27,7 @@ function ClearWalletDataModal() {
       {renderView()}
 
       <Button
-        buttonType={"ghost"}
+        buttonType={"light"}
         size={"large"}
         onClick={closeClearWalletDataModal}
         customClassName={"clear-wallet-data-modal__cancel-cta"}>

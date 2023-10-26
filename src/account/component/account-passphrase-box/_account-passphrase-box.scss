@@ -1,0 +1,50 @@
+.account-passphrase-box {
+  .clipboard-button__content {
+    .copy-icon {
+      width: 20px;
+      height: 20px;
+
+      path {
+        fill: var(--light-button-text);
+      }
+    }
+  }
+}
+
+.account-passphrase-box__passphrase-list {
+  display: grid;
+  grid-template: repeat(9, 1fr) / repeat(3, auto);
+  grid-gap: 8px 12px;
+
+  grid-auto-flow: column;
+
+  margin: 24px auto 40px;
+  padding: 24px 8px;
+
+  background-color: var(--layer-2);
+
+  border-radius: 12px;
+  box-shadow: var(--shadow-inline);
+
+  counter-reset: item;
+}
+
+.account-passphrase-box__passphrase-list-item {
+  user-select: none;
+
+  transform: translateX(28px);
+  list-style-type: none;
+
+  &:before {
+    margin-right: 8px;
+
+    color: var(--text-gray-lighter);
+
+    content: counter(item) " ";
+    counter-increment: item;
+  }
+
+  &:nth-child(8n + 1):not(:last-child) {
+    grid-row: 1;
+  }
+}

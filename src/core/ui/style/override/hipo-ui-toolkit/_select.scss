@@ -16,10 +16,10 @@
 .select-content {
   right: 0;
 
-  background-color: var(--card-default);
-  border: unset;
+  background-color: var(--background);
+  border: 1px solid var(--border-default);
   border-radius: 12px;
-  box-shadow: var(--shadow-small);
+  box-shadow: var(--shadow-2);
 }
 
 .select-item {

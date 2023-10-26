@@ -8,8 +8,8 @@ const PERA_API_DEFAULT_OPTIONS: Omit<FetcherConfig, "baseUrl"> = {
       Accept: "application/json",
       "Content-Type": "application/json",
       "X-API-Key": isProductionBuild
-        ? "pera-web-Dr98Vnmu-0yFejf-G-A1M7-7cZS6P0d-"
-        : "pera-web-staging-U-jZ3m-LR6-ed-7fLTmekDl0-95N5jUX"
+        ? "xxx"
+        : "yyy"
     }
   },
   bodyParser: JSON.stringify
@@ -37,4 +37,14 @@ const PERA_WEB_DEVICE_CONFIG = {
   locale: "en"
 };
 
-export {PERA_API_CONFIG, PERA_WEB_DEVICE_CONFIG};
+// eslint-disable-next-line no-useless-escape
+const PERA_NFDOMAINS_RGX = /^([a-z0-9\-]+\.){0,1}([a-z0-9\-]+)(\.[a-z0-9]+)$/;
+
+const PERA_ASSETS_ENDPOINT_PAGINATION_LIMIT = 100;
+
+export {
+  PERA_API_CONFIG,
+  PERA_WEB_DEVICE_CONFIG,
+  PERA_NFDOMAINS_RGX,
+  PERA_ASSETS_ENDPOINT_PAGINATION_LIMIT
+};

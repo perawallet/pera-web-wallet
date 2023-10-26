@@ -78,6 +78,14 @@
   letter-spacing: -0.04px;
 }
 
+@mixin typography--secondary-medium-body() {
+  font-family: "Milan", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.04px;
+}
+
 @mixin typography--secondary-bold-body() {
   font-family: "Milan", sans-serif;
   font-size: 13px;
@@ -149,8 +157,8 @@
   color: var(--text-gray);
 }
 
-@mixin text-color--gray-light() {
-  color: var(--text-gray-light);
+@mixin text-color--gray-lighter() {
+  color: var(--text-gray-lighter);
 }
 
 @mixin text-color--gray-lightest() {
@@ -158,9 +166,9 @@
 }
 
 @mixin text-color--danger() {
-  color: var(--helper-red-default);
+  color: var(--helper-red-900);
 }
 
 @mixin text-color--success() {
-  color: var(--helper-green-default);
+  color: var(--helper-peace-900);
 }

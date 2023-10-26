@@ -5,7 +5,17 @@
   flex-direction: column;
 
   .searchable-list {
-    height: 426px;
+    min-height: 210px;
+
+    padding: 28px;
+  }
+
+  &--colored-background {
+    .searchable-list {
+      background-color: var(--layer-2);
+      border-radius: 12px;
+      box-shadow: var(--shadow-inline);
+    }
   }
 }
 
@@ -17,7 +27,11 @@
   padding-bottom: 16px;
 
   &:not(:last-child) {
-    border-bottom: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--border-default);
+  }
+
+  &:last-child {
+    padding-bottom: 0;
   }
 
   .account-balance {

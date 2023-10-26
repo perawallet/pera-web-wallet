@@ -1,0 +1,13 @@
+.page-banner {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+
+  height: 68px;
+
+  padding: 22px 24px;
+
+  background-image: url("../../../core/ui/image/banner-background.png");
+  background-size: cover;
+}

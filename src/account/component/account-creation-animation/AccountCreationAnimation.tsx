@@ -9,10 +9,7 @@ import {shuffleArray} from "../../../core/util/array/arrayUtils";
 import ROUTES from "../../../core/route/routes";
 import useNavigateFlow from "../../../core/route/navigate/useNavigateFlow";
 import PeraLoader from "../../../component/loader/pera/PeraLoader";
-import {
-  ConnectFlowState,
-  useConnectFlowContext
-} from "../../../connect/context/ConnectFlowContext";
+import {useConnectFlowContext} from "../../../connect/context/ConnectFlowContext";
 import {AccountComponentFlows} from "../../util/accountTypes";
 
 interface AccountCreationAnimationProps {
@@ -38,25 +35,21 @@ function AccountCreationAnimation({
   useEffect(() => {
     const timeout = setTimeout(() => {
       // default is CREATE
-      let formitoActionPayload = {
-        createAccountViews: "success"
-      } as Partial<ConnectFlowState>;
-      let navigateTo = ROUTES.ACCOUNT.CREATE.SUCCESS.FULL_PATH as string;
+      const navigateTo =
+        type === "IMPORT"
+          ? ROUTES.ACCOUNT.IMPORT.PASSPHRASE.SUCCESS.FULL_PATH
+          : (ROUTES.ACCOUNT.CREATE.SUCCESS.FULL_PATH as string);
 
-      if (type === "IMPORT") {
-        formitoActionPayload = {importAccountViews: "success"};
-        navigateTo = ROUTES.ACCOUNT.IMPORT.PASSPHRASE.SUCCESS.FULL_PATH;
-      }
-
-      if (flow !== "connect") {
+      if (flow === "connect") {
+        dispatchFormitoAction({
+          type: "SET_FORM_VALUE",
+          payload: {
+            [type === "CREATE" ? "createAccountViews" : "importAccountViews"]: "success"
+          }
+        });
+      } else {
         navigate(navigateTo);
-        return;
       }
-
-      dispatchFormitoAction({
-        type: "SET_FORM_VALUE",
-        payload: formitoActionPayload
-      });
     }, ANIMATION_TIMEOUT);
 
     return () => {

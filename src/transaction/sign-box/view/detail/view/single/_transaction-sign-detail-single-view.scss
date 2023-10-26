@@ -8,6 +8,17 @@
       margin-bottom: 32px;
     }
   }
+
+  &--compact {
+    .transaction-sign-detail-single-view__asset-detail__external-link,
+    .transaction-sign-single-view-wallets__wallet__external-link {
+      text-align: right;
+
+      .export-icon {
+        margin-left: 4px;
+      }
+    }
+  }
 }
 
 .transaction-sign-detail-single-view__header {
@@ -16,6 +27,12 @@
   gap: 12px;
 
   margin-bottom: 32px;
+
+  .arrow-left-icon {
+    path {
+      fill: var(--text-main);
+    }
+  }
 }
 
 .transaction-sign-detail-single-view__transaction-details-list__item__title {
@@ -35,7 +52,7 @@
   .image__placeholder {
     @include typography--tagline();
 
-    background-color: var(--overlay);
+    background-color: var(--border-default);
 
     border-radius: 50%;
   }
@@ -66,13 +83,13 @@
 
 .transaction-sign-detail-single-view__asset-detail__external-link.button {
   @include typography--caption();
-  @include text-color--gray-light();
+  @include text-color--gray-lighter();
 
   gap: 2px;
 
   .export-icon {
     path {
-      fill: var(--text-gray-light);
+      fill: var(--text-gray-lighter);
     }
   }
 }
@@ -81,7 +98,7 @@
   padding: 16px 0;
 
   &:not(:last-of-type) {
-    border-bottom: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--border-default);
   }
 
   &:first-of-type {
@@ -104,7 +121,7 @@
 .transaction-sign-detail-single-view__actions__button.button {
   @include typography--caption();
 
-  --button-bg: var(--background);
+  --button-bg: var(--layer-2);
   --button-color: var(--text-gray);
 
   padding: 6px 12px;

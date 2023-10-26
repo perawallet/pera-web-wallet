@@ -4,9 +4,9 @@
 
   padding: 16px 20px;
 
-  background: var(--card-default);
+  background: var(--layer-1);
   border-radius: 16px;
-  box-shadow: var(--shadow-small);
+  box-shadow: var(--shadow-2);
 }
 
 .info-box-icon {
@@ -15,12 +15,12 @@
 
   padding: 6px;
 
-  background-color: var(--helper-orange-lighter);
+  background-color: var(--helper-blue-100);
   border-radius: 50%;
 
   .info-icon {
     path {
-      fill: var(--helper-orange-darker);
+      fill: var(--helper-blue-900);
     }
   }
 }

@@ -14,6 +14,7 @@ export interface SendTxnLinkProps {
     name: string;
     icon?: React.ReactNode;
     placeholder?: string;
+    tooltip?: React.ReactNode;
   };
   options?: {
     description?: React.ReactNode;
@@ -25,7 +26,7 @@ export interface SendTxnLinkProps {
 
 function SendTxnLink({
   to,
-  content: {label, name, icon, placeholder},
+  content: {label, name, icon, placeholder, tooltip},
   options = {},
   isDisabled = false,
   customClassName
@@ -51,6 +52,8 @@ function SendTxnLink({
             {icon || null}
 
             <p>{trimAccountName(name)}</p>
+
+            {tooltip}
           </div>
         )}
 

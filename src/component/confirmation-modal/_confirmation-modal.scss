@@ -1,0 +1,58 @@
+.confirmation-modal__wrapper,
+.confirmation-modal__body {
+  display: flex;
+  flex-direction: column;
+}
+
+.confirmation-modal__wrapper {
+  width: 424px;
+  height: 624px;
+}
+
+.confirmation-modal__body {
+  align-items: center;
+  gap: 16px;
+
+  margin-top: 120px;
+
+  white-space: pre-wrap;
+}
+
+.confirmation-modal__icon-wrapper {
+  display: grid;
+  place-content: center;
+
+  width: 106px;
+  height: 106px;
+
+  margin-bottom: 16px;
+
+  border-radius: 100%;
+  box-shadow: var(--shadow-1);
+
+  .info-icon {
+    path {
+      fill: var(--helper-purple-900);
+    }
+  }
+}
+
+.confirmation-modal__cta-group {
+  display: grid;
+
+  gap: 16px;
+
+  margin-top: auto;
+  padding-top: 16px;
+
+  &:before {
+    position: absolute;
+    top: -16px;
+    left: -30px;
+    right: -30px;
+
+    border: 1px solid var(--border-default);
+
+    content: "";
+  }
+}

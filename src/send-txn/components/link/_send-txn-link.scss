@@ -26,4 +26,10 @@
 
 .send-txn-link__description-container {
   gap: 16px;
+
+  .chevron-right-icon {
+    path {
+      fill: var(--text-main);
+    }
+  }
 }

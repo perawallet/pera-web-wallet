@@ -20,9 +20,9 @@ function ConnectFlow() {
             title={"Connect"}
             customClassName={classNames({
               "page--without-header": isEmbedded,
-              "page--with-banner": !isEmbedded
+              "page--with-pera-connect-banner": !isEmbedded
             })}
-            banner={
+            customBanner={
               <>
                 {!isEmbedded && (
                   <PeraConnectBanner currentSession={formitoState.currentSession!} />

@@ -1,0 +1,40 @@
+.arbitrary-data-list-item {
+  display: grid;
+  align-items: center;
+
+  grid-template-columns: 40px 1fr;
+  grid-gap: 12px;
+
+  .arbitrary-data-list-item__description {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    padding: 12px 0;
+  }
+
+  &:not(:last-of-type) {
+    .arbitrary-data-list-item__description {
+      border-bottom: 1px solid var(--border-default);
+    }
+  }
+}
+
+.arbitrary-data-list-item__icon-wrapper {
+  display: grid;
+  place-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 100%;
+  box-shadow: var(--shadow-small);
+}
+
+.arbitrary-data-list__message {
+  max-height: 180px;
+
+  overflow-y: scroll;
+
+  word-break: break-word;
+}

@@ -11,12 +11,6 @@
 
 .account-show-passphrase-modal__info-box {
   margin: 32px 0 16px;
-
-  .key-icon {
-    path {
-      fill: var(--helper-orange-darker);
-    }
-  }
 }
 
 .account-show-passphrase-modal__learn-more-link {
@@ -28,42 +22,8 @@
   }
 }
 
-.account-show-passphrase-modal__passphrase-list {
-  display: grid;
-  grid-template: repeat(9, 1fr) / repeat(3, auto);
-  grid-gap: 8px 12px;
-
-  grid-auto-flow: column;
-
-  margin: 16px auto 24px;
-  padding: 24px 8px;
-
-  background-color: var(--background);
-  border-radius: 12px;
-
-  counter-reset: item;
-}
-
-.account-show-passphrase-modal__passphrase-list-item {
-  transform: translateX(28px);
-  list-style-type: none;
-
-  &:before {
-    margin-right: 8px;
-
-    color: var(--text-gray-light);
-
-    content: counter(item) " ";
-    counter-increment: item;
-  }
-
-  &:nth-child(8n + 1):not(:last-child) {
-    grid-row: 1;
-  }
-}
-
 .account-show-passphrase-modal__close-button {
   width: 100%;
 
-  margin-top: 12px;
+  margin-top: 8px;
 }

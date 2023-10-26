@@ -2,11 +2,12 @@ import {updateAPIsPreferredNetwork} from "../api/apiUtils";
 import {filterObject} from "../util/object/objectUtils";
 
 export interface AppState extends CommonAppState {
-  accounts: AppDBScheme["accounts"];
   sessions: AppDBScheme["sessions"];
+  algoPrice?: number;
+  priceChangePercentage?: number;
   masterkey?: string;
+  deviceId?: string;
   hasAccounts: boolean;
-  hasConnection: boolean;
 }
 
 export type AppStateReducerAction =
@@ -19,6 +20,10 @@ export type AppStateReducerAction =
       theme: AppState["theme"];
     }
   | {
+      type: "SET_DEVICE_ID";
+      deviceId: string;
+    }
+  | {
       type: "SET_PREFERRED_NETWORK";
       preferredNetwork: AppState["preferredNetwork"];
     }
@@ -27,20 +32,17 @@ export type AppStateReducerAction =
       masterkey: AppState["hashedMasterkey"];
     }
   | {
+      type: "SET_HAS_ACCOUNTS";
+      hasAccounts: AppState["hasAccounts"];
+    }
+  | {
       type: "SET_MASTERKEY";
       masterkey: AppState["masterkey"];
     }
   | {
-      type: "SET_HAS_CONNECTION";
-      hasConnection: AppState["hasConnection"];
-    }
-  | {
-      type: "SET_ACCOUNT";
-      account: ValueOf<AppState["accounts"]> | ValueOf<AppState["accounts"]>[];
-    }
-  | {
-      type: "REMOVE_ACCOUNT";
-      address: string | string[];
+      type: "SET_ALGO_PRICE_AND_CHANGE";
+      price: number;
+      priceChangePercentage: number;
     }
   | {
       type: "SET_SESSION";
@@ -49,10 +51,6 @@ export type AppStateReducerAction =
   | {
       type: "REMOVE_SESSION";
       url: string | string[];
-    }
-  | {
-      type: "SYNC_IDB";
-      payload: Pick<AppState, "accounts" | "sessions">;
     };
 
 function appStateReducer(state: AppState, action: AppStateReducerAction) {
@@ -77,6 +75,12 @@ function appStateReducer(state: AppState, action: AppStateReducerAction) {
       break;
     }
 
+    case "SET_DEVICE_ID": {
+      newState = {...state, deviceId: action.deviceId};
+
+      break;
+    }
+
     case "SET_PREFERRED_NETWORK": {
       newState = {...state, preferredNetwork: action.preferredNetwork};
 
@@ -88,27 +92,25 @@ function appStateReducer(state: AppState, action: AppStateReducerAction) {
     case "SET_MASTERKEY": {
       newState = {...state, masterkey: action.masterkey};
 
-      break;
-    }
-
-    case "SET_HAS_CONNECTION": {
-      newState = {...state, hasConnection: action.hasConnection};
+      if (!action.masterkey) {
+        newState = {...newState, sessions: {}};
+      }
 
       break;
     }
 
-    case "SET_ACCOUNT": {
-      const addedAccounts = Object.fromEntries(
-        ([] as AppDBAccount[])
-          .concat(action.account)
-          .map((account) => [account.address, account])
-      );
-
+    case "SET_ALGO_PRICE_AND_CHANGE": {
       newState = {
         ...state,
-        accounts: {...state.accounts, ...addedAccounts},
-        hasAccounts: true
+        algoPrice: action.price,
+        priceChangePercentage: action.priceChangePercentage
       };
+
+      break;
+    }
+
+    case "SET_HAS_ACCOUNTS": {
+      newState = {...state, hasAccounts: action.hasAccounts};
 
       break;
     }
@@ -128,21 +130,6 @@ function appStateReducer(state: AppState, action: AppStateReducerAction) {
       break;
     }
 
-    case "REMOVE_ACCOUNT": {
-      const accountAddresses = ([] as string[]).concat(action.address);
-      const filteredAccounts = filterObject((key) => accountAddresses.indexOf(key) < 0)(
-        state.accounts
-      );
-
-      newState = {
-        ...state,
-        accounts: filteredAccounts,
-        hasAccounts: Object.keys(filteredAccounts).length > 0
-      };
-
-      break;
-    }
-
     case "REMOVE_SESSION": {
       const sessionUrls = ([] as string[]).concat(action.url);
       const filteredSessions = filterObject((key) => sessionUrls.indexOf(key) < 0)(
@@ -150,14 +137,6 @@ function appStateReducer(state: AppState, action: AppStateReducerAction) {
       );
 
       newState = {...state, sessions: filteredSessions};
-
-      break;
-    }
-
-    case "SYNC_IDB": {
-      const {accounts, sessions} = action.payload;
-
-      newState = {...state, accounts, sessions};
 
       break;
     }

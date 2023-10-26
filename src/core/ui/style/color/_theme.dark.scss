@@ -1,0 +1,109 @@
+.dark-theme {
+  --background: var(--gray-900);
+
+  // Logomark
+  --logomark-bg: var(--helper-purple-900);
+  --logomark-icon: var(--gray-900);
+  --logomark-type: var(--white);
+
+  // Layer
+  --layer-1: var(--gray-800);
+  --layer-2: var(--gray-800);
+  --layer-3: var(--gray-800);
+
+  // Text Colors
+  --text-main: var(--white);
+  --text-gray: var(--gray-400);
+  --text-gray-lighter: var(--gray-500);
+  --text-gray-lightest: var(--gray-700);
+  --text-contrast: var(--gray-900);
+
+  // Border
+  --border-default: rgba(var(--white-rgb), 0.05);
+  --border-medium: rgba(var(--white-rgb), 0.1);
+
+  // Overlay
+  --overlay: rgba(var(--black-rgb), 0.78);
+
+  // Popover
+  --popover-bg: var(--gray-700);
+  --popover-text: var(--white);
+
+  // Dropdown
+  --dropdown-bg: var(--gray-700);
+
+  // Skeleton
+  --skeleton: linear-gradient(
+    90deg,
+    rgba(var(--white-rgb), 0.08) 0%,
+    rgba(246, 246, 246, 0) 100%
+  );
+
+  // Banner
+  --banner-text: var(--gray-900);
+
+  // Purple Helpers
+  --helper-purple-900: var(--purple-400);
+  --helper-purple-800: rgba(var(--purple-400-rgb), 0.9);
+  --helper-purple-300: rgba(var(--purple-400-rgb), 0.35);
+  --helper-purple-200: rgba(var(--purple-400-rgb), 0.2);
+  --helper-purple-100: rgba(var(--purple-400-rgb), 0.1);
+
+  // Red Helpers
+  --helper-red-900: var(--red-500);
+  --helper-red-800: rgba(var(--red-500-rgb), 0.9);
+  --helper-red-300: rgba(var(--red-500-rgb), 0.35);
+  --helper-red-200: rgba(var(--red-500-rgb), 0.2);
+  --helper-red-100: rgba(var(--red-500-rgb), 0.1);
+
+  // Yellow Helpers
+  --helper-yellow-900: var(--yellow-500);
+  --helper-yellow-800: rgba(var(--yellow-500-rgb), 0.9);
+  --helper-yellow-300: rgba(var(--yellow-500-rgb), 0.35);
+  --helper-yellow-200: rgba(var(--yellow-500-rgb), 0.2);
+  --helper-yellow-100: rgba(var(--yellow-500-rgb), 0.1);
+
+  // Blue Helpers
+  --helper-blue-900: var(--blue-500);
+  --helper-blue-800: rgba(var(--blue-500-rgb), 0.9);
+  --helper-blue-300: rgba(var(--blue-500-rgb), 0.35);
+  --helper-blue-200: rgba(var(--blue-500-rgb), 0.2);
+  --helper-blue-100: rgba(var(--blue-500-rgb), 0.1);
+
+  // Pink Helpers
+  --helper-pink-900: var(--pink-300);
+  --helper-pink-800: rgba(var(--pink-300-rgb), 0.9);
+  --helper-pink-300: rgba(var(--pink-300-rgb), 0.35);
+  --helper-pink-200: rgba(var(--pink-300-rgb), 0.2);
+  --helper-pink-100: rgba(var(--pink-300-rgb), 0.1);
+
+  // Peace Helpers
+  --helper-peace-900: var(--green-500);
+  --helper-peace-800: rgba(var(--green-500-rgb), 0.9);
+  --helper-peace-300: rgba(var(--green-500-rgb), 0.32);
+  --helper-peace-200: rgba(var(--green-500-rgb), 0.2);
+  --helper-peace-100: rgba(var(--green-500-rgb), 0.1);
+
+  // Turquoise Helpers
+  --helper-turquoise-900: var(--turquoise-300);
+  --helper-turquoise-800: rgba(var(--turquoise-300-rgb), 0.9);
+  --helper-turquoise-300: rgba(var(--turquoise-300-rgb), 0.35);
+  --helper-turquoise-200: rgba(var(--turquoise-300-rgb), 0.2);
+  --helper-turquoise-100: rgba(var(--turquoise-300-rgb), 0.1);
+
+  // Lime Helpers
+  --helper-lime-900: var(--green-500);
+  --helper-lime-800: rgba(var(--green-500-rgb), 0.9);
+  --helper-lime-300: rgba(var(--green-500-rgb), 0.32);
+  --helper-lime-200: rgba(var(--green-500-rgb), 0.2);
+  --helper-lime-100: rgba(var(--green-500-rgb), 0.1);
+
+  // Gray Helpers
+  --helper-gray-900: var(--gray-400);
+  --helper-gray-800: rgba(var(--gray-400-rgb), 0.9);
+  --helper-gray-300: rgba(var(--gray-400-rgb), 0.32);
+  --helper-gray-200: rgba(var(--gray-400-rgb), 0.2);
+  --helper-gray-100: rgba(var(--gray-400-rgb), 0.1);
+
+  color-scheme: dark;
+}

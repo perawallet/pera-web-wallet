@@ -11,13 +11,13 @@
 
   &--with-border-bottom {
     .transaction-sign-assets-list-item__asset-detail {
-      border-bottom: 1px solid var(--gray-100);
+      border-bottom: 1px solid var(--border-default);
     }
   }
 
   &:not(:last-child) {
     .transaction-sign-assets-list-item__asset-detail {
-      border-bottom: 1px solid var(--gray-100);
+      border-bottom: 1px solid var(--border-default);
     }
   }
 }
@@ -27,6 +27,8 @@
   align-items: center;
   grid-template-columns: 40px auto;
   gap: 16px;
+
+  width: 100%;
 }
 
 .transaction-sign-assets-list-item--collectible {
@@ -51,7 +53,7 @@
   .image__placeholder {
     @include typography--tagline();
 
-    background-color: var(--overlay);
+    background-color: var(--border-default);
 
     border-radius: 50%;
   }
@@ -89,7 +91,7 @@
 
   .warning-icon {
     path {
-      fill: var(--helper-red-default);
+      fill: var(--helper-red-900);
     }
   }
 }

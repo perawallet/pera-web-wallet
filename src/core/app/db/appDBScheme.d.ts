@@ -1,13 +1,16 @@
 type NetworkToggle = "testnet" | "mainnet";
 
-type AccountType = "standard" | "ledger";
-
 interface AppDBAccount {
-  type?: "standard" | "ledger";
+  // must properties
   name: string;
   address: string;
-  pk: string;
   date: Date | null;
+
+  // Ledger Only
+  bip32?: string;
+  usbOnly?: boolean;
+
+  pk?: string;
 }
 
 interface AppDBSession {
@@ -33,5 +36,18 @@ type AssetDBScheme = {
   assets: Record<`${string},${number}`, AccountASA>;
   assets_testnet: Record<`${string},${number}`, AccountASA>;
 };
+
+interface AppDBPortfolioPosition {
+  name: string;
+  asset_id: string;
+  subtitle: string;
+  rows: {
+    first_line_name: string;
+    first_line_value_in_usd: string;
+    second_line_name: string;
+    second_line_value: string;
+  };
+  logo?: string;
+}
 
 type AppDBScheme = AppDBTables;

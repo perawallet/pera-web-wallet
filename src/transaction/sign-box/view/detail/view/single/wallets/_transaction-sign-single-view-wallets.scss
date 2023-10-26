@@ -3,8 +3,9 @@
 .transaction-sign-single-view-wallets {
   margin-bottom: 32px;
 
+  background-color: var(--layer-2);
   border-radius: 12px;
-  box-shadow: var(--shadow-small);
+  box-shadow: var(--shadow-inline);
 }
 
 .transaction-sign-single-view-wallets__wallet {
@@ -36,7 +37,7 @@
 
 .transaction-sign-single-view-wallets__wallet__external-link.button {
   @include typography--caption();
-  @include text-color--gray-light();
+  @include text-color--gray-lighter();
 
   gap: 2px;
 
@@ -50,7 +51,7 @@
 .transaction-sign-single-view-wallets__to {
   position: relative;
 
-  border-bottom: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--border-default);
 }
 
 .transaction-sign-single-view-wallets__to__text {
@@ -60,7 +61,7 @@
 
   width: 32px;
 
-  background-color: var(--card-default);
+  background-color: var(--layer-2);
 
   text-align: center;
 }

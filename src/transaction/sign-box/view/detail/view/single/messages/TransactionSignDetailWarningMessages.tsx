@@ -12,7 +12,13 @@ import TransactionSignDetailMessage from "../../../../../message/TransactionSign
 
 function TransactionSignDetailWarningMessages() {
   const {
-    formitoState: {txns, activeTransactionIndex, transactionAssets, currentSession}
+    formitoState: {
+      txns,
+      activeTransactionIndex,
+      userAddress,
+      transactionAssets,
+      currentSession
+    }
   } = useTransactionSignFlowContext();
   const activeTransaction = txns[activeTransactionIndex];
   const activeTransactionAsset = transactionAssets?.find(
@@ -39,14 +45,15 @@ function TransactionSignDetailWarningMessages() {
         />
       )}
 
-      {transactionHasRekey(activeTransaction.txn) && activeTransaction.txn.reKeyTo && (
-        <TransactionSignDetailMessage
-          message={`This transaction will rekey your account and give complete control to ${algosdk.encodeAddress(
-            activeTransaction.txn.reKeyTo.publicKey
-          )}. Do not proceed if you don't understand the implications of this action.`}
-          type={"warning"}
-        />
-      )}
+      {transactionHasRekey(activeTransaction.txn, userAddress) &&
+        activeTransaction.txn.reKeyTo && (
+          <TransactionSignDetailMessage
+            message={`This transaction will rekey your account and give complete control to ${algosdk.encodeAddress(
+              activeTransaction.txn.reKeyTo.publicKey
+            )}. Do not proceed if you don't understand the implications of this action.`}
+            type={"warning"}
+          />
+        )}
 
       {transactionHasCloseRemainder(activeTransaction.txn) && (
         <TransactionSignDetailMessage

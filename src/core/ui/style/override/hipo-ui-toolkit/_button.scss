@@ -7,6 +7,7 @@
   border: 2px solid transparent;
   border-radius: 12px;
 
+  /* stylelint-disable-next-line declaration-colon-newline-after */
   transition: background-color var(--default-animation), color var(--default-animation),
     border var(--default-animation), box-shadow var(--default-animation);
 
@@ -19,8 +20,7 @@
   --button-bg: var(--primary-button-bg);
   --button-color: var(--primary-button-text);
 
-  &:hover,
-  &:focus {
+  &:hover {
     --button-bg: var(--primary-button-hover-bg);
     --button-color: var(--primary-button-hover-text);
   }
@@ -30,8 +30,9 @@
     --button-color: var(--primary-button-disabled-text);
   }
 
-  &:active {
-    border: 2px solid var(--white);
+  &:active,
+  &:focus {
+    border: 2px solid var(--text-contrast);
     box-shadow: var(--shadow-pressed);
   }
 
@@ -42,7 +43,7 @@
     opacity: 1;
 
     .simple-loader path {
-      fill: var(--secondary-button-bg);
+      fill: var(--primary-button-text);
     }
   }
 }
@@ -51,14 +52,14 @@
   --button-bg: var(--secondary-button-bg);
   --button-color: var(--secondary-button-text);
 
-  &:hover,
-  &:focus {
+  &:hover {
     --button-bg: var(--secondary-button-hover-bg);
     --button-color: var(--secondary-button-hover-text);
   }
 
-  &:active {
-    border: 2px solid var(--white);
+  &:active,
+  &:focus {
+    border: 2px solid var(--text-contrast);
     box-shadow: var(--shadow-pressed);
   }
 
@@ -79,16 +80,16 @@
   --button-bg: var(--light-button-bg);
   --button-color: var(--light-button-text);
 
-  box-shadow: var(--shadow-small);
+  box-shadow: var(--shadow-2);
 
-  &:hover,
-  &:focus {
+  &:hover {
     --button-bg: var(--light-button-hover-bg);
     --button-color: var(--light-button-hover-text);
   }
 
+  &:focus,
   &:active {
-    border: 2px solid var(--white);
+    border: 2px solid var(--background);
     box-shadow: var(--shadow-pressed);
   }
 
@@ -109,18 +110,27 @@
   --button-bg: transparent;
   --button-color: var(--ghost-button-text);
 
+  padding: 10px 8px;
+
+  box-shadow: none;
+
   &:hover,
   &:focus {
     --button-color: var(--ghost-button-hover-text);
+
+    box-shadow: none;
 
     svg path {
       fill: var(--ghost-button-hover-text);
     }
   }
 
-  &:active {
+  &:active,
+  &:focus {
     --button-bg: var(--ghost-button-pressed-bg);
     --button-color: var(--ghost-button-pressed-text);
+
+    box-shadow: none;
 
     svg path {
       fill: var(--ghost-button-pressed-text);
@@ -144,13 +154,13 @@
 }
 
 .button--danger {
-  --button-bg: var(--red-100);
-  --button-color: var(--helper-red-default);
+  --button-bg: var(--helper-red-100);
+  --button-color: var(--helper-red-900);
 
   &:hover,
   &:focus {
-    --button-bg: var(--red-200);
-    --button-color: var(--helper-red-darker);
+    --button-bg: var(--helper-red-200);
+    --button-color: var(--helper-red-900);
   }
 
   &.button--is-inactive {

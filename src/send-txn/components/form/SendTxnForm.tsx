@@ -22,6 +22,7 @@ import {
 } from "../../util/sendTxnConstants";
 import algod from "../../../core/util/algod/algod";
 import {assetDBManager} from "../../../core/app/db";
+import {usePortfolioContext} from "../../../overview/context/PortfolioOverviewContext";
 
 const DEFAULT_MIN_ALGO_BALANCE = 100_000;
 
@@ -29,16 +30,11 @@ function SendTxnForm() {
   const navigate = useNavigate();
   const {display} = useSimpleToaster();
   const {
-    formitoState: {
-      senderAddress,
-      selectedAsset,
-      recipientAddress,
-      txnAmount,
-      txnNote,
-      minBalance: prefetchedMinBalance
-    },
+    formitoState: {senderAddress, selectedAsset, recipientAddress, txnAmount, txnNote},
     dispatchFormitoAction
   } = useSendTxnFlowContext();
+  const {accounts = {}} = usePortfolioContext() || {};
+  const accountMinBalance = (accounts[senderAddress!] || {}).minimum_balance;
   const isSubmitButtonDisabled = !(
     senderAddress &&
     recipientAddress &&
@@ -46,26 +42,6 @@ function SendTxnForm() {
     txnAmount
   );
   const [shouldDisplaySpinner, setShouldDisplaySpinner] = useState(false);
-
-  // fetch min-balance of the account for max-button
-  useEffect(() => {
-    if (!senderAddress || prefetchedMinBalance) return;
-
-    (async () => {
-      try {
-        const {"min-balance": minBalance} = (await algod.client
-          .accountInformation(senderAddress!)
-          .do()) as {"min-balance": number};
-
-        dispatchFormitoAction({
-          type: "SET_FORM_VALUE",
-          payload: {minBalance}
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, [dispatchFormitoAction, prefetchedMinBalance, senderAddress]);
 
   // prefill `selectedAsset` if user has ALGO balance
   useEffect(() => {
@@ -77,7 +53,7 @@ function SendTxnForm() {
       const accountAlgo = accountAssets.find(isALGO);
 
       // Newly created zero balanced accounts do not have ALGOs
-      if (accountAlgo) {
+      if (accountAlgo && Number(accountAlgo.amount) > 0) {
         dispatchFormitoAction({
           type: "SET_FORM_VALUE",
           payload: {selectedAsset: accountAlgo}
@@ -136,6 +112,8 @@ function SendTxnForm() {
         type: "error",
         message: "There is an error preparing your transaction, please try again later."
       });
+
+      setShouldDisplaySpinner(false);
     }
   }
 
@@ -156,7 +134,7 @@ function SendTxnForm() {
     const isAccountBalanceInsufficient =
       Number(selectedAsset!.amount) <
       (isALGO(selectedAsset!)
-        ? (prefetchedMinBalance || DEFAULT_MIN_ALGO_BALANCE) + txnFee + amount
+        ? (accountMinBalance || DEFAULT_MIN_ALGO_BALANCE) + txnFee + amount
         : amount);
 
     if (isAccountBalanceInsufficient) {

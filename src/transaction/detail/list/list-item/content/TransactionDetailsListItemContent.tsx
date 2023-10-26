@@ -8,14 +8,16 @@ import {Transaction} from "algosdk";
 import {useTransactionSignFlowContext} from "../../../../context/TransactionSignFlowContext";
 import {
   getTransactionTypeText,
+  isTxnArbitraryData,
   transactionHasClearState,
   transactionHasCloseRemainder,
   transactionHasRekey
 } from "../../../../utils/transactionUtils";
 import TransactionDetailListItemTitle from "../title/TransactionDetailsListItemTitle";
+import {ArbitraryData} from "../../../../../core/util/model/peraWalletModel";
 
 interface TransactionDetailsListItemContentProps {
-  transaction: Transaction;
+  transaction: Transaction | ArbitraryData;
   transactionIndex: number;
 }
 
@@ -23,8 +25,9 @@ function TransactionDetailsListItemContent({
   transaction,
   transactionIndex
 }: TransactionDetailsListItemContentProps) {
+  const isArbitraryData = isTxnArbitraryData(transaction);
   const {
-    formitoState: {txns, userAddress}
+    formitoState: {txns, userAddress, currentSession, arbitraryData}
   } = useTransactionSignFlowContext();
   const totalWarningCount = getTotalWarningCount();
 
@@ -34,17 +37,23 @@ function TransactionDetailsListItemContent({
         "has-space-between align-center--vertically transaction-details-list-item-content"
       }>
       <div>
-        <TransactionDetailListItemTitle transaction={transaction} />
+        {isArbitraryData ? (
+          `Data sign${currentSession?.title ? ` from ${currentSession?.title}` : ""}`
+        ) : (
+          <TransactionDetailListItemTitle transaction={transaction} />
+        )}
 
         <div
           className={
             "text-color--gray typography--secondary-body transaction-details-list-item-content__footer"
           }>
-          {getTransactionTypeText(transaction, userAddress)}
+          {isArbitraryData
+            ? "Data Sign"
+            : getTransactionTypeText(transaction, userAddress)}
 
           <span className={"bullet"} />
 
-          {`${transactionIndex + 1} of ${txns.length}`}
+          {`${transactionIndex + 1} of ${arbitraryData?.data.length || txns.length}`}
 
           {totalWarningCount > 0 && (
             <>
@@ -67,9 +76,11 @@ function TransactionDetailsListItemContent({
   );
 
   function getTotalWarningCount() {
+    if (isArbitraryData) return 0;
+
     let total = 0;
 
-    if (transactionHasRekey(transaction)) {
+    if (transactionHasRekey(transaction, userAddress)) {
       total += 1;
     }
 

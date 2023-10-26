@@ -13,4 +13,11 @@ function generateRandomString(options?: {radix?: number; substringStartIndex?: n
   return Math.random().toString(radix).substring(substringStartIndex);
 }
 
-export {encodeString, generateRandomString};
+function getFirstChars(text: string, charCount?: number) {
+  const words = text.split(" ").slice(0, charCount);
+  const firstChars = words.map((word) => word[0]);
+
+  return firstChars;
+}
+
+export {encodeString, generateRandomString, getFirstChars};

@@ -1,0 +1,43 @@
+:root {
+  // Primary Button
+  --primary-button-bg: var(--helper-purple-900);
+  --primary-button-text: var(--text-contrast);
+  --primary-button-hover-text: var(--text-contrast);
+  --primary-button-hover-bg: var(--helper-purple-800);
+  --primary-button-disabled-bg: var(--helper-gray-100);
+  --primary-button-disabled-text: var(--text-gray-lighter);
+
+  // Secondary Button
+  --secondary-button-bg: var(--helper-purple-100);
+  --secondary-button-text: var(--helper-purple-900);
+  --secondary-button-hover-bg: var(--helper-purple-200);
+  --secondary-button-hover-text: var(--helper-purple-900);
+  --secondary-button-disabled-bg: var(--helper-gray-100);
+  --secondary-button-disabled-text: var(--text-gray-lighter);
+
+  // Light Button
+  --light-button-bg: var(--layer-1);
+  --light-button-text: var(--text-gray);
+  --light-button-hover-bg: var(--layer-1);
+  --light-button-hover-text: var(--text-main);
+  --light-button-disabled-bg: var(--helper-gray-100);
+  --light-button-disabled-text: var(--text-gray-lighter);
+
+  // Ghost Button
+  --ghost-button-text: var(--text-gray);
+  --ghost-button-hover-text: var(--text-main);
+  --ghost-button-pressed-bg: var(--helper-purple-100);
+  --ghost-button-pressed-text: var(--helper-purple-900);
+  --ghost-button-disabled-text: var(--text-gray-lighter);
+}
+
+.dark-theme {
+  // Light Button
+  --light-button-text: var(--text-main);
+  --light-button-hover-bg: var(--text-gray-lightest);
+  --light-button-disabled-text: var(--text-gray-lightest);
+
+  // Ghost Button
+  --ghost-button-text: var(--text-gray-lighter);
+  --ghost-button-disabled-text: var(--text-gray-lightest);
+}

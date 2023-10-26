@@ -6,7 +6,7 @@ This repo was created with [Create React App](https://github.com/facebook/create
 
 Recommended system versions
 
-- `node 14.x`
+- `node 18.x`
 - `npm 8.x`
 
 ### Install dependencies

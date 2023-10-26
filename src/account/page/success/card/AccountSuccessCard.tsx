@@ -1,46 +1,56 @@
 import {ReactComponent as QRCodeIcon} from "../../../../core/ui/icons/qr-code.svg";
-import {ReactComponent as PlusIcon} from "../../../../core/ui/icons/plus.svg";
 import {ReactComponent as ExportIcon} from "../../../../core/ui/icons/export.svg";
 
 import "./_account-success-card.scss";
 
+import {useEffect, useState} from "react";
+
 import {useAppContext} from "../../../../core/app/AppContext";
 import {useModalDispatchContext} from "../../../../component/modal/context/ModalContext";
-import {
-  getLastAccountAddress,
-  trimAccountAddress,
-  trimAccountName
-} from "../../../util/accountUtils";
+import {trimAccountAddress, trimAccountName} from "../../../util/accountUtils";
 import ClipboardButton from "../../../../component/clipboard/button/ClipboardButton";
 import Button from "../../../../component/button/Button";
 import AccountShowQRModal, {
   ACCOUNT_SHOW_QR_MODAL_ID
 } from "../../../../overview/page/show-qr/AccountShowQR";
-import {usePortfolioContext} from "../../../../overview/context/PortfolioOverviewContext";
 import LinkButton from "../../../../component/button/LinkButton";
 import {defaultPriceFormatter} from "../../../../core/util/number/numberUtils";
 import {ALGO_UNIT} from "../../../../core/ui/typography/typographyConstants";
 import {getPeraExplorerLink} from "../../../../core/util/pera/explorer/getPeraExplorerLink";
-import MoonPayModal, {
-  MOON_PAY_MODAL_ID
-} from "../../../../core/integrations/moon-pay/modal/MoonPayModal";
-import {AccountSuccessPageProps} from "../AccountSuccessPage";
+import AddFundsButton from "../../../../add-funds/button/AddFundsButton";
+import {getPortfolioOverviewData} from "../../../../overview/util/portfolioOverviewUtils";
 
 interface AccountSuccessCardProps {
-  type: AccountSuccessPageProps["type"];
+  account: AppDBAccount;
 }
 
-function AccountSuccessCard({type}: AccountSuccessCardProps) {
+function AccountSuccessCard({account}: AccountSuccessCardProps) {
   const {
-    state: {accounts, preferredNetwork}
+    state: {algoPrice, preferredNetwork}
   } = useAppContext();
   const dispatchModalStateAction = useModalDispatchContext();
   const {algoFormatter, usdFormatter} = defaultPriceFormatter();
-  const address = getLastAccountAddress(accounts);
-  const portfolioOverview = usePortfolioContext();
-  const accountPortfolio = portfolioOverview?.accounts.find(
-    (account) => account.address === address
-  );
+  const {address, name: accountName} = account;
+  const [addedAccountOverview, setAddedAccountOverview] = useState<
+    Pick<PortfolioOverview, "portfolio_value_usd" | "portfolio_value_algo"> | undefined
+  >();
+
+  useEffect(() => {
+    const abortController = new AbortController();
+
+    getPortfolioOverviewData({
+      addresses: [account.address],
+      abortSignal: abortController.signal,
+      algoPrice: algoPrice!,
+      accounts: {}
+    }).then(({portfolio_value_algo, portfolio_value_usd}) =>
+      setAddedAccountOverview({portfolio_value_usd, portfolio_value_algo})
+    );
+
+    return () => {
+      abortController.abort();
+    };
+  }, [account.address, algoPrice]);
 
   return (
     <div
@@ -54,26 +64,27 @@ function AccountSuccessCard({type}: AccountSuccessCardProps) {
           <p
             className={
               "typography--h3 text-color--main account-success-card__summary__main-info"
-            }>{`${ALGO_UNIT}${algoFormatter(
-            Number(accountPortfolio?.total_algo_value || "0.00")
-          )}`}</p>
+            }>
+            {addedAccountOverview?.portfolio_value_usd
+              ? `${ALGO_UNIT}${algoFormatter(
+                  Number(addedAccountOverview.portfolio_value_algo || "0.00")
+                )}`
+              : "-"}
+          </p>
 
           <p className={"typoraphy--secondary-body text-color--gray"}>
-            {accountPortfolio?.total_usd_value
-              ? usdFormatter(parseFloat(accountPortfolio.total_usd_value), {
+            {addedAccountOverview?.portfolio_value_usd
+              ? usdFormatter(parseFloat(addedAccountOverview.portfolio_value_usd), {
                   minimumFractionDigits: 2
                 })
               : "-"}
           </p>
 
-          <Button
+          <AddFundsButton
+            customClassName={"account-success-card__summary-value__add-funds-cta"}
             size={"large"}
-            onClick={handleAddFundsClick}
-            customClassName={"account-success-card__summary-value__add-funds-cta"}>
-            <PlusIcon />
-
-            {"Add funds"}
-          </Button>
+            accountAddress={account.address}
+          />
         </div>
 
         <div className={"account-success-card__summary-address"}>
@@ -87,11 +98,12 @@ function AccountSuccessCard({type}: AccountSuccessCardProps) {
           </p>
 
           <p className={"typoraphy--secondary-body text-color--gray"}>
-            {trimAccountName(accounts[address].name)}
+            {trimAccountName(accountName)}
           </p>
 
           <div className={"account-success-card__summary-address__button-group"}>
             <ClipboardButton
+              size={"medium"}
               textToCopy={address}
               buttonType={"light"}
               customClassName={"account-success-card__summary-address__copy-button"}>
@@ -106,41 +118,39 @@ function AccountSuccessCard({type}: AccountSuccessCardProps) {
                 className={"account-success-card__qr-button__icon"}
                 width={16}
               />
-              {"Generate QR Code"}
+              {"Generate QR"}
             </Button>
           </div>
         </div>
       </div>
 
-      {type === "IMPORT" && (
-        <div className={"account-success-card__pera-explorer"}>
-          <p className={"typography--body text-color--gray"}>
-            {"See your account in more detail"}
-          </p>
+      <div className={"account-success-card__pera-explorer"}>
+        <p className={"typography--body text-color--gray"}>
+          {"See your account in more detail"}
+        </p>
 
-          <p
-            className={
-              "typography--h3 text-color--gray account-success-card__pera-explorer-text"
-            }>
-            {"on Pera Explorer"}
-          </p>
+        <p
+          className={
+            "typography--h3 text-color--gray account-success-card__pera-explorer-text"
+          }>
+          {"on Pera Explorer"}
+        </p>
 
-          <LinkButton
-            to={getPeraExplorerLink({
-              id: address,
-              network: preferredNetwork,
-              type: "account-detail"
-            })}
-            external={true}
-            buttonType={"light"}
-            size={"large"}
-            customClassName={"account-success-card__pera-explorer-link"}>
-            {"View on Pera Explorer"}
+        <LinkButton
+          to={getPeraExplorerLink({
+            id: address,
+            network: preferredNetwork,
+            type: "account-detail"
+          })}
+          external={true}
+          buttonType={"light"}
+          size={"large"}
+          customClassName={"account-success-card__pera-explorer-link"}>
+          {"View on Pera Explorer"}
 
-            <ExportIcon width={20} />
-          </LinkButton>
-        </div>
-      )}
+          <ExportIcon width={20} />
+        </LinkButton>
+      </div>
     </div>
   );
 
@@ -159,34 +169,11 @@ function AccountSuccessCard({type}: AccountSuccessCardProps) {
     });
   }
 
-  function handleAddFundsClick() {
-    dispatchModalStateAction({
-      type: "OPEN_MODAL",
-      payload: {
-        item: {
-          id: MOON_PAY_MODAL_ID,
-          modalContentLabel: "Add funds via MoonPay",
-          customClassName: "moon-pay-modal-container",
-          children: <MoonPayModal address={address} onClose={handleCloseMoonPayModal} />
-        }
-      }
-    });
-  }
-
   function handleCloseQRCodeModal() {
     dispatchModalStateAction({
       type: "CLOSE_MODAL",
       payload: {
         id: ACCOUNT_SHOW_QR_MODAL_ID
-      }
-    });
-  }
-
-  function handleCloseMoonPayModal() {
-    dispatchModalStateAction({
-      type: "CLOSE_MODAL",
-      payload: {
-        id: MOON_PAY_MODAL_ID
       }
     });
   }

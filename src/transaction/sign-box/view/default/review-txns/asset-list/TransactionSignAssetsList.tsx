@@ -20,11 +20,19 @@ import {
 import Tooltip from "../../../../../../component/tooltip/Tooltip";
 import Button from "../../../../../../component/button/Button";
 import {useTransactionSignFlowContext} from "../../../../../context/TransactionSignFlowContext";
+import ArbitraryDataList from "../../arbitrary-data-list/ArbitraryDataList";
 
 interface TransactionSignAssetsListProps {
   transactions: Transaction[];
   title: string;
-  type: "receive" | "spend" | "opt-in" | "app-call" | "asset-config" | "signed-by-others";
+  type:
+    | "arbitrary-data"
+    | "receive"
+    | "spend"
+    | "opt-in"
+    | "app-call"
+    | "asset-config"
+    | "signed-by-others";
 }
 
 function TransactionSignAssetsList({
@@ -32,21 +40,25 @@ function TransactionSignAssetsList({
   title,
   type
 }: TransactionSignAssetsListProps) {
-  const {dispatchFormitoAction: dispatchTransactionPageAction} =
-    useTransactionSignFlowContext();
+  const {
+    formitoState: {arbitraryData, userAddress},
+    dispatchFormitoAction: dispatchTransactionPageAction
+  } = useTransactionSignFlowContext();
   const algoTransactions = transactions.filter(isAlgoTransferTransaction);
   const totalAlgoValue = algoTransactions.reduce(
     (prevValue, transaction) => prevValue + Number(transaction.amount),
     0
   );
-  const hasRekeyTransaction = algoTransactions.some(transactionHasRekey);
+  const hasRekeyTransaction = algoTransactions.some((txn) =>
+    transactionHasRekey(txn, userAddress)
+  );
   const hasCloseReminderTransaction = algoTransactions.some(transactionHasCloseRemainder);
 
   return (
     <div className={"transaction-sign-assets-list"}>
       <div
         className={classNames(
-          "typography--tagline text--uppercase text-color--gray-light transaction-sign-assets-list__subtitle",
+          "typography--tagline text--uppercase text-color--gray-lighter transaction-sign-assets-list__subtitle",
           {
             "transaction-sign-assets-list__subtitle--with-tooltip":
               type === "signed-by-others"
@@ -67,6 +79,10 @@ function TransactionSignAssetsList({
         )}
       </div>
 
+      {arbitraryData && arbitraryData.data.length > 1 && (
+        <ArbitraryDataList data={arbitraryData.data} />
+      )}
+
       {!isAllTransactionsEmpty(transactions) && (
         <List items={transactions}>
           {(item) => (
@@ -81,7 +97,8 @@ function TransactionSignAssetsList({
         </List>
       )}
 
-      {(totalAlgoValue > 0 || isAllTransactionsEmpty(transactions)) && (
+      {(totalAlgoValue > 0 ||
+        (!arbitraryData && isAllTransactionsEmpty(transactions))) && (
         <div className={"has-space-between align-center--vertically"}>
           <div className={"transaction-sign-assets-list__total-algo-value"}>
             <AlgoASAIcon width={40} height={40} />
@@ -97,7 +114,7 @@ function TransactionSignAssetsList({
                 )
               )}`}</p>
 
-              <p className={"typography--secondary-body text-color--gray-light"}>
+              <p className={"typography--secondary-body text-color--gray-lighter"}>
                 {"ALGO"}
               </p>
             </div>

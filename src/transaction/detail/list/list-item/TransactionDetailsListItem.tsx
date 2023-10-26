@@ -5,9 +5,11 @@ import {Transaction} from "algosdk";
 
 import {useTransactionSignFlowContext} from "../../../context/TransactionSignFlowContext";
 import TransactionDetailsListItemContent from "./content/TransactionDetailsListItemContent";
+import {ArbitraryData} from "../../../../core/util/model/peraWalletModel";
+import {isTxnArbitraryData} from "../../../utils/transactionUtils";
 
 interface TransactionDetailsListItemProps {
-  transaction: Transaction;
+  transaction: Transaction | ArbitraryData;
   transactionIndex: number;
 }
 
@@ -34,7 +36,9 @@ function TransactionDetailsListItem({
       type: "SET_FORM_VALUE",
       payload: {
         activeTransactionIndex: transactionIndex,
-        transactionSignView: "txn-detail-single"
+        transactionSignView: isTxnArbitraryData(transaction)
+          ? "txn-arbitrary-data"
+          : "txn-detail-single"
       }
     });
   }
