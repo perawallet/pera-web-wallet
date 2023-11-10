@@ -49,6 +49,8 @@ interface AccountOverview extends AppDBAccount, Omit<AccountDetail, "name"> {
 
 interface PortfolioOverview {
   current_round: null | number;
+  portfolio_value_usd: string;
+  portfolio_value_algo: string;
   accounts: Record<string, AccountOverview>;
 }
 
